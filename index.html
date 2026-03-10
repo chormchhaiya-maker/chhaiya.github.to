@@ -22,7 +22,6 @@
     pointer-events: none;
   }
 
-  /* Grain overlay */
   .grain {
     position: fixed;
     inset: -50%;
@@ -43,7 +42,6 @@
     100%{ transform: translate(-1%, 1%); }
   }
 
-  /* Demo content */
   .content {
     position: relative;
     z-index: 2;
@@ -52,7 +50,7 @@
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    gap: 1rem;
+    gap: 1.5rem;
     text-align: center;
     padding: 2rem;
   }
@@ -71,6 +69,46 @@
     letter-spacing: 0.2em;
     text-transform: uppercase;
   }
+
+  .start-btn {
+    margin-top: 0.5rem;
+    padding: 0.6rem 2.2rem;
+    background: transparent;
+    border: 1px solid rgba(0, 255, 120, 0.5);
+    color: #c8ffe0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.3s, border-color 0.3s;
+  }
+
+  .start-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 255, 120, 0.08);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  .start-btn:hover::before {
+    transform: scaleX(1);
+  }
+
+  .start-btn:hover {
+    border-color: rgba(0, 255, 120, 0.9);
+    color: #ffffff;
+    box-shadow: 0 0 18px rgba(0, 255, 120, 0.2);
+  }
+
+  .start-btn:active {
+    transform: scale(0.97);
+  }
 </style>
 </head>
 <body>
@@ -80,9 +118,13 @@
 <div class="content">
   <p>Create by chhaiya</p>
   <h1>WELCOME TO MY WEBSITE</h1>
-<audio id="clickSound" src="ScreenRecording_03-10-2026%2015-52-09_1.m4a"></audio>
-<a href="https://www.youtube.com/?feature=ytca" target="_blank" onclick="document.getElementById('clickSound').play()">
- 
+
+  <audio id="clickSound" src="ScreenRecording_03-10-2026%2015-52-09_1.m4a"></audio>
+
+  <button class="start-btn" onclick="document.getElementById('clickSound').play(); window.open('https://www.youtube.com/?feature=ytca', '_blank')">
+    START
+  </button>
+</div>
 
 <script>
 const canvas = document.getElementById('canvas');
@@ -97,13 +139,7 @@ function resize() {
 resize();
 window.addEventListener('resize', resize);
 
-// Simplex-like noise (compact implementation)
-function hash(n) {
-  return Math.sin(n) * 43758.5453123;
-}
-function fract(n) {
-  return n - Math.floor(n);
-}
+function fract(n) { return n - Math.floor(n); }
 function noise2(x, y) {
   const ix = Math.floor(x), iy = Math.floor(y);
   const fx = x - ix, fy = y - iy;
@@ -126,7 +162,6 @@ function fbm(x, y) {
   return v;
 }
 
-// Blob definitions
 const blobs = [
   { x: 0.25, y: 0.35, r: 0.38, speed: 0.00018, phase: 0.0,  color: [0, 210, 90] },
   { x: 0.72, y: 0.60, r: 0.32, speed: 0.00013, phase: 2.1,  color: [0, 160, 255] },
@@ -136,10 +171,8 @@ const blobs = [
 
 function draw() {
   t++;
-
   ctx.clearRect(0, 0, W, H);
 
-  // Draw each blob
   blobs.forEach((blob, bi) => {
     const ox = blob.x * W + Math.sin(t * blob.speed * Math.PI * 2 * 60 + blob.phase) * W * 0.12;
     const oy = blob.y * H + Math.cos(t * blob.speed * Math.PI * 2 * 47 + blob.phase) * H * 0.10;
@@ -147,15 +180,12 @@ function draw() {
 
     const grad = ctx.createRadialGradient(ox, oy, 0, ox, oy, radius);
     const [r, g, b] = blob.color;
-
     grad.addColorStop(0,   `rgba(${r},${g},${b},0.18)`);
     grad.addColorStop(0.4, `rgba(${r},${g},${b},0.07)`);
     grad.addColorStop(1,   `rgba(${r},${g},${b},0)`);
 
     ctx.save();
     ctx.globalCompositeOperation = 'screen';
-
-    // Organic distortion using noise path
     ctx.beginPath();
     const steps = 64;
     for (let i = 0; i <= steps; i++) {
@@ -175,7 +205,6 @@ function draw() {
     ctx.restore();
   });
 
-  // Scanline overlay
   ctx.save();
   ctx.globalCompositeOperation = 'multiply';
   for (let y = 0; y < H; y += 3) {
@@ -184,7 +213,6 @@ function draw() {
   }
   ctx.restore();
 
-  // Edge vignette
   const vignette = ctx.createRadialGradient(W/2, H/2, H*0.3, W/2, H/2, H*0.9);
   vignette.addColorStop(0, 'rgba(0,0,0,0)');
   vignette.addColorStop(1, 'rgba(0,0,6,0.75)');
@@ -198,20 +226,3 @@ draw();
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
