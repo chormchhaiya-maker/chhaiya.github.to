@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Organic Blob Background</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #050508;
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: 'Courier New', monospace;
+    color: #e0ffe8;
+  }
+
+  .bg-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Grain overlay */
+  .grain {
+    position: fixed;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    animation: grain-drift 0.4s steps(1) infinite;
+  }
+
+  @keyframes grain-drift {
+    0%  { transform: translate(0, 0); }
+    25% { transform: translate(-2%, -1%); }
+    50% { transform: translate(1%, 2%); }
+    75% { transform: translate(2%, -2%); }
+    100%{ transform: translate(-1%, 1%); }
+  }
+
+  /* Demo content */
+  .content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    gap: 1rem;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .content h1 {
+    font-size: clamp(2rem, 6vw, 4.5rem);
+    letter-spacing: -0.02em;
+    color: #c8ffe0;
+    text-shadow: 0 0 60px rgba(0, 255, 120, 0.15);
+    font-weight: 400;
+  }
+
+  .content p {
+    font-size: 0.85rem;
+    color: rgba(180, 255, 210, 0.4);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+
+<canvas class="bg-canvas" id="canvas"></canvas>
+<div class="grain"></div>
+
+<!-- Your page content goes here -->
+<div class="content">
+  <p>Get the key </p>
+  <h1>PORN &amp; HUB</h1>
+  <p>GOONER ONLY</p>
+</div>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+let W, H, t = 0;
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+// Simplex-like noise (compact implementation)
+function hash(n) {
+  return Math.sin(n) * 43758.5453123;
+}
+function fract(n) {
+  return n - Math.floor(n);
+}
+function noise2(x, y) {
+  const ix = Math.floor(x), iy = Math.floor(y);
+  const fx = x - ix, fy = y - iy;
+  const ux = fx * fx * (3 - 2 * fx);
+  const uy = fy * fy * (3 - 2 * fy);
+  const a = fract(Math.sin(ix + iy * 57.0) * 43758.5453);
+  const b = fract(Math.sin(ix + 1 + iy * 57.0) * 43758.5453);
+  const c = fract(Math.sin(ix + (iy + 1) * 57.0) * 43758.5453);
+  const d = fract(Math.sin(ix + 1 + (iy + 1) * 57.0) * 43758.5453);
+  return a + (b - a) * ux + (c - a) * uy + (d - a - c + b) * ux * uy;
+}
+
+function fbm(x, y) {
+  let v = 0, amp = 0.5, freq = 1;
+  for (let i = 0; i < 5; i++) {
+    v += amp * noise2(x * freq, y * freq);
+    amp *= 0.5;
+    freq *= 2.1;
+  }
+  return v;
+}
+
+// Blob definitions
+const blobs = [
+  { x: 0.25, y: 0.35, r: 0.38, speed: 0.00018, phase: 0.0,  color: [0, 210, 90] },
+  { x: 0.72, y: 0.60, r: 0.32, speed: 0.00013, phase: 2.1,  color: [0, 160, 255] },
+  { x: 0.50, y: 0.80, r: 0.28, speed: 0.00022, phase: 4.4,  color: [20, 255, 180] },
+  { x: 0.80, y: 0.20, r: 0.22, speed: 0.00016, phase: 1.3,  color: [100, 80, 255] },
+];
+
+function draw() {
+  t++;
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Draw each blob
+  blobs.forEach((blob, bi) => {
+    const ox = blob.x * W + Math.sin(t * blob.speed * Math.PI * 2 * 60 + blob.phase) * W * 0.12;
+    const oy = blob.y * H + Math.cos(t * blob.speed * Math.PI * 2 * 47 + blob.phase) * H * 0.10;
+    const radius = blob.r * Math.min(W, H);
+
+    const grad = ctx.createRadialGradient(ox, oy, 0, ox, oy, radius);
+    const [r, g, b] = blob.color;
+
+    grad.addColorStop(0,   `rgba(${r},${g},${b},0.18)`);
+    grad.addColorStop(0.4, `rgba(${r},${g},${b},0.07)`);
+    grad.addColorStop(1,   `rgba(${r},${g},${b},0)`);
+
+    ctx.save();
+    ctx.globalCompositeOperation = 'screen';
+
+    // Organic distortion using noise path
+    ctx.beginPath();
+    const steps = 64;
+    for (let i = 0; i <= steps; i++) {
+      const angle = (i / steps) * Math.PI * 2;
+      const nx = ox / W + Math.cos(angle) * 0.3;
+      const ny = oy / H + Math.sin(angle) * 0.3;
+      const nt = t * 0.0004 + bi * 1.7;
+      const distort = fbm(nx * 2.5 + nt, ny * 2.5 + nt * 0.8);
+      const r2 = radius * (0.75 + distort * 0.55);
+      const px = ox + Math.cos(angle) * r2;
+      const py = oy + Math.sin(angle) * r2;
+      i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+    ctx.fillStyle = grad;
+    ctx.fill();
+    ctx.restore();
+  });
+
+  // Scanline overlay
+  ctx.save();
+  ctx.globalCompositeOperation = 'multiply';
+  for (let y = 0; y < H; y += 3) {
+    ctx.fillStyle = 'rgba(0,0,0,0.08)';
+    ctx.fillRect(0, y, W, 1);
+  }
+  ctx.restore();
+
+  // Edge vignette
+  const vignette = ctx.createRadialGradient(W/2, H/2, H*0.3, W/2, H/2, H*0.9);
+  vignette.addColorStop(0, 'rgba(0,0,0,0)');
+  vignette.addColorStop(1, 'rgba(0,0,6,0.75)');
+  ctx.fillStyle = vignette;
+  ctx.fillRect(0, 0, W, H);
+
+  requestAnimationFrame(draw);
+}
+
+draw();
+</script>
+</body>
+</html>
