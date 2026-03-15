@@ -149,17 +149,17 @@
 <!-- LOGIN -->
 <div id="login-screen">
   <div class="login-card">
-    <div class="login-logo">// FriendChat</div>
-    <div class="login-sub">Private rooms, just your crew.</div>
+    <div class="login-logo">// FriendChat-VIP ONLY</div>
+    <div class="login-sub">Create By ChhaiyaDeveloper</div>
     <div class="field-group">
-      <div class="field-label">Your nickname</div>
-      <input type="text" id="nick-input" placeholder="e.g. coolcat99" maxlength="20" autocomplete="off" />
+      <div class="field-label">ឈ្មោះ</div>
+      <input type="text" id="nick-input" placeholder="ដាក់ឈ្មោះហែងមក" maxlength="20" autocomplete="off" />
     </div>
     <div class="field-group">
-      <div class="field-label">Room password</div>
-      <input type="password" id="pass-input" placeholder="Secret code" autocomplete="off" />
+      <div class="field-label">លេខកូដ</div>
+      <input type="password" id="pass-input" placeholder="ដាក់ចូលមកអាភ្លឺ" autocomplete="off" />
     </div>
-    <div id="login-error">Wrong password. Try again.</div>
+    <div id="login-error">ខុសហើយអាងាប់. ម្ដងទៀត.</div>
     <button class="btn-join" id="join-btn">Enter Chat →</button>
     <div class="login-hint">Share the password <span>only with friends</span>.<br>Anyone without it can't get in.</div>
   </div>
@@ -194,7 +194,7 @@
       <div class="input-wrap">
         <textarea id="msg-input" rows="1" placeholder="Message..."></textarea>
       </div>
-      <button class="send-btn" id="send-btn">Send</button>
+      <button class="send-btn" id="send-btn">ផ្ញើ</button>
     </div>
   </div>
 </div>
@@ -258,7 +258,7 @@ const FIREBASE_CONFIG = {
 
 // ── PASSWORD ─────────────────────────────────────────────
 // Change this to your secret code and share it with friends only!
-const ROOM_PASSWORD = 'friends123';
+const ROOM_PASSWORD = 'kompongluong';
 
 // ── DETECT IF CONFIGURED ────────────────────────────────
 const isConfigured = FIREBASE_CONFIG.apiKey !== "YOUR_API_KEY";
