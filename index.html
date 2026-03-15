@@ -176,6 +176,8 @@ textarea::placeholder { color: var(--text3); }
         <div class="suggestion" onclick="sendSuggestion('Tell me a fun fact')">Tell me a fun fact</div>
         <div class="suggestion" onclick="sendSuggestion('Help me study for an exam')">Help me study</div>
         <div class="suggestion" onclick="sendSuggestion('Explain how the internet works')">How does internet work?</div>
+        <div class="suggestion" onclick="sendSuggestion('generate a beautiful sunset over mountains')">🎨 Generate image</div>
+        <div class="suggestion" onclick="sendSuggestion('draw a cute cat')">🐱 Draw a cat</div>
       </div>
     </div>
   </div>
@@ -232,13 +234,54 @@ function autoResize(el) { el.style.height = 'auto'; el.style.height = Math.min(e
 function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
 function sendSuggestion(text) { document.getElementById('userInput').value = text; sendMessage(); }
 
-function addMessage(role, content) {
+// Check if user wants to generate an image
+function isImageRequest(text) {
+  const keywords = ['generate', 'draw', 'create', 'make', 'paint', 'sketch', 'image of', 'picture of', 'photo of', 'show me'];
+  const lower = text.toLowerCase();
+  return keywords.some(k => lower.includes(k));
+}
+
+function addMessage(role, content, isHTML = false) {
   const welcome = document.getElementById('welcome');
   if (welcome) welcome.remove();
   const container = document.getElementById('messages');
   const div = document.createElement('div');
   div.className = `msg ${role}`;
-  div.innerHTML = `<div class="avatar">${role === 'user' ? '👤' : '🤖'}</div><div class="bubble">${content}</div>`;
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  if (isHTML) bubble.innerHTML = content;
+  else bubble.innerHTML = content;
+  div.innerHTML = `<div class="avatar">${role === 'user' ? '👤' : '🤖'}</div>`;
+  div.appendChild(bubble);
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+function addImageMessage(prompt) {
+  const welcome = document.getElementById('welcome');
+  if (welcome) welcome.remove();
+  const container = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = 'msg ai';
+
+  const encodedPrompt = encodeURIComponent(prompt);
+  const imgUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=400&height=400&nologo=true`;
+
+  div.innerHTML = `
+    <div class="avatar">🤖</div>
+    <div class="bubble" style="padding:6px;background:transparent;border:none;">
+      <div style="font-size:0.82rem;color:var(--text2);margin-bottom:6px;">🎨 Generating: "${prompt}"</div>
+      <img src="${imgUrl}" alt="${prompt}" style="max-width:280px;border-radius:12px;display:block;border:1px solid var(--border);" 
+        onload="this.previousElementSibling.textContent='🎨 Generated!'"
+        onerror="this.parentElement.innerHTML='❌ Could not generate image. Try again!'"/>
+      <div style="font-size:0.75rem;color:var(--text3);margin-top:6px;">Tap to view full size</div>
+    </div>`;
+
+  // Make image clickable for fullscreen
+  div.querySelector('img').onclick = function() {
+    window.open(imgUrl, '_blank');
+  };
+
   container.appendChild(div);
   container.scrollTop = container.scrollHeight;
 }
@@ -262,10 +305,22 @@ async function sendMessage() {
   const text = input.value.trim();
   if (!text) return;
   addMessage('user', text.replace(/\n/g, '<br>'));
-  messages.push({ role: 'user', content: text });
   input.value = ''; input.style.height = 'auto';
   isLoading = true;
   document.getElementById('sendBtn').disabled = true;
+
+  // Check if image generation request
+  if (isImageRequest(text)) {
+    // Extract the subject after keywords
+    const prompt = text.replace(/^(generate|draw|create|make|paint|sketch|show me|image of|picture of|photo of)\s*/i, '').trim() || text;
+    addImageMessage(prompt);
+    isLoading = false;
+    document.getElementById('sendBtn').disabled = false;
+    document.getElementById('userInput').focus();
+    return;
+  }
+
+  messages.push({ role: 'user', content: text });
   addTyping();
   try {
     const response = await fetch('/api/chat', {
