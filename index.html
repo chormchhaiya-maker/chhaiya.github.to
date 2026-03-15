@@ -265,22 +265,28 @@ function addImageMessage(prompt) {
   div.className = 'msg ai';
 
   const encodedPrompt = encodeURIComponent(prompt);
-  const imgUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=400&height=400&nologo=true`;
+  // Try multiple image sources
+  const imgUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&nologo=true&seed=${Math.floor(Math.random()*10000)}`;
 
-  div.innerHTML = `
-    <div class="avatar">🤖</div>
-    <div class="bubble" style="padding:6px;background:transparent;border:none;">
-      <div style="font-size:0.82rem;color:var(--text2);margin-bottom:6px;">🎨 Generating: "${prompt}"</div>
-      <img src="${imgUrl}" alt="${prompt}" style="max-width:280px;border-radius:12px;display:block;border:1px solid var(--border);" 
-        onload="this.previousElementSibling.textContent='🎨 Generated!'"
-        onerror="this.parentElement.innerHTML='❌ Could not generate image. Try again!'"/>
-      <div style="font-size:0.75rem;color:var(--text3);margin-top:6px;">Tap to view full size</div>
-    </div>`;
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  bubble.style.cssText = 'padding:8px;background:var(--surface2);border:1px solid var(--border);';
+  bubble.innerHTML = `
+    <div style="font-size:0.82rem;color:var(--text2);margin-bottom:8px;">🎨 Generating: <em>${prompt}</em></div>
+    <div id="img-loading-${Date.now()}" style="color:var(--text3);font-size:0.8rem;">⏳ Please wait 5-10 seconds...</div>
+    <img src="${imgUrl}" alt="${prompt}" 
+      style="max-width:260px;border-radius:12px;display:none;margin-top:6px;cursor:pointer;border:1px solid var(--border);"
+      onload="this.style.display='block';this.previousElementSibling.style.display='none';"
+      onerror="this.previousElementSibling.textContent='❌ Failed. Try a different description!'"/>`;
 
-  // Make image clickable for fullscreen
-  div.querySelector('img').onclick = function() {
-    window.open(imgUrl, '_blank');
-  };
+  div.innerHTML = `<div class="avatar">🤖</div>`;
+  div.appendChild(bubble);
+
+  // Click to open full size
+  setTimeout(() => {
+    const img = div.querySelector('img');
+    if (img) img.onclick = () => window.open(imgUrl, '_blank');
+  }, 100);
 
   container.appendChild(div);
   container.scrollTop = container.scrollHeight;
