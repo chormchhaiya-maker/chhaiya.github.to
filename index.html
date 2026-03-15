@@ -265,18 +265,28 @@ function addImageMessage(prompt) {
   div.className = 'msg ai';
 
   const encodedPrompt = encodeURIComponent(prompt);
-  const seed = Math.floor(Math.random() * 99999);
-  const imgUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?seed=${seed}&nologo=true`;
+  // Use multiple reliable free image APIs
+  const apis = [
+    `https://image.pollinations.ai/prompt/${encodedPrompt}?nologo=true&seed=${Math.floor(Math.random()*99999)}`,
+    `https://lexica.art/api/v1/search?q=${encodedPrompt}`,
+  ];
+  const imgUrl = apis[0];
+  const lexicaUrl = `https://lexica.art/?q=${encodedPrompt}`;
 
   const bubble = document.createElement('div');
   bubble.className = 'bubble';
   bubble.style.cssText = 'padding:10px;background:var(--surface2);border:1px solid var(--border);';
   bubble.innerHTML = `
-    <div style="font-size:0.85rem;color:var(--text2);margin-bottom:10px;">🎨 Image ready for: <em>"${prompt}"</em></div>
-    <a href="${imgUrl}" target="_blank" style="display:inline-block;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;padding:8px 18px;border-radius:20px;font-size:0.85rem;text-decoration:none;font-family:Syne,sans-serif;">
-      🖼️ View Generated Image
-    </a>
-    <div style="font-size:0.72rem;color:var(--text3);margin-top:8px;">Opens in new tab • Takes 5-10 seconds to generate</div>`;
+    <div style="font-size:0.85rem;color:var(--text2);margin-bottom:10px;">🎨 Generate image: <em>"${prompt}"</em></div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <a href="${imgUrl}" target="_blank" style="display:inline-block;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;padding:8px 18px;border-radius:20px;font-size:0.85rem;text-decoration:none;text-align:center;">
+        🖼️ Generate with Pollinations
+      </a>
+      <a href="${lexicaUrl}" target="_blank" style="display:inline-block;background:var(--surface3);color:var(--text2);border:1px solid var(--border);padding:8px 18px;border-radius:20px;font-size:0.85rem;text-decoration:none;text-align:center;">
+        🔍 Search on Lexica (backup)
+      </a>
+    </div>
+    <div style="font-size:0.72rem;color:var(--text3);margin-top:8px;">If one doesn't work, try the other!</div>`;
 
   div.innerHTML = `<div class="avatar">🤖</div>`;
   div.appendChild(bubble);
