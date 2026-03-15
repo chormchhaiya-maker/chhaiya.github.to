@@ -10,29 +10,17 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #0d0d0f;
-    --surface: #17171a;
-    --surface2: #1e1e22;
-    --surface3: #252529;
-    --border: rgba(255,255,255,0.07);
-    --border2: rgba(255,255,255,0.13);
-    --accent: #7c6af5;
-    --accent2: #a093f8;
-    --text: #e8e8ee;
-    --muted: #7a7a8a;
-    --muted2: #555566;
-    --bubble-me: #2d2860;
-    --bubble-them: #1e1e25;
-    --green: #3ecf6e;
-    --font: 'DM Sans', sans-serif;
-    --mono: 'Space Mono', monospace;
-    --radius: 16px;
+    --bg: #0d0d0f; --surface: #17171a; --surface2: #1e1e22; --surface3: #252529;
+    --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.13);
+    --accent: #7c6af5; --accent2: #a093f8; --text: #e8e8ee;
+    --muted: #7a7a8a; --muted2: #555566;
+    --bubble-me: #2d2860; --bubble-them: #1e1e25;
+    --green: #3ecf6e; --font: 'DM Sans', sans-serif; --mono: 'Space Mono', monospace;
   }
 
   body { font-family: var(--font); background: var(--bg); color: var(--text); height: 100dvh; display: flex; overflow: hidden; }
 
-  /* LOGIN */
-  #login-screen { width: 100%; display: flex; align-items: center; justify-content: center; background: var(--bg); }
+  #login-screen { width: 100%; display: flex; align-items: center; justify-content: center; }
   .login-card { width: 100%; max-width: 400px; padding: 2.5rem 2rem; background: var(--surface); border: 1px solid var(--border2); border-radius: 24px; margin: 1rem; }
   .login-logo { font-family: var(--mono); font-size: 1.5rem; font-weight: 700; letter-spacing: -1px; color: var(--accent2); margin-bottom: 0.25rem; }
   .login-sub { font-size: 0.85rem; color: var(--muted); margin-bottom: 2rem; }
@@ -43,15 +31,12 @@
   .btn-join { width: 100%; background: var(--accent); color: white; border: none; border-radius: 10px; padding: 0.75rem; font-family: var(--font); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.15s, transform 0.1s; margin-top: 0.5rem; }
   .btn-join:hover { background: var(--accent2); }
   .btn-join:active { transform: scale(0.98); }
-  .btn-join:disabled { opacity: 0.5; cursor: not-allowed; }
   .login-hint { margin-top: 1.25rem; font-size: 0.78rem; color: var(--muted); text-align: center; line-height: 1.6; }
   .login-hint span { color: var(--accent2); font-weight: 600; }
   #login-error { color: #f87171; font-size: 0.82rem; margin-top: 0.5rem; display: none; }
 
-  /* APP */
   #app { display: none; width: 100%; }
 
-  /* Sidebar */
   #sidebar { width: 240px; flex-shrink: 0; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; height: 100dvh; }
   .sidebar-header { padding: 1rem 1rem 0.75rem; border-bottom: 1px solid var(--border); }
   .sidebar-logo { font-family: var(--mono); font-weight: 700; font-size: 1rem; color: var(--accent2); letter-spacing: -0.5px; }
@@ -70,7 +55,6 @@
   .leave-btn { background: none; border: 1px solid var(--border); border-radius: 8px; color: var(--muted); font-family: var(--font); font-size: 0.8rem; padding: 0.4rem 0.75rem; cursor: pointer; transition: border 0.15s, color 0.15s; width: 100%; }
   .leave-btn:hover { border-color: #f87171; color: #f87171; }
 
-  /* Chat */
   #chat-area { flex: 1; display: flex; flex-direction: column; height: 100dvh; overflow: hidden; }
   .chat-topbar { padding: 0.85rem 1.25rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; background: var(--surface); flex-shrink: 0; }
   .topbar-room { font-family: var(--mono); font-size: 0.95rem; color: var(--accent2); }
@@ -88,8 +72,23 @@
   .msg-name { font-size: 0.8rem; font-weight: 600; color: var(--accent2); }
   .msg-name.me { color: #a093f8; }
   .msg-time { font-size: 0.7rem; color: var(--muted2); }
-  .msg-bubble { display: inline-block; min-width: 60px; max-width: 75%; padding: 0.5rem 0.85rem; border-radius: 14px; border-bottom-left-radius: 4px; font-size: 0.9rem; line-height: 1.5; word-break: normal; overflow-wrap: break-word; white-space: nowrap; background: var(--bubble-them); color: var(--text); position: relative; }
-  .msg-bubble.long { white-space: normal; }
+
+  .msg-bubble {
+    display: inline-block;
+    min-width: 60px;
+    max-width: 75%;
+    padding: 0.5rem 0.85rem;
+    border-radius: 14px;
+    border-bottom-left-radius: 4px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    background: var(--bubble-them);
+    color: var(--text);
+    position: relative;
+  }
   .msg-group.mine .msg-bubble { background: var(--bubble-me); border-bottom-left-radius: 14px; border-bottom-right-radius: 4px; }
   .msg-group.mine .msg-header { flex-direction: row-reverse; }
   .msg-group.mine .msg-name { color: #c4bcfc; }
@@ -97,6 +96,11 @@
 
   .bubble-wrap { position: relative; display: flex; align-items: flex-end; gap: 6px; }
   .msg-group.mine .bubble-wrap { flex-direction: row-reverse; }
+
+  .seen-row { font-size: 0.68rem; color: var(--muted2); margin-top: 3px; display: flex; align-items: center; gap: 3px; }
+  .msg-group.mine .seen-row { justify-content: flex-end; }
+  .seen-tick { color: var(--green); font-size: 0.75rem; }
+  .sent-tick { color: var(--muted2); font-size: 0.75rem; }
 
   .reaction-row { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
   .reaction-pill { display: flex; align-items: center; gap: 3px; background: var(--surface3); border: 1px solid var(--border); border-radius: 20px; padding: 2px 8px; font-size: 0.78rem; cursor: pointer; transition: background 0.1s, border 0.1s; user-select: none; }
@@ -124,7 +128,6 @@
   .send-btn { background: var(--accent); border: none; border-radius: 8px; padding: 0.4rem 0.75rem; color: white; font-family: var(--font); font-size: 0.85rem; font-weight: 600; cursor: pointer; flex-shrink: 0; transition: background 0.15s; }
   .send-btn:hover { background: var(--accent2); }
 
-  /* Modal */
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 200; align-items: center; justify-content: center; }
   .modal-overlay.show { display: flex; }
   .modal-box { background: var(--surface); border: 1px solid var(--border2); border-radius: 20px; padding: 1.75rem 1.5rem; width: 320px; }
@@ -135,9 +138,7 @@
   .btn-cancel { background: none; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; color: var(--muted); font-family: var(--font); font-size: 0.85rem; cursor: pointer; }
   .btn-create { background: var(--accent); border: none; border-radius: 8px; padding: 0.5rem 1rem; color: white; font-family: var(--font); font-size: 0.85rem; font-weight: 600; cursor: pointer; }
 
-  /* Setup banner */
   #setup-banner { background: #1a1500; border: 1px solid #5a3e00; border-radius: 10px; padding: 0.75rem 1rem; margin: 0.75rem 1.25rem 0; font-size: 0.82rem; color: #f5c542; line-height: 1.6; display: none; }
-  #setup-banner a { color: #f5c542; }
 
   @media (max-width: 600px) {
     #sidebar { display: none; }
@@ -147,7 +148,6 @@
 </head>
 <body>
 
-<!-- LOGIN -->
 <div id="login-screen">
   <div class="login-card">
     <div class="login-logo">// FriendChat-VIP ONLY</div>
@@ -166,7 +166,6 @@
   </div>
 </div>
 
-<!-- APP -->
 <div id="app">
   <div id="sidebar">
     <div class="sidebar-header">
@@ -178,7 +177,6 @@
     <button class="add-room-btn" id="add-room-btn">+ new room</button>
     <div class="sidebar-footer"><button class="leave-btn" id="leave-btn">ហែងចេញរកងាប់ស្អី</button></div>
   </div>
-
   <div id="chat-area">
     <div class="chat-topbar">
       <span class="topbar-room" id="topbar-room">#general</span>
@@ -186,10 +184,7 @@
       <span class="topbar-desc">Friends only</span>
       <div class="online-count"><div class="user-dot"></div><span id="online-count">0 online</span></div>
     </div>
-    <div id="setup-banner">
-      ⚠️ Firebase not configured yet. Messages won't sync between friends.<br>
-      Follow the setup guide in the HTML file comments to connect Firebase.
-    </div>
+    <div id="setup-banner">⚠️ Firebase not configured yet.</div>
     <div id="messages"></div>
     <div class="input-bar">
       <div class="input-wrap">
@@ -200,7 +195,6 @@
   </div>
 </div>
 
-<!-- Add Room Modal -->
 <div class="modal-overlay" id="add-room-modal">
   <div class="modal-box">
     <div class="modal-title">Create a new room</div>
@@ -212,41 +206,9 @@
   </div>
 </div>
 
-<!--
-═══════════════════════════════════════════════════════════
-  FIREBASE SETUP — follow these steps to go live!
-═══════════════════════════════════════════════════════════
-
-  STEP 1 — Create a Firebase project
-    1. Go to https://console.firebase.google.com
-    2. Click "Add project" → name it (e.g. "friendchat")
-    3. Disable Google Analytics (optional) → click "Create project"
-
-  STEP 2 — Add a web app
-    1. In your project dashboard, click the </> (Web) icon
-    2. Register the app with a nickname (e.g. "chat")
-    3. Copy the firebaseConfig object shown to you
-
-  STEP 3 — Enable Realtime Database
-    1. In the left sidebar → Build → Realtime Database
-    2. Click "Create Database" → choose a region → Start in TEST MODE
-    3. (Test mode allows read/write for 30 days — fine for private use)
-
-  STEP 4 — Paste your config below
-    Replace the placeholder values in FIREBASE_CONFIG with your real values.
-
-  STEP 5 — Host on GitHub Pages or Netlify
-    - GitHub Pages: push this file to a repo → Settings → Pages → Deploy from main branch
-    - Netlify: go to app.netlify.com/drop → drag and drop this file
-
-═══════════════════════════════════════════════════════════
--->
-
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script>
-
-// ── PASTE YOUR FIREBASE CONFIG HERE ─────────────────────
 const FIREBASE_CONFIG = {
   apiKey:            "AIzaSyDEGzcoCjv3sOBihbDDbJH2_bUOFrixwY0",
   authDomain:        "chatwithfriend-f4de5.firebaseapp.com",
@@ -257,99 +219,57 @@ const FIREBASE_CONFIG = {
   appId:             "1:24969437141:web:e376b78cbcb7e3d0a6675c"
 };
 
-// ── PASSWORD ─────────────────────────────────────────────
-// Change this to your secret code and share it with friends only!
 const ROOM_PASSWORD = 'kompongluong';
-
-// ── DETECT IF CONFIGURED ────────────────────────────────
 const isConfigured = FIREBASE_CONFIG.apiKey !== "YOUR_API_KEY";
-
-// ── FIREBASE INIT ────────────────────────────────────────
 let db = null;
 if (isConfigured) {
-  try {
-    firebase.initializeApp(FIREBASE_CONFIG);
-    db = firebase.database();
-  } catch(e) {
-    console.error('Firebase init failed:', e);
-  }
+  try { firebase.initializeApp(FIREBASE_CONFIG); db = firebase.database(); }
+  catch(e) { console.error('Firebase init failed:', e); }
 }
 
-// ── STATE ────────────────────────────────────────────────
-let myNick = '';
-let currentRoom = 'general';
+let myNick = '', currentRoom = 'general';
 let rooms = ['general', 'random'];
-let localMessages = {};   // fallback when Firebase not set up
-let unsubscribers = {};
-let openEmojiMsgId = null;
+let localMessages = {}, unsubscribers = {}, openEmojiMsgId = null;
 const EMOJIS = ['👍','❤️','😂','😮','😢','🔥'];
 
-// ── AUTH ─────────────────────────────────────────────────
 function joinChat() {
   const nick = document.getElementById('nick-input').value.trim();
   const pass = document.getElementById('pass-input').value;
   const err = document.getElementById('login-error');
-
   if (!nick) { err.textContent = 'Please enter a nickname.'; err.style.display = 'block'; return; }
-  if (pass !== ROOM_PASSWORD) { err.style.display = 'block'; err.textContent = 'Wrong password. Try again.'; return; }
-
+  if (pass !== ROOM_PASSWORD) { err.style.display = 'block'; return; }
   myNick = nick;
   err.style.display = 'none';
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app').style.display = 'flex';
   document.getElementById('sidebar-nick').textContent = myNick;
-
-  if (!isConfigured) {
-    document.getElementById('setup-banner').style.display = 'block';
-    renderRoomList();
-    switchRoom('general');
-    return;
-  }
-
-  // Track online presence
+  if (!isConfigured) { document.getElementById('setup-banner').style.display = 'block'; renderRoomList(); switchRoom('general'); return; }
   const presenceRef = db.ref(`presence/${myNick}`);
   presenceRef.set({ nick: myNick, online: true });
   presenceRef.onDisconnect().remove();
-
-  // Watch online users
   db.ref('presence').on('value', snap => {
-    const count = snap.exists() ? Object.keys(snap.val()).length : 0;
-    document.getElementById('online-count').textContent = count + ' online';
+    document.getElementById('online-count').textContent = (snap.exists() ? Object.keys(snap.val()).length : 0) + ' online';
   });
-
-  // Watch rooms list
   db.ref('rooms').on('value', snap => {
-    if (snap.exists()) {
-      const fbRooms = Object.keys(snap.val());
-      fbRooms.forEach(r => { if (!rooms.includes(r)) rooms.push(r); });
-      renderRoomList();
-    }
+    if (snap.exists()) { Object.keys(snap.val()).forEach(r => { if (!rooms.includes(r)) rooms.push(r); }); renderRoomList(); }
   });
-
-  // Ensure default rooms exist
   db.ref('rooms/general').set(true);
   db.ref('rooms/random').set(true);
-
   renderRoomList();
   switchRoom('general');
   postSystemMsg('general', `${myNick} joined the chat`);
-};
+}
 
 function leaveChat() {
-  if (isConfigured) {
-    postSystemMsg(currentRoom, `${myNick} left the chat`);
-    db.ref(`presence/${myNick}`).remove();
-  }
+  if (isConfigured) { postSystemMsg(currentRoom, `${myNick} left the chat`); db.ref(`presence/${myNick}`).remove(); }
   Object.values(unsubscribers).forEach(fn => fn && fn());
-  unsubscribers = {};
-  myNick = '';
+  unsubscribers = {}; myNick = '';
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('app').style.display = 'none';
   document.getElementById('nick-input').value = '';
   document.getElementById('pass-input').value = '';
 }
 
-// ── ROOMS ─────────────────────────────────────────────────
 function renderRoomList() {
   const list = document.getElementById('room-list');
   list.innerHTML = '';
@@ -360,7 +280,7 @@ function renderRoomList() {
     el.onclick = () => switchRoom(r);
     list.appendChild(el);
   });
-};
+}
 
 function switchRoom(room) {
   if (unsubscribers[currentRoom]) { unsubscribers[currentRoom](); unsubscribers[currentRoom] = null; }
@@ -368,25 +288,20 @@ function switchRoom(room) {
   document.getElementById('topbar-room').textContent = '#' + room;
   document.getElementById('messages').innerHTML = '';
   renderRoomList();
-
-  if (!isConfigured) {
-    renderLocalMessages();
-    return;
-  }
-
-  // Subscribe to this room's messages in Firebase
+  if (!isConfigured) { renderLocalMessages(); return; }
   const msgsRef = db.ref(`messages/${room}`);
   const handler = msgsRef.on('value', snap => {
     document.getElementById('messages').innerHTML = '';
     if (!snap.exists()) return;
-    const msgs = snap.val();
-    Object.entries(msgs)
-      .sort(([,a],[,b]) => (a.time||0) - (b.time||0))
-      .forEach(([id, m]) => renderMessage(id, m));
+    const entries = Object.entries(snap.val()).sort(([,a],[,b]) => (a.time||0) - (b.time||0));
+    entries.forEach(([id, m]) => renderMessage(id, m));
+    entries.forEach(([id, m]) => {
+      if (m.type === 'msg' && m.nick !== myNick) db.ref(`messages/${room}/${id}/seen/${myNick}`).set(true);
+    });
     scrollBottom();
   });
   unsubscribers[room] = () => msgsRef.off('value', handler);
-};
+}
 
 function showAddRoom() { document.getElementById('add-room-modal').classList.add('show'); }
 function hideAddRoom() { document.getElementById('add-room-modal').classList.remove('show'); }
@@ -400,92 +315,56 @@ function createRoom() {
   document.getElementById('new-room-input').value = '';
   switchRoom(name);
   postSystemMsg(name, `${myNick} created this room`);
-};
+}
 
-// ── MESSAGES ─────────────────────────────────────────────
 function sendMsg() {
   const input = document.getElementById('msg-input');
   const text = input.value.trim();
   if (!text || !myNick) return;
-
-  input.value = '';
-  input.style.height = 'auto';
-
+  input.value = ''; input.style.height = 'auto';
   if (!isConfigured) {
     if (!localMessages[currentRoom]) localMessages[currentRoom] = [];
     localMessages[currentRoom].push({ id: Date.now(), nick: myNick, text: escapeHtml(text), time: Date.now(), reactions: {}, type: 'msg' });
-    renderLocalMessages();
-    scrollBottom();
-    return;
+    renderLocalMessages(); scrollBottom(); return;
   }
-
-  db.ref(`messages/${currentRoom}`).push({
-    nick: myNick,
-    text: escapeHtml(text),
-    time: firebase.database.ServerValue.TIMESTAMP,
-    type: 'msg',
-    reactions: {}
-  });
-};
+  db.ref(`messages/${currentRoom}`).push({ nick: myNick, text: escapeHtml(text), time: firebase.database.ServerValue.TIMESTAMP, type: 'msg', reactions: {} });
+}
 
 function postSystemMsg(room, text) {
   if (!isConfigured) {
     if (!localMessages[room]) localMessages[room] = [];
     localMessages[room].push({ id: Date.now(), type: 'system', text });
-    if (room === currentRoom) { renderLocalMessages(); scrollBottom(); }
-    return;
+    if (room === currentRoom) { renderLocalMessages(); scrollBottom(); } return;
   }
   db.ref(`messages/${room}`).push({ type: 'system', text, time: firebase.database.ServerValue.TIMESTAMP });
 }
 
-// ── REACTIONS ────────────────────────────────────────────
 function addReaction(msgId, emoji) {
   if (!isConfigured) {
-    const msgs = localMessages[currentRoom] || [];
-    const m = msgs.find(x => x.id == msgId);
+    const m = (localMessages[currentRoom] || []).find(x => x.id == msgId);
     if (!m) return;
     if (!m.reactions[emoji]) m.reactions[emoji] = {};
-    if (m.reactions[emoji][myNick]) delete m.reactions[emoji][myNick];
-    else m.reactions[emoji][myNick] = true;
-    openEmojiMsgId = null;
-    renderLocalMessages();
-    return;
+    if (m.reactions[emoji][myNick]) delete m.reactions[emoji][myNick]; else m.reactions[emoji][myNick] = true;
+    openEmojiMsgId = null; renderLocalMessages(); return;
   }
-
   const rRef = db.ref(`messages/${currentRoom}/${msgId}/reactions/${emoji}`);
-  rRef.once('value', snap => {
-    const data = snap.val() || {};
-    const updates = {};
-    if (data[myNick]) updates[myNick] = null;
-    else updates[myNick] = true;
-    rRef.update(updates);
-  });
-
+  rRef.once('value', snap => { const d = snap.val() || {}; rRef.update({ [myNick]: d[myNick] ? null : true }); });
   openEmojiMsgId = null;
-};
+}
 
 function togglePicker(msgId) {
   openEmojiMsgId = (openEmojiMsgId == msgId) ? null : msgId;
-  // Just re-render emoji picker state
   document.querySelectorAll('.emoji-picker').forEach(p => p.classList.remove('show'));
-  if (openEmojiMsgId !== null) {
-    const p = document.getElementById('picker-' + msgId);
-    if (p) p.classList.add('show');
-  }
-};
+  if (openEmojiMsgId !== null) { const p = document.getElementById('picker-' + msgId); if (p) p.classList.add('show'); }
+}
 
-// ── RENDER ───────────────────────────────────────────────
 function renderMessage(id, m) {
   const container = document.getElementById('messages');
-
   if (m.type === 'system') {
     const el = document.createElement('div');
-    el.className = 'sys-msg';
-    el.textContent = m.text;
-    container.appendChild(el);
-    return;
+    el.className = 'sys-msg'; el.textContent = m.text;
+    container.appendChild(el); return;
   }
-
   const isMine = m.nick === myNick;
   const group = document.createElement('div');
   group.className = 'msg-group' + (isMine ? ' mine' : '');
@@ -493,7 +372,7 @@ function renderMessage(id, m) {
   const time = m.time ? new Date(m.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
   const header = document.createElement('div');
   header.className = 'msg-header';
-  header.innerHTML = `<span class="msg-name${isMine ? ' me' : ''}">${escapeHtml(m.nick)}</span><span class="msg-time">${time}</span>`;
+  header.innerHTML = `<span class="msg-name${isMine?' me':''}">${escapeHtml(m.nick)}</span><span class="msg-time">${time}</span>`;
   group.appendChild(header);
 
   const bwrap = document.createElement('div');
@@ -509,8 +388,7 @@ function renderMessage(id, m) {
   picker.id = 'picker-' + id;
   EMOJIS.forEach(emoji => {
     const opt = document.createElement('div');
-    opt.className = 'emoji-opt';
-    opt.textContent = emoji;
+    opt.className = 'emoji-opt'; opt.textContent = emoji;
     opt.onclick = (e) => { e.stopPropagation(); addReaction(id, emoji); };
     picker.appendChild(opt);
   });
@@ -519,24 +397,22 @@ function renderMessage(id, m) {
   bubbleCol.style.cssText = 'display:flex;flex-direction:column;align-items:' + (isMine ? 'flex-end' : 'flex-start');
 
   const bubble = document.createElement('div');
-  bubble.className = 'msg-bubble' + (m.text.length > 30 ? ' long' : '');
+  bubble.className = 'msg-bubble';
   bubble.textContent = m.text;
   bubble.style.position = 'relative';
   bubble.appendChild(picker);
   bubbleCol.appendChild(bubble);
 
   // Reactions
-  const reactions = m.reactions || {};
-  const reactionEntries = Object.entries(reactions).filter(([, v]) => v && Object.keys(v).length > 0);
+  const reactionEntries = Object.entries(m.reactions || {}).filter(([,v]) => v && Object.keys(v).length > 0);
   if (reactionEntries.length > 0) {
     const rrow = document.createElement('div');
     rrow.className = 'reaction-row';
     reactionEntries.forEach(([emoji, nicks]) => {
       const nickList = typeof nicks === 'object' ? Object.keys(nicks) : [...nicks];
-      if (nickList.length === 0) return;
+      if (!nickList.length) return;
       const pill = document.createElement('div');
-      const iReacted = nickList.includes(myNick);
-      pill.className = 'reaction-pill' + (iReacted ? ' mine' : '');
+      pill.className = 'reaction-pill' + (nickList.includes(myNick) ? ' mine' : '');
       pill.innerHTML = `${emoji} <span class="r-count">${nickList.length}</span>`;
       pill.title = nickList.join(', ');
       pill.onclick = () => addReaction(id, emoji);
@@ -545,9 +421,19 @@ function renderMessage(id, m) {
     bubbleCol.appendChild(rrow);
   }
 
+  // Seen indicator under my messages
+  if (isMine) {
+    const seenRow = document.createElement('div');
+    seenRow.className = 'seen-row';
+    const seeners = m.seen ? Object.keys(m.seen) : [];
+    seenRow.innerHTML = seeners.length > 0
+      ? `<span class="seen-tick">✓✓</span> Seen by ${seeners.join(', ')}`
+      : `<span class="sent-tick">✓</span> Sent`;
+    bubbleCol.appendChild(seenRow);
+  }
+
   if (isMine) { bwrap.appendChild(emojiBtn); bwrap.appendChild(bubbleCol); }
   else { bwrap.appendChild(bubbleCol); bwrap.appendChild(emojiBtn); }
-
   group.appendChild(bwrap);
   container.appendChild(group);
 }
@@ -558,7 +444,6 @@ function renderLocalMessages() {
   (localMessages[currentRoom] || []).forEach(m => renderMessage(m.id, m));
 }
 
-// ── HELPERS ──────────────────────────────────────────────
 function scrollBottom() {
   const c = document.getElementById('messages');
   requestAnimationFrame(() => { c.scrollTop = c.scrollHeight; });
@@ -569,10 +454,7 @@ function escapeHtml(t) {
 }
 
 document.addEventListener('click', () => {
-  if (openEmojiMsgId !== null) {
-    openEmojiMsgId = null;
-    document.querySelectorAll('.emoji-picker').forEach(p => p.classList.remove('show'));
-  }
+  if (openEmojiMsgId !== null) { openEmojiMsgId = null; document.querySelectorAll('.emoji-picker').forEach(p => p.classList.remove('show')); }
 });
 
 document.getElementById('join-btn').addEventListener('click', joinChat);
@@ -581,16 +463,8 @@ document.getElementById('add-room-btn').addEventListener('click', showAddRoom);
 document.getElementById('leave-btn').addEventListener('click', leaveChat);
 document.getElementById('cancel-room-btn').addEventListener('click', hideAddRoom);
 document.getElementById('create-room-btn').addEventListener('click', createRoom);
-
-document.getElementById('msg-input').addEventListener('input', function() {
-  this.style.height = 'auto';
-  this.style.height = this.scrollHeight + 'px';
-});
-
-document.getElementById('msg-input').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
-});
-
+document.getElementById('msg-input').addEventListener('input', function() { this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px'; });
+document.getElementById('msg-input').addEventListener('keydown', function(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); } });
 document.getElementById('pass-input').addEventListener('keydown', e => { if (e.key === 'Enter') joinChat(); });
 document.getElementById('nick-input').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('pass-input').focus(); });
 </script>
