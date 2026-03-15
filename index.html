@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#7c6fff">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Chhaiya AI">
+<meta name="apple-mobile-web-app-title" content="CHHAIYA-AI">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="https://img.icons8.com/fluency/96/bot.png">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1389812823230326" crossorigin="anonymous"></script>
@@ -170,7 +170,7 @@ textarea::placeholder { color: var(--text3); }
     <div class="welcome" id="welcome">
       <div class="welcome-icon">🤖</div>
       <h2>Hello! I'm Chhaiya AI 🔥</h2>
-      <p>Created by ChhaiyaDeveloper-AI 😎</p>
+      <p>Welcome to my AI😎</p>
       <div class="suggestions">
         <div class="suggestion" onclick="sendSuggestion('What can you do?')">What can you do?</div>
         <div class="suggestion" onclick="sendSuggestion('Tell me a fun fact')">Tell me a fun fact</div>
@@ -234,7 +234,33 @@ function autoResize(el) { el.style.height = 'auto'; el.style.height = Math.min(e
 function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
 function sendSuggestion(text) { document.getElementById('userInput').value = text; sendMessage(); }
 
-// Check if user wants to generate an image
+function formatMessage(text) {
+  // Replace code blocks with styled pre/code elements
+  text = text.replace(/```(\w+)?\n?([\s\S]*?)```/g, (match, lang, code) => {
+    const language = lang || 'code';
+    const escaped = code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return `<div style="margin:8px 0;border-radius:8px;overflow:hidden;border:1px solid rgba(124,111,255,0.3);">
+      <div style="background:#1a1a2e;padding:4px 12px;font-size:0.72rem;color:#7c6fff;font-family:DM Mono,monospace;display:flex;justify-content:space-between;align-items:center;">
+        <span>${language}</span>
+        <button onclick="copyCode(this)" style="background:none;border:1px solid rgba(124,111,255,0.3);color:#a093f8;font-size:0.7rem;padding:2px 8px;border-radius:4px;cursor:pointer;">Copy</button>
+      </div>
+      <pre style="background:#0d0d1a;padding:12px;margin:0;overflow-x:auto;font-family:DM Mono,monospace;font-size:0.8rem;line-height:1.6;color:#e8e8ee;"><code>${escaped}</code></pre>
+    </div>`;
+  });
+  // Replace inline code
+  text = text.replace(/`([^`]+)`/g, '<code style="background:#1a1a2e;padding:2px 6px;border-radius:4px;font-family:DM Mono,monospace;font-size:0.85rem;color:#a093f8;">$1</code>');
+  // Replace newlines with br
+  text = text.replace(/\n/g, '<br>');
+  return text;
+}
+
+function copyCode(btn) {
+  const code = btn.closest('div').nextElementSibling.querySelector('code').textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+  });
+}
 function isImageRequest(text) {
   const lower = text.toLowerCase();
   // Must NOT be a code request
@@ -430,8 +456,7 @@ async function sendMessage() {
     if (data.choices && data.choices[0]) {
       const reply = data.choices[0].message.content;
       messages.push({ role: 'assistant', content: reply });
-      addMessage('ai', reply.replace(/\n/g, '<br>'));
-      // Auto speak the reply
+      addMessage('ai', formatMessage(reply));
       speak(reply);
     } else if (data.error) {
       addMessage('ai', '❌ Error: ' + data.error.message);
