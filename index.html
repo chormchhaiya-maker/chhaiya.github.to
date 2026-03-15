@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chhaiya AI</title>
+<meta name="description" content="AI assistant by ChhaiyaDeveloper">
+<meta name="theme-color" content="#7c6fff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Chhaiya AI">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="https://img.icons8.com/fluency/96/bot.png">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -281,6 +288,11 @@ async function sendMessage() {
   isLoading = false;
   document.getElementById('sendBtn').disabled = false;
   document.getElementById('userInput').focus();
+}
+
+// ── PWA ──────────────────────────────────────────────────
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(e => console.log('SW error:', e));
 }
 </script>
 </body>
