@@ -265,8 +265,8 @@ function addImageMessage(prompt) {
   div.className = 'msg ai';
 
   const encodedPrompt = encodeURIComponent(prompt);
-  // Try multiple image sources
-  const imgUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&nologo=true&seed=${Math.floor(Math.random()*10000)}`;
+  const seed = Math.floor(Math.random() * 99999);
+  const imgUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?seed=${seed}&nologo=true`;
 
   const bubble = document.createElement('div');
   bubble.className = 'bubble';
@@ -317,8 +317,11 @@ async function sendMessage() {
 
   // Check if image generation request
   if (isImageRequest(text)) {
-    // Extract the subject after keywords
-    const prompt = text.replace(/^(generate|draw|create|make|paint|sketch|show me|image of|picture of|photo of)\s*/i, '').trim() || text;
+    const prompt = text
+      .replace(/^(can you|can u|please|hey|i want|i need)\s*/i, '')
+      .replace(/^(generate|draw|create|make|paint|sketch|show me|image of|picture of|photo of|a photo of|a picture of|a image of)\s*/i, '')
+      .trim() || 'beautiful landscape';
+    addMessage('user', text.replace(/\n/g, '<br>'));
     addImageMessage(prompt);
     isLoading = false;
     document.getElementById('sendBtn').disabled = false;
