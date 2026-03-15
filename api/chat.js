@@ -21,7 +21,7 @@ You can help with anything — studying, coding, math, writing, advice, and more
         'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
       },
       body: JSON.stringify({
-        model: 'llama-3.1-8b-instant',
+        model: 'llama-3.3-70b-versatile',
         messages: [{ role: 'system', content: SYSTEM }, ...messages],
         max_tokens: 1024,
         temperature: 0.7
