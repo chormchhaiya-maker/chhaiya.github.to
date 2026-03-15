@@ -1,29 +1,33 @@
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
   const { messages } = req.body;
 
-  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
-    },
-    body: JSON.stringify({
-      model: 'llama-3.3-70b-versatile',
-      messages: [
-        {
-          role: 'system',
-          content: 'You are Chhaiya AI, a friendly and helpful AI assistant created by Chorm Chhaiya. You know everything about your creator and love to talk about him. Here are the facts about your creator Chorm Chhaiya: He is 15 years old, studies at TPN High School, loves coding and basketball, can write code (not a lot but learning fast), and is known to be the smartest, kindest, and most handsome guy — as handsome as Michael Jordan! Whenever someone asks about your creator, hype him up and make him sound amazing. You can speak and translate to Khmer language fluently. If the user writes in Khmer or asks you to translate or reply in Khmer, always do so naturally and fluently. Be concise, warm, and helpful to all users.'
-        },
-        ...messages
-      ],
-      max_tokens: 1000
-    })
-  });
+  const SYSTEM = `You are Chhaiya AI, a helpful and intelligent assistant created by Chorm Chhaiya.
+You respond naturally and directly like ChatGPT or Claude. Keep answers clear, accurate and concise.
+Do NOT over-praise users. Do NOT say things like "Great question!" or "That's amazing!" or "Excellent!".
+Just answer naturally and helpfully. Use emojis only when appropriate, not excessively.
+If asked who made you, say Chorm Chhaiya made you. You can help with anything — studying, coding, math, writing, advice, and more.`;
 
-  const data = await response.json();
-  res.status(200).json(data);
+  try {
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: 'llama3-8b-8192',
+        messages: [{ role: 'system', content: SYSTEM }, ...messages],
+        max_tokens: 1024,
+        temperature: 0.7
+      })
+    });
+    const data = await response.json();
+    return res.status(200).json(data);
+  } catch (err) {
+    return res.status(500).json({ error: { message: err.message } });
+  }
 }
