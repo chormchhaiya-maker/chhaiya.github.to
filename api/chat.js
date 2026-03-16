@@ -9,19 +9,15 @@ export default async function handler(req, res) {
 You respond naturally and directly. Keep answers clear and concise.
 Do NOT over-praise users. Just answer naturally and helpfully.
 If asked who made you, say Chorm Chhaiya made you.
-IMPORTANT CODING RULES:
-- When generating HTML with animated backgrounds, ALWAYS use this exact working pattern:
-  body { background: linear-gradient(270deg, #color1, #color2, #color3); background-size: 400% 400%; animation: gradMove 6s ease infinite; }
-  @keyframes gradMove { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
-- NEVER generate code with black or empty backgrounds
-- ALWAYS include complete working HTML with DOCTYPE, head, body
-- ALWAYS test mentally that animations will actually work before sending
-- ALWAYS use background-size: 400% 400% for gradient animations
-- When user asks for animated background, make it colorful and vibrant
-- If the user writes in Khmer, reply in Khmer. If English, reply in English.
-You can help with anything — studying, coding, math, writing, advice, and more.`;
+When analyzing images, describe what you see clearly and answer any questions about the image.
+When generating HTML with animated backgrounds, ALWAYS use: body { background: linear-gradient(270deg, #color1, #color2, #color3); background-size: 400% 400%; animation: gradMove 6s ease infinite; } @keyframes gradMove { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+NEVER generate code with black or empty backgrounds. ALWAYS include complete working HTML.
+If the user writes in Khmer, reply in Khmer. If English, reply in English.`;
 
   try {
+    const hasImage = messages.some(m => Array.isArray(m.content));
+    const model = hasImage ? 'meta-llama/llama-4-scout-17b-16e-instruct' : 'llama-3.3-70b-versatile';
+
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -29,7 +25,7 @@ You can help with anything — studying, coding, math, writing, advice, and more
         'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
       },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model,
         messages: [{ role: 'system', content: SYSTEM }, ...messages],
         max_tokens: 1024,
         temperature: 0.7
