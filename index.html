@@ -487,37 +487,48 @@ function stopSpeaking() {
   isSpeaking = false;
 }
 
-function addImageMessage(prompt) {
+async function addImageMessage(prompt) {
   const welcome = document.getElementById('welcome');
   if (welcome) welcome.remove();
   const container = document.getElementById('messages');
   const div = document.createElement('div');
   div.className = 'msg ai';
 
-  const encodedPrompt = encodeURIComponent(prompt);
-
   const bubble = document.createElement('div');
   bubble.className = 'bubble';
   bubble.style.cssText = 'padding:10px;background:var(--surface2);border:1px solid var(--border);';
   bubble.innerHTML = `
-    <div style="font-size:0.85rem;color:var(--text2);margin-bottom:10px;">🎨 Generate: <em>"${prompt}"</em></div>
-    <div style="display:flex;flex-direction:column;gap:8px;">
-      <a href="https://lexica.art/?q=${encodedPrompt}" target="_blank" style="display:inline-block;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;padding:8px 18px;border-radius:20px;font-size:0.85rem;text-decoration:none;text-align:center;">
-        🖼️ Search on Lexica
-      </a>
-      <a href="https://www.bing.com/images/create?q=${encodedPrompt}" target="_blank" style="display:inline-block;background:var(--surface3);color:var(--text2);border:1px solid var(--border);padding:8px 18px;border-radius:20px;font-size:0.85rem;text-decoration:none;text-align:center;">
-        🎨 Generate with Bing AI
-      </a>
-      <a href="https://craiyon.com/?prompt=${encodedPrompt}" target="_blank" style="display:inline-block;background:var(--surface3);color:var(--text2);border:1px solid var(--border);padding:8px 18px;border-radius:20px;font-size:0.85rem;text-decoration:none;text-align:center;">
-        ✏️ Generate with Craiyon
-      </a>
-    </div>
-    <div style="font-size:0.72rem;color:var(--text3);margin-top:8px;">All free! Bing AI makes the best quality images 🔥</div>`;
+    <div style="font-size:0.85rem;color:var(--text2);margin-bottom:8px;">🎨 Generating: <em>"${prompt}"</em></div>
+    <div id="img-status-${Date.now()}" style="color:var(--text3);font-size:0.8rem;">⏳ Please wait 10-20 seconds...</div>`;
 
   div.innerHTML = `<div class="avatar">🤖</div>`;
   div.appendChild(bubble);
   container.appendChild(div);
   container.scrollTop = container.scrollHeight;
+
+  const statusId = bubble.querySelector('[id^="img-status"]').id;
+
+  try {
+    const response = await fetch('/api/image', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt })
+    });
+
+    if (response.ok) {
+      const blob = await response.blob();
+      const imgUrl = URL.createObjectURL(blob);
+      document.getElementById(statusId).outerHTML = `
+        <img src="${imgUrl}" alt="${prompt}" 
+          style="max-width:100%;border-radius:10px;display:block;cursor:pointer;margin-top:4px;"
+          onclick="window.open('${imgUrl}','_blank')"/>
+        <div style="font-size:0.72rem;color:var(--text3);margin-top:6px;">Tap to view full size</div>`;
+    } else {
+      document.getElementById(statusId).textContent = '❌ Could not generate. Try again!';
+    }
+  } catch(e) {
+    document.getElementById(statusId).textContent = '❌ Error: ' + e.message;
+  }
 }
 
 function addTyping() {
@@ -568,7 +579,7 @@ async function sendMessage() {
       .replace(/^(generate|draw|create|make|paint|sketch|show me|image of|picture of|photo of|a photo of|a picture of|a image of)\s*/i, '')
       .trim() || 'beautiful landscape';
     addMessage('user', text.replace(/\n/g, '<br>'));
-    addImageMessage(prompt);
+    await addImageMessage(prompt);
     isLoading = false;
     document.getElementById('sendBtn').disabled = false;
     document.getElementById('userInput').focus();
