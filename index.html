@@ -438,39 +438,6 @@ function stopSpeaking() {
   isSpeaking = false;
 }
 
-function stopSpeaking() {
-  window.speechSynthesis.cancel();
-  isSpeaking = false;
-}
-
-function addMessage(role, content) {
-  const welcome = document.getElementById('welcome');
-  if (welcome) welcome.remove();
-  const container = document.getElementById('messages');
-  const div = document.createElement('div');
-  div.className = `msg ${role}`;
-  const bubble = document.createElement('div');
-  bubble.className = 'bubble';
-  bubble.innerHTML = content;
-
-  // Add action buttons for AI messages
-  if (role === 'ai') {
-    const actions = document.createElement('div');
-    actions.className = 'msg-actions';
-    const rawText = content.replace(/<[^>]*>/g, '');
-    actions.innerHTML = `
-      <button class="msg-action-btn" onclick="copyText(this)" data-text="${rawText.replace(/"/g,'&quot;')}">📋 Copy</button>
-      <button class="msg-action-btn" onclick="shareText(this)" data-text="${rawText.replace(/"/g,'&quot;')}">🔗 Share</button>
-      <button class="msg-action-btn" onclick="speakText(this)" data-text="${rawText.replace(/"/g,'&quot;')}">🔊 Listen</button>`;
-    bubble.appendChild(actions);
-  }
-
-  div.innerHTML = `<div class="avatar">${role === 'user' ? '👤' : '🤖'}</div>`;
-  div.appendChild(bubble);
-  container.appendChild(div);
-  container.scrollTop = container.scrollHeight;
-}
-
 function addImageMessage(prompt) {
   const welcome = document.getElementById('welcome');
   if (welcome) welcome.remove();
@@ -720,10 +687,32 @@ function loadSettings() {
 }
 
 // Override addMessage to save history
-const _origAddMsg = addMessage;
 function addMessage(role, content) {
-  _origAddMsg(role, content);
-  if (role === 'ai') saveChatHistory();
+  const welcome = document.getElementById('welcome');
+  if (welcome) welcome.remove();
+  const container = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = `msg ${role}`;
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  bubble.innerHTML = content;
+
+  if (role === 'ai') {
+    const rawText = content.replace(/<[^>]*>/g, '');
+    const actions = document.createElement('div');
+    actions.className = 'msg-actions';
+    actions.innerHTML = `
+      <button class="msg-action-btn" onclick="copyText(this)" data-text="${rawText.replace(/"/g,'&quot;')}">📋 Copy</button>
+      <button class="msg-action-btn" onclick="shareText(this)" data-text="${rawText.replace(/"/g,'&quot;')}">🔗 Share</button>
+      <button class="msg-action-btn" onclick="speakText(this)" data-text="${rawText.replace(/"/g,'&quot;')}">🔊 Listen</button>`;
+    bubble.appendChild(actions);
+    if (saveHistory) saveChatHistory();
+  }
+
+  div.innerHTML = `<div class="avatar">${role === 'user' ? '👤' : '🤖'}</div>`;
+  div.appendChild(bubble);
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
 }
 
 // Scroll helper
