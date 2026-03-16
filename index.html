@@ -141,6 +141,33 @@ textarea::placeholder { color: var(--text3); }
 .send-btn:hover { opacity: 0.85; transform: scale(1.05); box-shadow: 0 0 20px rgba(124,111,255,0.5); }
 .send-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
 .input-hint { text-align: center; font-size: 11px; color: var(--text3); margin-top: 10px; font-family: 'DM Mono', monospace; }
+
+/* HEADER BUTTONS */
+.hdr-btn { background: none; border: 1px solid var(--border); border-radius: 8px; color: var(--text2); font-size: 0.85rem; padding: 5px 10px; cursor: pointer; transition: all 0.2s; }
+.hdr-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* SETTINGS PANEL */
+.settings-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 300; align-items: center; justify-content: center; }
+.settings-overlay.show { display: flex; }
+.settings-box { background: var(--surface); border: 1px solid rgba(124,111,255,0.3); border-radius: 20px; padding: 1.5rem; width: 300px; max-width: 90vw; }
+.settings-title { font-size: 1rem; font-weight: 700; margin-bottom: 1.25rem; color: var(--text); display: flex; justify-content: space-between; align-items: center; }
+.settings-row { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0; border-bottom: 1px solid var(--border); font-size: 0.88rem; color: var(--text2); }
+.settings-row:last-child { border-bottom: none; }
+.toggle-wrap { position: relative; width: 40px; height: 22px; }
+.toggle-wrap input { opacity: 0; width: 0; height: 0; }
+.toggle-slider { position: absolute; inset: 0; background: var(--surface2); border-radius: 22px; cursor: pointer; transition: 0.3s; border: 1px solid var(--border); }
+.toggle-slider:before { content: ''; position: absolute; width: 16px; height: 16px; left: 2px; top: 2px; background: var(--text3); border-radius: 50%; transition: 0.3s; }
+input:checked + .toggle-slider { background: var(--accent); }
+input:checked + .toggle-slider:before { transform: translateX(18px); background: white; }
+
+/* LIGHT MODE */
+body.light { --bg: #f0f0f8; --surface: #ffffff; --surface2: #f0eff8; --surface3: #e4e3f0; --border: rgba(0,0,0,0.08); --text: #1a1a2e; --text2: #5a5680; --text3: #9b97c0; }
+body.light #matrix-canvas { opacity: 0.06; }
+
+/* MSG ACTIONS */
+.msg-actions { display: flex; gap: 8px; margin-top: 6px; }
+.msg-action-btn { background: none; border: none; font-size: 0.78rem; color: var(--text3); cursor: pointer; padding: 2px 6px; border-radius: 6px; transition: all 0.15s; }
+.msg-action-btn:hover { color: var(--accent); background: rgba(124,111,255,0.1); }
 </style>
 </head>
 <body>
@@ -163,7 +190,11 @@ textarea::placeholder { color: var(--text3); }
         <div class="logo-tag">Powered By masterchhaiya-ai</div>
       </div>
     </div>
-    <div class="status"><div class="status-dot"></div> Online</div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <button class="hdr-btn" onclick="clearChat()" title="Clear chat">🗑️</button>
+      <button class="hdr-btn" onclick="showSettings()" title="Settings">⚙️</button>
+      <div class="status"><div class="status-dot"></div> Online</div>
+    </div>
   </div>
 
   <div class="messages" id="messages">
@@ -198,6 +229,42 @@ textarea::placeholder { color: var(--text3); }
       <input type="file" id="gallery-upload" accept="image/*" style="display:none" onchange="handlePhoto(this)"/>
     </div>
     <div class="input-hint">Press Enter to send · Shift+Enter for new line</div>
+  </div>
+</div>
+
+<!-- Settings Panel -->
+<div class="settings-overlay" id="settings-overlay" onclick="hideSettings(event)">
+  <div class="settings-box" onclick="event.stopPropagation()">
+    <div class="settings-title">
+      ⚙️ Settings
+      <button onclick="hideSettings()" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:1.2rem;">✕</button>
+    </div>
+    <div class="settings-row">
+      <span>🌙 Dark mode</span>
+      <label class="toggle-wrap">
+        <input type="checkbox" id="dark-toggle" checked onchange="toggleDark(this)"/>
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+    <div class="settings-row">
+      <span>🔊 Auto speak replies</span>
+      <label class="toggle-wrap">
+        <input type="checkbox" id="speak-toggle" onchange="toggleAutoSpeak(this)"/>
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+    <div class="settings-row">
+      <span>💾 Save chat history</span>
+      <label class="toggle-wrap">
+        <input type="checkbox" id="history-toggle" checked onchange="toggleHistory(this)"/>
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+    <div class="settings-row" style="border-bottom:none;padding-top:12px;">
+      <button onclick="clearChat();hideSettings();" style="width:100%;background:rgba(255,100,100,0.1);border:1px solid rgba(255,100,100,0.3);color:#f87171;border-radius:10px;padding:8px;cursor:pointer;font-family:Syne,sans-serif;font-size:0.85rem;">
+        🗑️ Clear all chat history
+      </button>
+    </div>
   </div>
 </div>
 
@@ -386,27 +453,16 @@ function addMessage(role, content) {
   bubble.className = 'bubble';
   bubble.innerHTML = content;
 
-  // Add speak button for AI messages
+  // Add action buttons for AI messages
   if (role === 'ai') {
-    const speakBtn = document.createElement('button');
-    speakBtn.style.cssText = 'background:none;border:none;cursor:pointer;font-size:0.8rem;color:var(--text3);margin-top:6px;display:block;padding:2px 0;transition:color 0.2s;';
-    speakBtn.textContent = '🔊 Listen';
-    speakBtn.onclick = () => {
-      if (isSpeaking) {
-        stopSpeaking();
-        speakBtn.textContent = '🔊 Listen';
-      } else {
-        speak(content);
-        speakBtn.textContent = '⏹ Stop';
-        const checkInterval = setInterval(() => {
-          if (!isSpeaking) {
-            speakBtn.textContent = '🔊 Listen';
-            clearInterval(checkInterval);
-          }
-        }, 500);
-      }
-    };
-    bubble.appendChild(speakBtn);
+    const actions = document.createElement('div');
+    actions.className = 'msg-actions';
+    const rawText = content.replace(/<[^>]*>/g, '');
+    actions.innerHTML = `
+      <button class="msg-action-btn" onclick="copyText(this)" data-text="${rawText.replace(/"/g,'&quot;')}">📋 Copy</button>
+      <button class="msg-action-btn" onclick="shareText(this)" data-text="${rawText.replace(/"/g,'&quot;')}">🔗 Share</button>
+      <button class="msg-action-btn" onclick="speakText(this)" data-text="${rawText.replace(/"/g,'&quot;')}">🔊 Listen</button>`;
+    bubble.appendChild(actions);
   }
 
   div.innerHTML = `<div class="avatar">${role === 'user' ? '👤' : '🤖'}</div>`;
@@ -542,6 +598,143 @@ async function sendMessage() {
   document.getElementById('sendBtn').disabled = false;
   document.getElementById('userInput').focus();
 }
+
+function copyText(btn) {
+  const text = btn.getAttribute('data-text');
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy', 2000);
+  });
+}
+
+function shareText(btn) {
+  const text = btn.getAttribute('data-text');
+  if (navigator.share) {
+    navigator.share({ title: 'Chhaiya AI', text: text });
+  } else {
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => btn.textContent = '🔗 Share', 2000);
+    });
+  }
+}
+
+function speakText(btn) {
+  const text = btn.getAttribute('data-text');
+  if (isSpeaking) {
+    stopSpeaking();
+    btn.textContent = '🔊 Listen';
+  } else {
+    speak(text);
+    btn.textContent = '⏹ Stop';
+    const check = setInterval(() => {
+      if (!isSpeaking) { btn.textContent = '🔊 Listen'; clearInterval(check); }
+    }, 500);
+  }
+}
+
+// ── SETTINGS ────────────────────────────────────────────
+let autoSpeak = false;
+let saveHistory = true;
+
+function showSettings() { document.getElementById('settings-overlay').classList.add('show'); }
+function hideSettings(e) {
+  if (!e || e.target === document.getElementById('settings-overlay')) {
+    document.getElementById('settings-overlay').classList.remove('show');
+  }
+}
+
+function toggleDark(cb) {
+  document.body.classList.toggle('light', !cb.checked);
+  localStorage.setItem('darkMode', cb.checked);
+}
+
+function toggleAutoSpeak(cb) {
+  autoSpeak = cb.checked;
+  localStorage.setItem('autoSpeak', cb.checked);
+}
+
+function toggleHistory(cb) {
+  saveHistory = cb.checked;
+  localStorage.setItem('saveHistory', cb.checked);
+  if (!cb.checked) localStorage.removeItem('chatHistory');
+}
+
+// ── CLEAR CHAT ───────────────────────────────────────────
+function clearChat() {
+  if (!confirm('Clear all chat history?')) return;
+  messages = [];
+  localStorage.removeItem('chatHistory');
+  const container = document.getElementById('messages');
+  container.innerHTML = '';
+  // Show welcome back
+  const welcome = document.createElement('div');
+  welcome.className = 'welcome'; welcome.id = 'welcome';
+  welcome.innerHTML = `<div class="welcome-icon">🤖</div>
+    <h2>Hello! I'm Chhaiya AI 🔥</h2>
+    <p>Created by ChhaiyaDeveloper-AI 😎</p>
+    <div class="suggestions">
+      <div class="suggestion" onclick="sendSuggestion('What can you do?')">What can you do?</div>
+      <div class="suggestion" onclick="sendSuggestion('Tell me a fun fact')">Tell me a fun fact</div>
+      <div class="suggestion" onclick="sendSuggestion('Help me study for an exam')">Help me study</div>
+      <div class="suggestion" onclick="sendSuggestion('Explain how the internet works')">How does internet work?</div>
+    </div>`;
+  container.appendChild(welcome);
+}
+
+// ── CHAT HISTORY ─────────────────────────────────────────
+function saveChatHistory() {
+  if (!saveHistory) return;
+  try { localStorage.setItem('chatHistory', JSON.stringify(messages.slice(-50))); } catch(e) {}
+}
+
+function loadChatHistory() {
+  try {
+    const saved = localStorage.getItem('chatHistory');
+    if (!saved) return;
+    const history = JSON.parse(saved);
+    if (!history.length) return;
+    messages = history;
+    const container = document.getElementById('messages');
+    const welcome = document.getElementById('welcome');
+    if (welcome) welcome.remove();
+    history.forEach(m => {
+      if (m.role === 'user') {
+        if (typeof m.content === 'string') addMessage('user', m.content.replace(/\n/g,'<br>'));
+      } else if (m.role === 'assistant') {
+        addMessage('ai', formatMessage(m.content));
+      }
+    });
+    scrollBottom();
+  } catch(e) {}
+}
+
+// Load settings from localStorage
+function loadSettings() {
+  const dark = localStorage.getItem('darkMode');
+  const speak = localStorage.getItem('autoSpeak');
+  const hist = localStorage.getItem('saveHistory');
+  if (dark === 'false') { document.body.classList.add('light'); document.getElementById('dark-toggle').checked = false; }
+  if (speak === 'true') { autoSpeak = true; document.getElementById('speak-toggle').checked = true; }
+  if (hist === 'false') { saveHistory = false; document.getElementById('history-toggle').checked = false; }
+}
+
+// Override addMessage to save history
+const _origAddMsg = addMessage;
+function addMessage(role, content) {
+  _origAddMsg(role, content);
+  if (role === 'ai') saveChatHistory();
+}
+
+// Scroll helper
+function scrollBottom() {
+  const c = document.getElementById('messages');
+  requestAnimationFrame(() => { c.scrollTop = c.scrollHeight; });
+}
+
+// Init
+loadSettings();
+loadChatHistory();
 
 // ── PWA ──────────────────────────────────────────────────
 if ('serviceWorker' in navigator) {
