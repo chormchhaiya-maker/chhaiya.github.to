@@ -1,4 +1,4 @@
-// pages/api/chat.js
+// pages/api/chat.js  ← Updated with current xAI model
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
         'Authorization': `Bearer ${process.env.XAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "grok-4.20-beta-0309-non-reasoning",
+        model: "grok-4-0709",           // ← This is the current stable flagship model
         messages: messages,
         temperature: 0.85,
         max_tokens: 1200,
@@ -31,7 +31,7 @@ export default async function handler(req, res) {
       console.error('xAI Chat Error:', errorText);
       return res.status(500).json({ 
         error: 'xAI API Error', 
-        details: errorText.slice(0, 500) 
+        details: errorText 
       });
     }
 
