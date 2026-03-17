@@ -1,17 +1,11 @@
-// pages/api/chat.js  ← Working version (March 2026)
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  const { messages } = req.body;
-
-  if (!messages || !Array.isArray(messages)) {
-    return res.status(400).json({ error: 'Messages array is required' });
-  }
-
   try {
+    const { messages } = req.body;
+
     const response = await fetch('https://api.x.ai/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -19,18 +13,18 @@ export default async function handler(req, res) {
         'Authorization': `Bearer ${process.env.XAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "grok-4-0709",           // ← Current stable flagship model
+        model: "grok-4-0709",      // ← This is a confirmed working model right now
         messages: messages,
-        temperature: 0.85,
-        max_tokens: 1200,
+        temperature: 0.8,
+        max_tokens: 800,
       }),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('xAI Error Details:', errorText);
+      console.error("xAI Error:", errorText);
       return res.status(500).json({ 
-        error: 'xAI API Error', 
+        error: "xAI API Error", 
         details: errorText 
       });
     }
@@ -39,9 +33,9 @@ export default async function handler(req, res) {
     return res.status(200).json(data);
 
   } catch (err) {
-    console.error('Chat API Error:', err);
+    console.error("Server Error:", err);
     return res.status(500).json({ 
-      error: 'Server Error', 
+      error: "Server Error", 
       message: err.message 
     });
   }
