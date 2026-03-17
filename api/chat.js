@@ -1,31 +1,36 @@
-// api/chat.js  ← replace with this simpler code
+// api/chat.js
 export default async function handler(req, res) {
-  const key = process.env.XAI_API_KEY;
+  console.log("API called - Key exists?", !!process.env.XAI_API_KEY);
 
-  if (!key) {
-    return res.status(500).json({ error: "No API key on Vercel" });
+  if (!process.env.XAI_API_KEY) {
+    return res.status(500).json({ 
+      error: "XAI_API_KEY is missing on Vercel server" 
+    });
   }
 
   try {
-    const body = req.body;
-
-    const grokRes = await fetch("https://api.x.ai/v1/chat/completions", {
+    const response = await fetch("https://api.x.ai/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${key}`
+        "Authorization": `Bearer ${process.env.XAI_API_KEY}`
       },
       body: JSON.stringify({
         model: "grok-4",
-        messages: body.messages || [{ role: "user", content: "Hello" }]
+        messages: req.body.messages || [{ role: "user", content: "test" }]
       })
     });
 
-    const data = await grokRes.json();
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("Grok API error:", data);
+      return res.status(500).json({ error: data.error?.message || "Grok rejected the request" });
+    }
 
     res.status(200).json(data);
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: e.message || "Proxy failed" });
+  } catch (error) {
+    console.error("Proxy catch error:", error.message);
+    res.status(500).json({ error: "Proxy failed: " + error.message });
   }
 }
