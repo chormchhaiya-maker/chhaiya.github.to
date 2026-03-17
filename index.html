@@ -35,51 +35,20 @@
 
 body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; min-height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-/* DIGITAL BACKGROUND */
 #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.18; pointer-events: none; }
-
-.grid-overlay {
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background-image: linear-gradient(rgba(124,111,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(124,111,255,0.04) 1px, transparent 1px);
-  background-size: 40px 40px;
-}
-
-.scanline {
-  position: fixed; top: 0; left: 0; width: 100%; height: 3px;
-  background: linear-gradient(transparent, rgba(124,111,255,0.15), transparent);
-  z-index: 1; pointer-events: none;
-  animation: scanline 6s linear infinite;
-}
-
-.corner-decoration {
-  position: fixed; width: 60px; height: 60px; z-index: 1; pointer-events: none;
-}
+.grid-overlay { position: fixed; inset: 0; z-index: 0; pointer-events: none; background-image: linear-gradient(rgba(124,111,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(124,111,255,0.04) 1px, transparent 1px); background-size: 40px 40px; }
+.scanline { position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(transparent, rgba(124,111,255,0.15), transparent); z-index: 1; pointer-events: none; animation: scanline 6s linear infinite; }
+.corner-decoration { position: fixed; width: 60px; height: 60px; z-index: 1; pointer-events: none; }
 .corner-decoration.tl { top: 12px; left: 12px; border-top: 1px solid rgba(124,111,255,0.4); border-left: 1px solid rgba(124,111,255,0.4); }
 .corner-decoration.tr { top: 12px; right: 12px; border-top: 1px solid rgba(255,107,157,0.4); border-right: 1px solid rgba(255,107,157,0.4); }
 .corner-decoration.bl { bottom: 12px; left: 12px; border-bottom: 1px solid rgba(124,111,255,0.4); border-left: 1px solid rgba(124,111,255,0.4); }
 .corner-decoration.br { bottom: 12px; right: 12px; border-bottom: 1px solid rgba(255,107,157,0.4); border-right: 1px solid rgba(255,107,157,0.4); }
 
 .app { display: flex; flex-direction: column; height: 100vh; position: relative; z-index: 2; }
-
-.header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 16px 24px; border-bottom: 1px solid var(--border);
-  background: rgba(10,10,15,0.85); backdrop-filter: blur(20px); flex-shrink: 0;
-}
+.header { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid var(--border); background: rgba(10,10,15,0.85); backdrop-filter: blur(20px); flex-shrink: 0; }
 .logo { display: flex; align-items: center; gap: 12px; }
-.logo-icon {
-  width: 36px; height: 36px;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  border-radius: 10px; display: flex; align-items: center; justify-content: center;
-  font-size: 18px; animation: gradShift 4s ease infinite, glitch 8s infinite;
-  background-size: 200% 200%;
-}
-.logo-name {
-  font-size: 18px; font-weight: 800;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  animation: glitch 10s infinite;
-}
+.logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent), var(--accent2)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; animation: gradShift 4s ease infinite, glitch 8s infinite; background-size: 200% 200%; }
+.logo-name { font-size: 18px; font-weight: 800; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: glitch 10s infinite; }
 .logo-tag { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; margin-top: 1px; }
 .status { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text2); font-family: 'DM Mono', monospace; }
 .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; animation: pulse 2s infinite; }
@@ -90,26 +59,15 @@ body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-seri
 
 .welcome { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; text-align: center; padding: 40px; animation: fadeUp 0.6s ease forwards; }
 .welcome-icon { font-size: 56px; margin-bottom: 20px; filter: drop-shadow(0 0 20px rgba(124,111,255,0.8)) drop-shadow(0 0 40px rgba(124,111,255,0.4)); }
-.welcome h2 {
-  font-size: 32px; font-weight: 800;
-  background: linear-gradient(135deg, var(--text), var(--accent));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  margin-bottom: 10px; animation: glitch 12s infinite;
-}
+.welcome h2 { font-size: 32px; font-weight: 800; background: linear-gradient(135deg, var(--text), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 10px; animation: glitch 12s infinite; }
 .welcome p { color: var(--text2); font-size: 15px; max-width: 360px; line-height: 1.6; font-weight: 400; }
 .suggestions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 28px; }
-.suggestion {
-  background: rgba(28,28,38,0.8); border: 1px solid rgba(124,111,255,0.2);
-  border-radius: 20px; padding: 8px 16px; font-size: 13px;
-  color: var(--text2); cursor: pointer; transition: all 0.2s; font-family: 'Syne', sans-serif;
-  backdrop-filter: blur(10px);
-}
+.suggestion { background: rgba(28,28,38,0.8); border: 1px solid rgba(124,111,255,0.2); border-radius: 20px; padding: 8px 16px; font-size: 13px; color: var(--text2); cursor: pointer; transition: all 0.2s; font-family: 'Syne', sans-serif; backdrop-filter: blur(10px); }
 .suggestion:hover { border-color: var(--accent); color: var(--accent); background: rgba(124,111,255,0.1); box-shadow: 0 0 15px rgba(124,111,255,0.2); }
 
 .msg { display: flex; gap: 12px; animation: fadeUp 0.3s ease forwards; max-width: 780px; }
 .msg.user { flex-direction: row-reverse; align-self: flex-end; }
 .msg.ai { align-self: flex-start; }
-
 .avatar { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; margin-top: 2px; }
 .msg.user .avatar { background: linear-gradient(135deg, var(--accent), var(--accent2)); }
 .msg.ai .avatar { background: var(--surface2); border: 1px solid rgba(124,111,255,0.3); box-shadow: 0 0 10px rgba(124,111,255,0.2); }
@@ -123,30 +81,18 @@ body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-seri
 .typing-dot:nth-child(3) { animation-delay: 0.4s; }
 
 .input-area { padding: 16px 24px 24px; border-top: 1px solid var(--border); background: rgba(10,10,15,0.85); backdrop-filter: blur(20px); flex-shrink: 0; }
-.input-wrap {
-  display: flex; align-items: flex-end; gap: 12px;
-  background: rgba(28,28,38,0.9); border: 1px solid rgba(124,111,255,0.2);
-  border-radius: 16px; padding: 12px 16px; transition: border-color 0.2s, box-shadow 0.2s;
-  max-width: 800px; margin: 0 auto; backdrop-filter: blur(10px);
-}
+.input-wrap { display: flex; align-items: flex-end; gap: 12px; background: rgba(28,28,38,0.9); border: 1px solid rgba(124,111,255,0.2); border-radius: 16px; padding: 12px 16px; transition: border-color 0.2s, box-shadow 0.2s; max-width: 800px; margin: 0 auto; backdrop-filter: blur(10px); }
 .input-wrap:focus-within { border-color: var(--accent); box-shadow: 0 0 20px rgba(124,111,255,0.2); }
 textarea { flex: 1; background: none; border: none; outline: none; color: var(--text); font-family: 'Syne', sans-serif; font-size: 14px; resize: none; max-height: 120px; min-height: 24px; line-height: 1.6; }
 textarea::placeholder { color: var(--text3); }
-.send-btn {
-  width: 36px; height: 36px; border-radius: 10px;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; transition: opacity 0.2s, transform 0.1s, box-shadow 0.2s; font-size: 16px;
-}
+.send-btn { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(--accent), var(--accent2)); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: opacity 0.2s, transform 0.1s, box-shadow 0.2s; font-size: 16px; }
 .send-btn:hover { opacity: 0.85; transform: scale(1.05); box-shadow: 0 0 20px rgba(124,111,255,0.5); }
 .send-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
 .input-hint { text-align: center; font-size: 11px; color: var(--text3); margin-top: 10px; font-family: 'DM Mono', monospace; }
 
-/* HEADER BUTTONS */
 .hdr-btn { background: none; border: 1px solid var(--border); border-radius: 8px; color: var(--text2); font-size: 0.85rem; padding: 5px 10px; cursor: pointer; transition: all 0.2s; }
 .hdr-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-/* SETTINGS PANEL */
 .settings-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 300; align-items: center; justify-content: center; }
 .settings-overlay.show { display: flex; }
 .settings-box { background: var(--surface); border: 1px solid rgba(124,111,255,0.3); border-radius: 20px; padding: 1.5rem; width: 300px; max-width: 90vw; }
@@ -160,11 +106,9 @@ textarea::placeholder { color: var(--text3); }
 input:checked + .toggle-slider { background: var(--accent); }
 input:checked + .toggle-slider:before { transform: translateX(18px); background: white; }
 
-/* LIGHT MODE */
 body.light { --bg: #f0f0f8; --surface: #ffffff; --surface2: #f0eff8; --surface3: #e4e3f0; --border: rgba(0,0,0,0.08); --text: #1a1a2e; --text2: #5a5680; --text3: #9b97c0; }
 body.light #matrix-canvas { opacity: 0.06; }
 
-/* MSG ACTIONS */
 .msg-actions { display: flex; gap: 8px; margin-top: 6px; }
 .msg-action-btn { background: none; border: none; font-size: 0.78rem; color: var(--text3); cursor: pointer; padding: 2px 6px; border-radius: 6px; transition: all 0.15s; }
 .msg-action-btn:hover { color: var(--accent); background: rgba(124,111,255,0.1); }
@@ -172,7 +116,6 @@ body.light #matrix-canvas { opacity: 0.06; }
 </head>
 <body>
 
-<!-- Digital BG -->
 <canvas id="matrix-canvas"></canvas>
 <div class="grid-overlay"></div>
 <div class="scanline"></div>
@@ -220,12 +163,8 @@ body.light #matrix-canvas { opacity: 0.06; }
       <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
     </div>
     <div style="display:flex;justify-content:center;gap:8px;margin-top:8px;flex-wrap:wrap;">
-      <label for="photo-upload" style="display:flex;align-items:center;gap:6px;cursor:pointer;background:var(--surface2);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:6px 14px;border-radius:20px;font-size:0.82rem;">
-        📷 Camera
-      </label>
-      <label for="gallery-upload" style="display:flex;align-items:center;gap:6px;cursor:pointer;background:var(--surface2);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:6px 14px;border-radius:20px;font-size:0.82rem;">
-        🖼️ Gallery
-      </label>
+      <label for="photo-upload" style="display:flex;align-items:center;gap:6px;cursor:pointer;background:var(--surface2);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:6px 14px;border-radius:20px;font-size:0.82rem;">📷 Camera</label>
+      <label for="gallery-upload" style="display:flex;align-items:center;gap:6px;cursor:pointer;background:var(--surface2);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:6px 14px;border-radius:20px;font-size:0.82rem;">🖼️ Gallery</label>
       <button onclick="showYoutube()" style="background:var(--surface2);border:1px solid rgba(255,0,0,0.3);color:var(--text2);padding:6px 14px;border-radius:20px;font-size:0.82rem;cursor:pointer;">▶️ YouTube</button>
       <button onclick="showTranslate()" style="background:var(--surface2);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:6px 14px;border-radius:20px;font-size:0.82rem;cursor:pointer;">🌐 Translate</button>
       <button onclick="showCodeRunner()" style="background:var(--surface2);border:1px solid rgba(0,207,255,0.3);color:var(--text2);padding:6px 14px;border-radius:20px;font-size:0.82rem;cursor:pointer;">💻 Code</button>
@@ -236,7 +175,7 @@ body.light #matrix-canvas { opacity: 0.06; }
   </div>
 </div>
 
-<!-- YouTube Modal -->
+<!-- Modals -->
 <div class="settings-overlay" id="youtube-overlay" onclick="hideModal('youtube-overlay',event)">
   <div class="settings-box" onclick="event.stopPropagation()" style="width:360px;">
     <div class="settings-title">▶️ YouTube Search <button onclick="hideModal('youtube-overlay')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:1.2rem;">✕</button></div>
@@ -246,7 +185,6 @@ body.light #matrix-canvas { opacity: 0.06; }
   </div>
 </div>
 
-<!-- Translate Modal -->
 <div class="settings-overlay" id="translate-overlay" onclick="hideModal('translate-overlay',event)">
   <div class="settings-box" onclick="event.stopPropagation()" style="width:380px;">
     <div class="settings-title">🌐 Translate <button onclick="hideModal('translate-overlay')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:1.2rem;">✕</button></div>
@@ -267,7 +205,6 @@ body.light #matrix-canvas { opacity: 0.06; }
   </div>
 </div>
 
-<!-- Code Runner Modal -->
 <div class="settings-overlay" id="code-overlay" onclick="hideModal('code-overlay',event)">
   <div class="settings-box" onclick="event.stopPropagation()" style="width:90vw;max-width:700px;">
     <div class="settings-title">💻 Code Runner <button onclick="hideModal('code-overlay')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:1.2rem;">✕</button></div>
@@ -281,44 +218,19 @@ body.light #matrix-canvas { opacity: 0.06; }
   </div>
 </div>
 
-<!-- Settings Panel -->
 <div class="settings-overlay" id="settings-overlay" onclick="hideSettings(event)">
   <div class="settings-box" onclick="event.stopPropagation()">
-    <div class="settings-title">
-      ⚙️ Settings
-      <button onclick="hideSettings()" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:1.2rem;">✕</button>
-    </div>
-    <div class="settings-row">
-      <span>🌙 Dark mode</span>
-      <label class="toggle-wrap">
-        <input type="checkbox" id="dark-toggle" checked onchange="toggleDark(this)"/>
-        <span class="toggle-slider"></span>
-      </label>
-    </div>
-    <div class="settings-row">
-      <span>🔊 Auto speak replies</span>
-      <label class="toggle-wrap">
-        <input type="checkbox" id="speak-toggle" onchange="toggleAutoSpeak(this)"/>
-        <span class="toggle-slider"></span>
-      </label>
-    </div>
-    <div class="settings-row">
-      <span>💾 Save chat history</span>
-      <label class="toggle-wrap">
-        <input type="checkbox" id="history-toggle" checked onchange="toggleHistory(this)"/>
-        <span class="toggle-slider"></span>
-      </label>
-    </div>
+    <div class="settings-title">⚙️ Settings <button onclick="hideSettings()" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:1.2rem;">✕</button></div>
+    <div class="settings-row"><span>🌙 Dark mode</span><label class="toggle-wrap"><input type="checkbox" id="dark-toggle" checked onchange="toggleDark(this)"/><span class="toggle-slider"></span></label></div>
+    <div class="settings-row"><span>🔊 Auto speak replies</span><label class="toggle-wrap"><input type="checkbox" id="speak-toggle" onchange="toggleAutoSpeak(this)"/><span class="toggle-slider"></span></label></div>
+    <div class="settings-row"><span>💾 Save chat history</span><label class="toggle-wrap"><input type="checkbox" id="history-toggle" checked onchange="toggleHistory(this)"/><span class="toggle-slider"></span></label></div>
     <div class="settings-row" style="border-bottom:none;padding-top:12px;">
-      <button onclick="clearChat();hideSettings();" style="width:100%;background:rgba(255,100,100,0.1);border:1px solid rgba(255,100,100,0.3);color:#f87171;border-radius:10px;padding:8px;cursor:pointer;font-family:Syne,sans-serif;font-size:0.85rem;">
-        🗑️ Clear all chat history
-      </button>
+      <button onclick="clearChat();hideSettings();" style="width:100%;background:rgba(255,100,100,0.1);border:1px solid rgba(255,100,100,0.3);color:#f87171;border-radius:10px;padding:8px;cursor:pointer;font-family:Syne,sans-serif;font-size:0.85rem;">🗑️ Clear all chat history</button>
     </div>
   </div>
 </div>
 
 <script>
-// ── MATRIX RAIN ──────────────────────────────────────────
 const canvas = document.getElementById('matrix-canvas');
 const ctx = canvas.getContext('2d');
 let cols, drops;
@@ -352,7 +264,6 @@ initMatrix();
 setInterval(drawMatrix, 50);
 window.addEventListener('resize', initMatrix);
 
-// ── PHOTO ────────────────────────────────────────────────
 let pendingImage = null;
 
 function handlePhoto(input) {
@@ -366,9 +277,7 @@ function handlePhoto(input) {
     const prev = document.createElement('div');
     prev.id = 'img-preview';
     prev.style.cssText = 'padding:8px 16px;display:flex;align-items:center;gap:10px;background:var(--surface2);border-top:1px solid var(--border);';
-    prev.innerHTML = `<img src="${pendingImage}" style="width:50px;height:50px;border-radius:8px;object-fit:cover;"/>
-      <span style="font-size:0.82rem;color:var(--text2);flex:1;">Photo ready — ask something about it!</span>
-      <button onclick="clearPhoto()" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:1rem;">✕</button>`;
+    prev.innerHTML = `<img src="${pendingImage}" style="width:50px;height:50px;border-radius:8px;object-fit:cover;"/><span style="font-size:0.82rem;color:var(--text2);flex:1;">Photo ready — ask something about it!</span><button onclick="clearPhoto()" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:1rem;">✕</button>`;
     document.querySelector('.input-area').insertBefore(prev, document.querySelector('.input-wrap'));
     document.getElementById('userInput').placeholder = 'Ask something about this photo...';
     document.getElementById('userInput').focus();
@@ -384,7 +293,6 @@ function clearPhoto() {
   document.getElementById('userInput').placeholder = 'Ask me anything...';
 }
 
-// ── CHAT ─────────────────────────────────────────────────
 let messages = [];
 let isLoading = false;
 
@@ -393,21 +301,12 @@ function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault
 function sendSuggestion(text) { document.getElementById('userInput').value = text; sendMessage(); }
 
 function formatMessage(text) {
-  // Replace code blocks with styled pre/code elements
   text = text.replace(/```(\w+)?\n?([\s\S]*?)```/g, (match, lang, code) => {
     const language = lang || 'code';
     const escaped = code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    return `<div style="margin:8px 0;border-radius:8px;overflow:hidden;border:1px solid rgba(124,111,255,0.3);">
-      <div style="background:#1a1a2e;padding:4px 12px;font-size:0.72rem;color:#7c6fff;font-family:DM Mono,monospace;display:flex;justify-content:space-between;align-items:center;">
-        <span>${language}</span>
-        <button onclick="copyCode(this)" style="background:none;border:1px solid rgba(124,111,255,0.3);color:#a093f8;font-size:0.7rem;padding:2px 8px;border-radius:4px;cursor:pointer;">Copy</button>
-      </div>
-      <pre style="background:#0d0d1a;padding:12px;margin:0;overflow-x:auto;font-family:DM Mono,monospace;font-size:0.8rem;line-height:1.6;color:#e8e8ee;"><code>${escaped}</code></pre>
-    </div>`;
+    return `<div style="margin:8px 0;border-radius:8px;overflow:hidden;border:1px solid rgba(124,111,255,0.3);"><div style="background:#1a1a2e;padding:4px 12px;font-size:0.72rem;color:#7c6fff;font-family:DM Mono,monospace;display:flex;justify-content:space-between;align-items:center;"><span>${language}</span><button onclick="copyCode(this)" style="background:none;border:1px solid rgba(124,111,255,0.3);color:#a093f8;font-size:0.7rem;padding:2px 8px;border-radius:4px;cursor:pointer;">Copy</button></div><pre style="background:#0d0d1a;padding:12px;margin:0;overflow-x:auto;font-family:DM Mono,monospace;font-size:0.8rem;line-height:1.6;color:#e8e8ee;"><code>${escaped}</code></pre></div>`;
   });
-  // Replace inline code
   text = text.replace(/`([^`]+)`/g, '<code style="background:#1a1a2e;padding:2px 6px;border-radius:4px;font-family:DM Mono,monospace;font-size:0.85rem;color:#a093f8;">$1</code>');
-  // Replace newlines with br
   text = text.replace(/\n/g, '<br>');
   return text;
 }
@@ -419,17 +318,15 @@ function copyCode(btn) {
     setTimeout(() => btn.textContent = 'Copy', 2000);
   });
 }
+
 function isImageRequest(text) {
   const lower = text.toLowerCase();
-  // Must NOT be a code request
   const codeKeywords = ['code', 'script', 'program', 'function', 'html', 'css', 'javascript', 'python', 'java', 'app', 'website', 'algorithm'];
   if (codeKeywords.some(k => lower.includes(k))) return false;
-  // Must contain image-specific keywords
   const imageKeywords = ['draw', 'paint', 'sketch', 'image of', 'picture of', 'photo of', 'show me a photo', 'generate a photo', 'generate an image', 'generate a picture', 'generate a drawing', 'create an image', 'create a picture', 'make an image', 'make a picture'];
   return imageKeywords.some(k => lower.includes(k));
 }
 
-// ── VOICE ────────────────────────────────────────────────
 let isSpeaking = false;
 let currentAudio = null;
 
@@ -442,19 +339,12 @@ function speak(text) {
   const clean = text.replace(/<[^>]*>/g, '').replace(/[*_#`]/g, '').trim();
   if (!clean) return;
   const lang = detectLang(clean);
-
-  // Stop any current audio
   stopSpeaking();
-
   if (lang === 'km') {
-    // Use Google Translate TTS for Khmer
     const encoded = encodeURIComponent(clean.substring(0, 200));
     const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encoded}&tl=km&client=tw-ob`;
     currentAudio = new Audio(url);
-    currentAudio.play().catch(() => {
-      // Fallback to browser TTS
-      browserSpeak(clean, 'km-KH');
-    });
+    currentAudio.play().catch(() => { browserSpeak(clean, 'km-KH'); });
     currentAudio.onended = () => { isSpeaking = false; };
     isSpeaking = true;
   } else {
@@ -471,10 +361,7 @@ function browserSpeak(text, lang) {
   utterance.pitch = 1;
   utterance.volume = 1;
   const voices = window.speechSynthesis.getVoices();
-  const preferred = voices.find(v => v.lang === lang)
-    || voices.find(v => v.lang.startsWith(lang.split('-')[0]))
-    || voices.find(v => v.lang.startsWith('en'))
-    || voices[0];
+  const preferred = voices.find(v => v.lang === lang) || voices.find(v => v.lang.startsWith(lang.split('-')[0])) || voices.find(v => v.lang.startsWith('en')) || voices[0];
   if (preferred) utterance.voice = preferred;
   utterance.onstart = () => isSpeaking = true;
   utterance.onend = () => isSpeaking = false;
@@ -487,6 +374,7 @@ function stopSpeaking() {
   isSpeaking = false;
 }
 
+// FIXED: Updated addImageMessage with better error handling
 async function addImageMessage(prompt) {
   const welcome = document.getElementById('welcome');
   if (welcome) welcome.remove();
@@ -524,7 +412,8 @@ async function addImageMessage(prompt) {
           onclick="window.open('${imgUrl}','_blank')"/>
         <div style="font-size:0.72rem;color:var(--text3);margin-top:6px;">Tap to view full size</div>`;
     } else {
-      document.getElementById(statusId).textContent = '❌ Could not generate. Try again!';
+      const err = await response.text();
+      document.getElementById(statusId).textContent = '❌ Could not generate: ' + err;
     }
   } catch(e) {
     document.getElementById(statusId).textContent = '❌ Error: ' + e.message;
@@ -544,13 +433,14 @@ function addTyping() {
 
 function removeTyping() { const t = document.getElementById('typing'); if (t) t.remove(); }
 
+// FIXED: sendMessage function - removed duplicate user message
 async function sendMessage() {
   if (isLoading) return;
   const input = document.getElementById('userInput');
   const text = input.value.trim();
   if (!text && !pendingImage) return;
 
-  // Show user message with image preview if any
+  // Show user message
   if (pendingImage) {
     const welcome = document.getElementById('welcome');
     if (welcome) welcome.remove();
@@ -568,7 +458,8 @@ async function sendMessage() {
     addMessage('user', text.replace(/\n/g, '<br>'));
   }
 
-  input.value = ''; input.style.height = 'auto';
+  input.value = ''; 
+  input.style.height = 'auto';
   isLoading = true;
   document.getElementById('sendBtn').disabled = true;
 
@@ -578,7 +469,7 @@ async function sendMessage() {
       .replace(/^(can you|can u|please|hey|i want|i need)\s*/i, '')
       .replace(/^(generate|draw|create|make|paint|sketch|show me|image of|picture of|photo of|a photo of|a picture of|a image of)\s*/i, '')
       .trim() || 'beautiful landscape';
-    addMessage('user', text.replace(/\n/g, '<br>'));
+    
     await addImageMessage(prompt);
     isLoading = false;
     document.getElementById('sendBtn').disabled = false;
@@ -662,7 +553,6 @@ function speakText(btn) {
   }
 }
 
-// ── YOUTUBE SEARCH ──────────────────────────────────────
 function showYoutube() { document.getElementById('youtube-overlay').classList.add('show'); setTimeout(() => document.getElementById('yt-input').focus(), 100); }
 function showTranslate() { document.getElementById('translate-overlay').classList.add('show'); setTimeout(() => document.getElementById('translate-input').focus(), 100); }
 function showCodeRunner() { document.getElementById('code-overlay').classList.add('show'); setTimeout(() => document.getElementById('code-input').focus(), 100); }
@@ -679,15 +569,10 @@ function searchYoutube() {
   const resultsDiv = document.getElementById('yt-results');
   const encoded = encodeURIComponent(q);
   resultsDiv.innerHTML = `
-    <a href="https://www.youtube.com/results?search_query=${encoded}" target="_blank" 
-      style="display:block;background:linear-gradient(135deg,#ff0000,#cc0000);color:white;padding:10px 16px;border-radius:10px;text-decoration:none;text-align:center;font-size:0.88rem;margin-bottom:8px;">
-      🔍 Search "${q}" on YouTube
-    </a>
-    <iframe style="width:100%;height:200px;border-radius:10px;border:none;" 
-      src="https://www.youtube.com/embed?listType=search&list=${encoded}" allowfullscreen></iframe>`;
+    <a href="https://www.youtube.com/results?search_query=${encoded}" target="_blank" style="display:block;background:linear-gradient(135deg,#ff0000,#cc0000);color:white;padding:10px 16px;border-radius:10px;text-decoration:none;text-align:center;font-size:0.88rem;margin-bottom:8px;">🔍 Search "${q}" on YouTube</a>
+    <iframe style="width:100%;height:200px;border-radius:10px;border:none;" src="https://www.youtube.com/embed?listType=search&list=${encoded}" allowfullscreen></iframe>`;
 }
 
-// ── TRANSLATE ────────────────────────────────────────────
 function doTranslate() {
   const text = document.getElementById('translate-input').value.trim();
   const lang = document.getElementById('translate-lang').value;
@@ -695,7 +580,6 @@ function doTranslate() {
   const resultDiv = document.getElementById('translate-result');
   resultDiv.style.display = 'block';
   resultDiv.textContent = '⏳ Translating...';
-  // Use AI to translate
   const langNames = { km:'Khmer', en:'English', zh:'Chinese', ja:'Japanese', ko:'Korean', fr:'French', es:'Spanish', th:'Thai', vi:'Vietnamese' };
   const prompt = `Translate this text to ${langNames[lang]}. Only reply with the translation, nothing else:\n\n${text}`;
   fetch('/api/chat', {
@@ -706,7 +590,6 @@ function doTranslate() {
     if (data.choices && data.choices[0]) {
       resultDiv.textContent = data.choices[0].message.content;
     } else {
-      // Fallback to Google Translate link
       const encoded = encodeURIComponent(text);
       resultDiv.innerHTML = `<a href="https://translate.google.com/?sl=auto&tl=${lang}&text=${encoded}" target="_blank" style="color:var(--accent);">Open in Google Translate →</a>`;
     }
@@ -716,7 +599,6 @@ function doTranslate() {
   });
 }
 
-// ── CODE RUNNER ──────────────────────────────────────────
 function runCode() {
   const code = document.getElementById('code-input').value;
   const iframe = document.getElementById('code-preview');
@@ -733,7 +615,6 @@ function clearCode() {
   doc.open(); doc.write(''); doc.close();
 }
 
-// ── SETTINGS ────────────────────────────────────────────
 let autoSpeak = false;
 let saveHistory = true;
 
@@ -760,29 +641,18 @@ function toggleHistory(cb) {
   if (!cb.checked) localStorage.removeItem('chatHistory');
 }
 
-// ── CLEAR CHAT ───────────────────────────────────────────
 function clearChat() {
   if (!confirm('Clear all chat history?')) return;
   messages = [];
   localStorage.removeItem('chatHistory');
   const container = document.getElementById('messages');
   container.innerHTML = '';
-  // Show welcome back
   const welcome = document.createElement('div');
   welcome.className = 'welcome'; welcome.id = 'welcome';
-  welcome.innerHTML = `<div class="welcome-icon">🤖</div>
-    <h2>Hello! I'm Chhaiya AI 🔥</h2>
-    <p>Created by ChhaiyaDeveloper-AI 😎</p>
-    <div class="suggestions">
-      <div class="suggestion" onclick="sendSuggestion('What can you do?')">What can you do?</div>
-      <div class="suggestion" onclick="sendSuggestion('Tell me a fun fact')">Tell me a fun fact</div>
-      <div class="suggestion" onclick="sendSuggestion('Help me study for an exam')">Help me study</div>
-      <div class="suggestion" onclick="sendSuggestion('Explain how the internet works')">How does internet work?</div>
-    </div>`;
+  welcome.innerHTML = `<div class="welcome-icon">🤖</div><h2>Hello! I'm Chhaiya AI 🔥</h2><p>Created by ChhaiyaDeveloper-AI 😎</p><div class="suggestions"><div class="suggestion" onclick="sendSuggestion('What can you do?')">What can you do?</div><div class="suggestion" onclick="sendSuggestion('Tell me a fun fact')">Tell me a fun fact</div><div class="suggestion" onclick="sendSuggestion('Help me study for an exam')">Help me study</div><div class="suggestion" onclick="sendSuggestion('Explain how the internet works')">How does internet work?</div></div>`;
   container.appendChild(welcome);
 }
 
-// ── CHAT HISTORY ─────────────────────────────────────────
 function saveChatHistory() {
   if (!saveHistory) return;
   try { localStorage.setItem('chatHistory', JSON.stringify(messages.slice(-50))); } catch(e) {}
@@ -809,7 +679,6 @@ function loadChatHistory() {
   } catch(e) {}
 }
 
-// Load settings from localStorage
 function loadSettings() {
   const dark = localStorage.getItem('darkMode');
   const speak = localStorage.getItem('autoSpeak');
@@ -819,7 +688,6 @@ function loadSettings() {
   if (hist === 'false') { saveHistory = false; document.getElementById('history-toggle').checked = false; }
 }
 
-// Override addMessage to save history
 function addMessage(role, content) {
   const welcome = document.getElementById('welcome');
   if (welcome) welcome.remove();
@@ -848,17 +716,14 @@ function addMessage(role, content) {
   container.scrollTop = container.scrollHeight;
 }
 
-// Scroll helper
 function scrollBottom() {
   const c = document.getElementById('messages');
   requestAnimationFrame(() => { c.scrollTop = c.scrollHeight; });
 }
 
-// Init
 loadSettings();
 loadChatHistory();
 
-// ── PWA ──────────────────────────────────────────────────
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').catch(e => console.log('SW error:', e));
 }
