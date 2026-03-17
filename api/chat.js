@@ -1,36 +1,40 @@
 // api/chat.js
 export default async function handler(req, res) {
-  console.log("API called - Key exists?", !!process.env.XAI_API_KEY);
+  const key = process.env.XAI_API_KEY;
 
-  if (!process.env.XAI_API_KEY) {
-    return res.status(500).json({ 
-      error: "XAI_API_KEY is missing on Vercel server" 
-    });
+  if (!key) {
+    return res.status(500).json({ error: "KEY_MISSING_ON_VERCEL" });
   }
 
   try {
-    const response = await fetch("https://api.x.ai/v1/chat/completions", {
+    const grokResponse = await fetch("https://api.x.ai/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.XAI_API_KEY}`
+        "Authorization": `Bearer ${key}`
       },
       body: JSON.stringify({
-        model: "grok-4",
-        messages: req.body.messages || [{ role: "user", content: "test" }]
+        model: "grok-4",                    // try "grok-3" if grok-4 fails
+        messages: req.body.messages,
+        temperature: 0.7,
+        max_tokens: 1024
       })
     });
 
-    const data = await response.json();
+    const data = await grokResponse.json();
 
-    if (!response.ok) {
-      console.error("Grok API error:", data);
-      return res.status(500).json({ error: data.error?.message || "Grok rejected the request" });
+    // Return the exact error from xAI so we can see it
+    if (!grokResponse.ok) {
+      console.error("xAI rejected:", data);
+      return res.status(500).json({ 
+        error: "Grok rejected the request",
+        details: data.error?.message || data 
+      });
     }
 
     res.status(200).json(data);
-  } catch (error) {
-    console.error("Proxy catch error:", error.message);
-    res.status(500).json({ error: "Proxy failed: " + error.message });
+  } catch (err) {
+    console.error("Proxy error:", err);
+    res.status(500).json({ error: err.message });
   }
 }
