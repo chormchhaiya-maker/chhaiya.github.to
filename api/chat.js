@@ -17,8 +17,7 @@ export default async function handler(req, res) {
         'Authorization': `Bearer ${process.env.XAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "grok-4.20-beta-0309-non-reasoning",   // your original model (should work)
-        // model: "grok-4-1-fast-non-reasoning",      // ← Uncomment this line if you want faster & cheaper
+        model: "grok-4.20-beta-0309-non-reasoning",   // This is the most stable one right now
         messages: messages,
         temperature: 0.85,
         max_tokens: 1000,
@@ -26,11 +25,11 @@ export default async function handler(req, res) {
     });
 
     if (!response.ok) {
-      const errorData = await response.text();
-      console.error("xAI Error:", errorData);
+      const errorText = await response.text();
+      console.error("xAI Error:", errorText);
       return res.status(500).json({ 
         error: "xAI API Error", 
-        details: errorData 
+        details: errorText 
       });
     }
 
@@ -41,7 +40,7 @@ export default async function handler(req, res) {
     console.error("Server Error:", err);
     return res.status(500).json({ 
       error: "Server Error", 
-      message: err.message || "Unknown error" 
+      message: err.message 
     });
   }
 }
