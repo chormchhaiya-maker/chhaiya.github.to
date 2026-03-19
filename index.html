@@ -335,7 +335,7 @@ function formatMessage(text) {
   text = text.replace(/```(\w+)?\n?([\s\S]*?)```/g, (match, lang, code) => {
     const language = lang || 'code';
     const escaped = code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    return `<div style="margin:8px 0;border-radius:8px;overflow:hidden;border:1px solid rgba(124,111,255,0.3);">
+    return `<div data-code-block style="margin:8px 0;border-radius:8px;overflow:hidden;border:1px solid rgba(124,111,255,0.3);">
       <div style="background:#1a1a2e;padding:4px 12px;font-size:0.72rem;color:#7c6fff;font-family:DM Mono,monospace;display:flex;justify-content:space-between;align-items:center;">
         <span>${language}</span>
         <button onclick="copyCode(this)" style="background:none;border:1px solid rgba(124,111,255,0.3);color:#a093f8;font-size:0.7rem;padding:2px 8px;border-radius:4px;cursor:pointer;">Copy</button>
@@ -355,8 +355,11 @@ function formatMessage(text) {
 }
 
 function copyCode(btn) {
-  const code = btn.closest('div').nextElementSibling.querySelector('code').textContent;
-  copyToClipboard(code, btn, 'Copy');
+  // Walk up to the code block container then find the <code> element
+  const container = btn.closest('[data-code-block]') || btn.parentElement.parentElement;
+  const codeEl = container.querySelector('code');
+  const text = codeEl ? codeEl.textContent : '';
+  copyToClipboard(text, btn, 'Copy');
 }
 
 function copyToClipboard(text, btn, resetLabel) {
