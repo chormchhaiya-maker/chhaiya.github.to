@@ -9,9 +9,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Chhaiya AI">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="https://img.icons8.com/fluency/96/bot.png">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1389812823230326" crossorigin="anonymous"></script>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -136,7 +133,7 @@ body.light #matrix-canvas { opacity: 0.06; }
         <div class="suggestion" onclick="showYoutube()">▶️ YouTube Search</div>
         <div class="suggestion" onclick="showTranslate()">🌐 Translate</div>
         <div class="suggestion" onclick="showCodeRunner()">💻 Code Runner</div>
-        <div class="suggestion" onclick="sendSuggestion('generate a beautiful sunset over Angkor Wat in cyberpunk style')">🎨 Generate image</div>
+        <div class="suggestion" onclick="sendSuggestion('generate image of a beautiful sunset over Angkor Wat in cyberpunk style')">🎨 Generate image</div>
       </div>
     </div>
   </div>
@@ -146,19 +143,17 @@ body.light #matrix-canvas { opacity: 0.06; }
       <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
     </div>
     <div style="display:flex;justify-content:center;gap:8px;margin-top:8px;flex-wrap:wrap;">
-      <label for="photo-upload" style="display:flex;align-items:center;gap:6px;cursor:pointer;background:var(--surface2);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:6px 14px;border-radius:20px;font-size:0.82rem;">📷 Camera</label>
       <label for="gallery-upload" style="display:flex;align-items:center;gap:6px;cursor:pointer;background:var(--surface2);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:6px 14px;border-radius:20px;font-size:0.82rem;">🖼️ Gallery</label>
       <button onclick="showYoutube()" style="background:var(--surface2);border:1px solid rgba(255,0,0,0.3);color:var(--text2);padding:6px 14px;border-radius:20px;font-size:0.82rem;cursor:pointer;">▶️ YouTube</button>
       <button onclick="showTranslate()" style="background:var(--surface2);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:6px 14px;border-radius:20px;font-size:0.82rem;cursor:pointer;">🌐 Translate</button>
       <button onclick="showCodeRunner()" style="background:var(--surface2);border:1px solid rgba(0,207,255,0.3);color:var(--text2);padding:6px 14px;border-radius:20px;font-size:0.82rem;cursor:pointer;">💻 Code</button>
-      <input type="file" id="photo-upload" accept="image/*" capture="environment" style="display:none" onchange="handlePhoto(this)"/>
       <input type="file" id="gallery-upload" accept="image/*" style="display:none" onchange="handlePhoto(this)"/>
     </div>
     <div class="input-hint">Press Enter to send · Shift+Enter for new line</div>
   </div>
 </div>
 
-<!-- Modals (same as before) -->
+<!-- YouTube Modal -->
 <div class="settings-overlay" id="youtube-overlay" onclick="hideModal('youtube-overlay',event)">
   <div class="settings-box" onclick="event.stopPropagation()" style="width:360px;">
     <div class="settings-title">▶️ YouTube Search <button onclick="hideModal('youtube-overlay')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:1.2rem;">✕</button></div>
@@ -168,26 +163,28 @@ body.light #matrix-canvas { opacity: 0.06; }
   </div>
 </div>
 
+<!-- Translate Modal -->
 <div class="settings-overlay" id="translate-overlay" onclick="hideModal('translate-overlay',event)">
   <div class="settings-box" onclick="event.stopPropagation()" style="width:380px;">
     <div class="settings-title">🌐 Translate <button onclick="hideModal('translate-overlay')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:1.2rem;">✕</button></div>
     <textarea id="translate-input" placeholder="Type text to translate..." style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:0.6rem 1rem;color:var(--text);font-family:Syne,sans-serif;font-size:0.9rem;outline:none;resize:none;height:80px;margin-bottom:8px;"></textarea>
     <select id="translate-lang" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:0.6rem 1rem;color:var(--text);font-family:Syne,sans-serif;font-size:0.9rem;outline:none;margin-bottom:10px;">
-      <option value="km">🇰🇭 Khmer</option>
-      <option value="en">🇺🇸 English</option>
-      <option value="zh">🇨🇳 Chinese</option>
-      <option value="ja">🇯🇵 Japanese</option>
-      <option value="ko">🇰🇷 Korean</option>
-      <option value="fr">🇫🇷 French</option>
-      <option value="es">🇪🇸 Spanish</option>
-      <option value="th">🇹🇭 Thai</option>
-      <option value="vi">🇻🇳 Vietnamese</option>
+      <option value="Khmer">🇰🇭 Khmer</option>
+      <option value="English">🇺🇸 English</option>
+      <option value="Chinese">🇨🇳 Chinese</option>
+      <option value="Japanese">🇯🇵 Japanese</option>
+      <option value="Korean">🇰🇷 Korean</option>
+      <option value="French">🇫🇷 French</option>
+      <option value="Spanish">🇪🇸 Spanish</option>
+      <option value="Thai">🇹🇭 Thai</option>
+      <option value="Vietnamese">🇻🇳 Vietnamese</option>
     </select>
     <button onclick="doTranslate()" style="width:100%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;border:none;border-radius:10px;padding:0.6rem;font-family:Syne,sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;">Translate</button>
     <div id="translate-result" style="margin-top:12px;padding:10px;background:var(--surface2);border-radius:10px;display:none;color:var(--text);font-size:0.9rem;line-height:1.6;"></div>
   </div>
 </div>
 
+<!-- Code Runner Modal -->
 <div class="settings-overlay" id="code-overlay" onclick="hideModal('code-overlay',event)">
   <div class="settings-box" onclick="event.stopPropagation()" style="width:90vw;max-width:700px;">
     <div class="settings-title">💻 Code Runner <button onclick="hideModal('code-overlay')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:1.2rem;">✕</button></div>
@@ -201,20 +198,54 @@ body.light #matrix-canvas { opacity: 0.06; }
   </div>
 </div>
 
+<!-- Settings Modal -->
 <div class="settings-overlay" id="settings-overlay" onclick="hideSettings(event)">
   <div class="settings-box" onclick="event.stopPropagation()">
     <div class="settings-title">⚙️ Settings <button onclick="hideSettings()" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:1.2rem;">✕</button></div>
     <div class="settings-row"><span>🌙 Dark mode</span><label class="toggle-wrap"><input type="checkbox" id="dark-toggle" checked onchange="toggleDark(this)"/><span class="toggle-slider"></span></label></div>
     <div class="settings-row"><span>🔊 Auto speak replies</span><label class="toggle-wrap"><input type="checkbox" id="speak-toggle" onchange="toggleAutoSpeak(this)"/><span class="toggle-slider"></span></label></div>
-    <div class="settings-row"><span>💾 Save chat history</span><label class="toggle-wrap"><input type="checkbox" id="history-toggle" checked onchange="toggleHistory(this)"/><span class="toggle-slider"></span></label></div>
-    <div class="settings-row" style="border-bottom:none;padding-top:12px;">
+    <div class="settings-row" style="padding-top:8px;">
+      <button onclick="promptForApiKey()" style="width:100%;background:rgba(124,111,255,0.1);border:1px solid rgba(124,111,255,0.3);color:#a093f8;border-radius:10px;padding:8px;cursor:pointer;font-family:Syne,sans-serif;font-size:0.85rem;">🔑 Change API Key</button>
+    </div>
+    <div class="settings-row" style="border-bottom:none;padding-top:8px;">
       <button onclick="clearChat();hideSettings();" style="width:100%;background:rgba(255,100,100,0.1);border:1px solid rgba(255,100,100,0.3);color:#f87171;border-radius:10px;padding:8px;cursor:pointer;font-family:Syne,sans-serif;font-size:0.85rem;">🗑️ Clear all chat history</button>
     </div>
   </div>
 </div>
 
 <script>
-// Matrix background
+// ===================== CONFIG =====================
+const GROQ_MODEL = 'llama3-70b-8192';
+
+function getApiKey() {
+  return localStorage.getItem('groq_api_key') || '';
+}
+
+function promptForApiKey() {
+  const existing = getApiKey();
+  const key = prompt('Enter your Groq API Key (get one free at console.groq.com):', existing || '');
+  if (key && key.trim().startsWith('gsk_')) {
+    localStorage.setItem('groq_api_key', key.trim());
+    alert('✅ API key saved!');
+  } else if (key !== null) {
+    alert('❌ Invalid key. It should start with gsk_');
+  }
+}
+
+// Show key setup banner if no key saved
+window.addEventListener('DOMContentLoaded', () => {
+  if (!getApiKey()) {
+    const banner = document.createElement('div');
+    banner.id = 'key-banner';
+    banner.style.cssText = 'background:rgba(255,107,157,0.15);border-bottom:1px solid rgba(255,107,157,0.3);padding:8px 24px;text-align:center;font-size:0.82rem;color:#ff6b9d;cursor:pointer;';
+    banner.innerHTML = '🔑 No API key set — <strong>click here to enter your Groq API key</strong> to enable chat';
+    banner.onclick = () => { promptForApiKey(); if (getApiKey()) banner.remove(); };
+    document.querySelector('.app').insertBefore(banner, document.querySelector('.messages'));
+  }
+});
+const SYSTEM_PROMPT = `You are Chhaiya AI, a smart, friendly, and helpful AI assistant created by ChhaiyaDeveloper-AI. You help users with anything they need — coding, learning, creative writing, answering questions, and more. Be concise, clear, and engaging. Use emojis occasionally to be friendly.`;
+
+// ===================== MATRIX =====================
 const canvas = document.getElementById('matrix-canvas');
 const ctx = canvas.getContext('2d');
 let cols, drops;
@@ -228,13 +259,12 @@ function initMatrix() {
 function drawMatrix() {
   ctx.fillStyle = 'rgba(10, 10, 15, 0.05)';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = '#7c6fff';
-  ctx.font = '14px DM Mono, monospace';
   const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノ';
   for (let i = 0; i < drops.length; i++) {
     const char = chars[Math.floor(Math.random() * chars.length)];
     ctx.fillStyle = Math.random() > 0.95 ? '#ff6b9d' : (Math.random() > 0.7 ? '#a093f8' : '#7c6fff');
     ctx.globalAlpha = Math.random() * 0.5 + 0.1;
+    ctx.font = '14px DM Mono, monospace';
     ctx.fillText(char, i * 14, drops[i] * 14);
     if (drops[i] * 14 > canvas.height && Math.random() > 0.975) drops[i] = 0;
     drops[i]++;
@@ -245,19 +275,27 @@ initMatrix();
 setInterval(drawMatrix, 50);
 window.addEventListener('resize', initMatrix);
 
+// ===================== STATE =====================
+let messages = [];
+let isLoading = false;
+let autoSpeak = false;
 let pendingImage = null;
+
+// ===================== PHOTO =====================
 function handlePhoto(input) {
   const file = input.files[0];
   if (!file) return;
   const reader = new FileReader();
   reader.onload = (e) => {
     pendingImage = e.target.result;
-    const preview = document.getElementById('img-preview');
-    if (preview) preview.remove();
+    const existing = document.getElementById('img-preview');
+    if (existing) existing.remove();
     const prev = document.createElement('div');
     prev.id = 'img-preview';
-    prev.style.cssText = 'padding:8px 16px;display:flex;align-items:center;gap:10px;background:var(--surface2);border-top:1px solid var(--border);';
-    prev.innerHTML = `<img src="${pendingImage}" style="width:50px;height:50px;border-radius:8px;object-fit:cover;"/><span style="font-size:0.82rem;color:var(--text2);flex:1;">Photo ready — ask something about it!</span><button onclick="clearPhoto()" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:1rem;">✕</button>`;
+    prev.style.cssText = 'padding:8px 16px;display:flex;align-items:center;gap:10px;background:var(--surface2);border-top:1px solid var(--border);max-width:800px;margin:0 auto;border-radius:10px;margin-bottom:8px;';
+    prev.innerHTML = `<img src="${pendingImage}" style="width:50px;height:50px;border-radius:8px;object-fit:cover;"/>
+      <span style="font-size:0.82rem;color:var(--text2);flex:1;">Photo ready — ask something about it!</span>
+      <button onclick="clearPhoto()" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:1rem;">✕</button>`;
     document.querySelector('.input-area').insertBefore(prev, document.querySelector('.input-wrap'));
     document.getElementById('userInput').placeholder = 'Ask something about this photo...';
     document.getElementById('userInput').focus();
@@ -272,23 +310,36 @@ function clearPhoto() {
   document.getElementById('userInput').placeholder = 'Ask me anything...';
 }
 
-let messages = [];
-let isLoading = false;
-
+// ===================== INPUT =====================
 function autoResize(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 120) + 'px'; }
 function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
 function sendSuggestion(text) { document.getElementById('userInput').value = text; sendMessage(); }
 
+// ===================== FORMAT =====================
 function formatMessage(text) {
+  // Code blocks
   text = text.replace(/```(\w+)?\n?([\s\S]*?)```/g, (match, lang, code) => {
     const language = lang || 'code';
     const escaped = code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    return `<div style="margin:8px 0;border-radius:8px;overflow:hidden;border:1px solid rgba(124,111,255,0.3);"><div style="background:#1a1a2e;padding:4px 12px;font-size:0.72rem;color:#7c6fff;font-family:DM Mono,monospace;display:flex;justify-content:space-between;align-items:center;"><span>${language}</span><button onclick="copyCode(this)" style="background:none;border:1px solid rgba(124,111,255,0.3);color:#a093f8;font-size:0.7rem;padding:2px 8px;border-radius:4px;cursor:pointer;">Copy</button></div><pre style="background:#0d0d1a;padding:12px;margin:0;overflow-x:auto;font-family:DM Mono,monospace;font-size:0.8rem;line-height:1.6;color:#e8e8ee;"><code>${escaped}</code></pre></div>`;
+    return `<div style="margin:8px 0;border-radius:8px;overflow:hidden;border:1px solid rgba(124,111,255,0.3);">
+      <div style="background:#1a1a2e;padding:4px 12px;font-size:0.72rem;color:#7c6fff;font-family:DM Mono,monospace;display:flex;justify-content:space-between;align-items:center;">
+        <span>${language}</span>
+        <button onclick="copyCode(this)" style="background:none;border:1px solid rgba(124,111,255,0.3);color:#a093f8;font-size:0.7rem;padding:2px 8px;border-radius:4px;cursor:pointer;">Copy</button>
+      </div>
+      <pre style="background:#0d0d1a;padding:12px;margin:0;overflow-x:auto;font-family:DM Mono,monospace;font-size:0.8rem;line-height:1.6;color:#e8e8ee;"><code>${escaped}</code></pre>
+    </div>`;
   });
+  // Inline code
   text = text.replace(/`([^`]+)`/g, '<code style="background:#1a1a2e;padding:2px 6px;border-radius:4px;font-family:DM Mono,monospace;font-size:0.85rem;color:#a093f8;">$1</code>');
+  // Bold
+  text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  // Italic
+  text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+  // Newlines
   text = text.replace(/\n/g, '<br>');
   return text;
 }
+
 function copyCode(btn) {
   const code = btn.closest('div').nextElementSibling.querySelector('code').textContent;
   navigator.clipboard.writeText(code).then(() => {
@@ -297,158 +348,187 @@ function copyCode(btn) {
   });
 }
 
+// ===================== IMAGE DETECTION =====================
 function isImageRequest(text) {
   const lower = text.toLowerCase().trim();
   if (!lower) return false;
-  const avoid = ['code', 'script', 'html', 'css', 'python', 'function', 'program', 'website', 'algorithm'];
+  const avoid = ['code', 'script', 'html', 'css', 'python', 'function', 'program', 'website', 'algorithm', 'explain', 'what is', 'how to', 'why', 'when', 'who'];
   if (avoid.some(k => lower.includes(k))) return false;
-  const triggers = ['generate image', 'generate a image', 'generate picture', 'generate photo', 'create image', 'make image', 'draw', 'paint', 'sketch', 'image of', 'picture of', 'photo of', 'show me a'];
+  const triggers = ['generate image', 'generate a image', 'generate picture', 'generate photo', 'create image', 'make image', 'draw ', 'paint ', 'sketch ', 'image of', 'picture of', 'photo of', 'show me a picture', 'visualize'];
   return triggers.some(k => lower.includes(k));
 }
 
-// ==================== GROK IMAGINE IMAGE GENERATION ====================
+// ===================== IMAGE GENERATION (Pollinations.ai - FREE, no key needed) =====================
 async function generateImage(prompt) {
-  const welcome = document.getElementById('welcome');
-  if (welcome) welcome.remove();
-
+  removeWelcome();
   const container = document.getElementById('messages');
   const div = document.createElement('div');
   div.className = 'msg ai';
-  const bubble = document.createElement('div');
-  bubble.className = 'bubble';
-  bubble.style.cssText = 'padding:12px;background:var(--surface2);border:1px solid var(--border);border-radius:16px;';
 
-  const statusId = 'img-status-' + Date.now();
-  bubble.innerHTML = `
-    <div style="margin-bottom:10px;font-size:0.85rem;color:var(--text2);">🎨 Grok Imagine is generating your image...</div>
-    <div id="${statusId}" style="color:var(--accent);font-size:0.82rem;">⏳ Please wait 8-15 seconds...</div>
-  `;
+  const encodedPrompt = encodeURIComponent(prompt);
+  const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&nologo=true&seed=${Math.floor(Math.random()*99999)}`;
 
   div.innerHTML = `<div class="avatar">🤖</div>`;
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  bubble.style.cssText = 'padding:12px;';
+  bubble.innerHTML = `
+    <div style="margin-bottom:10px;font-size:0.85rem;color:var(--text2);">🎨 Generating image: <em>${prompt}</em></div>
+    <div style="color:var(--accent);font-size:0.82rem;" id="img-loading-${Date.now()}">⏳ Loading image... please wait...</div>`;
   div.appendChild(bubble);
   container.appendChild(div);
   container.scrollTop = container.scrollHeight;
 
-  try {
-    const response = await fetch('/api/image', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: prompt.trim() })
-    });
-
-    if (!response.ok) throw new Error('Server returned error');
-
-    const data = await response.json();
-    const imgUrl = data.url;
-
-    if (!imgUrl) throw new Error('No image URL received');
-
-    document.getElementById(statusId).outerHTML = `
-      <img src="${imgUrl}" alt="${prompt}" 
-           style="max-width:100%;border-radius:12px;display:block;margin:8px 0;box-shadow:0 0 25px rgba(124,111,255,0.4);"
-           onclick="window.open('${imgUrl}','_blank')">
+  // Create image element and load
+  const img = new Image();
+  img.onload = () => {
+    bubble.innerHTML = `
+      <div style="margin-bottom:8px;font-size:0.82rem;color:var(--text2);">🎨 <em>${prompt}</em></div>
+      <img src="${imageUrl}" alt="${prompt}"
+           style="max-width:100%;border-radius:12px;display:block;box-shadow:0 0 25px rgba(124,111,255,0.4);cursor:pointer;"
+           onclick="window.open('${imageUrl}','_blank')">
       <div style="font-size:0.75rem;color:var(--text3);margin-top:8px;text-align:center;">
-        ✨ Generated by Grok Imagine • Tap to enlarge
+        ✨ Generated by Pollinations AI • Click to enlarge
       </div>`;
+    container.scrollTop = container.scrollHeight;
+  };
+  img.onerror = () => {
+    bubble.innerHTML = `❌ Image generation failed. Try a different prompt.`;
+  };
+  img.src = imageUrl;
+}
+
+// ===================== GROQ CHAT =====================
+async function callGroq(msgs) {
+  const key = getApiKey();
+  if (!key) { promptForApiKey(); throw new Error("No API key. Please enter your Groq API key."); }
+  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${key}`
+    },
+    body: JSON.stringify({
+      model: GROQ_MODEL,
+      messages: [
+        { role: 'system', content: SYSTEM_PROMPT },
+        ...msgs
+      ],
+      max_tokens: 1024,
+      temperature: 0.7
+    })
+  });
+
+  if (!response.ok) {
+    const err = await response.json();
+    throw new Error(err.error?.message || 'Groq API error');
+  }
+
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
+
+// ===================== TRANSLATE via Groq =====================
+async function doTranslate() {
+  const text = document.getElementById('translate-input').value.trim();
+  const lang = document.getElementById('translate-lang').value;
+  const resultDiv = document.getElementById('translate-result');
+
+  if (!text) return;
+
+  resultDiv.style.display = 'block';
+  resultDiv.textContent = '⏳ Translating...';
+
+  try {
+    const reply = await callGroq([{
+      role: 'user',
+      content: `Translate the following text to ${lang}. Reply with ONLY the translated text, nothing else:\n\n${text}`
+    }]);
+    resultDiv.textContent = reply.trim();
   } catch (e) {
-    document.getElementById(statusId).innerHTML = `❌ Failed to generate image: ${e.message}<br><small>Check your XAI_API_KEY and server</small>`;
+    resultDiv.textContent = '❌ Translation failed: ' + e.message;
   }
 }
 
-function addTyping() {
+// ===================== SEND MESSAGE =====================
+function removeWelcome() {
   const welcome = document.getElementById('welcome');
   if (welcome) welcome.remove();
-  const container = document.getElementById('messages');
-  const div = document.createElement('div');
-  div.className = 'msg ai'; div.id = 'typing';
-  div.innerHTML = `<div class="avatar">🤖</div><div class="bubble"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>`;
-  container.appendChild(div);
-  container.scrollTop = container.scrollHeight;
 }
-function removeTyping() { const t = document.getElementById('typing'); if (t) t.remove(); }
 
 async function sendMessage() {
   if (isLoading) return;
   const input = document.getElementById('userInput');
   const text = input.value.trim();
-
   if (!text && !pendingImage) return;
 
-  // Show user message
+  removeWelcome();
+  const container = document.getElementById('messages');
+
+  // Show user bubble
+  const userDiv = document.createElement('div');
+  userDiv.className = 'msg user';
   if (pendingImage) {
-    const welcome = document.getElementById('welcome');
-    if (welcome) welcome.remove();
-    const container = document.getElementById('messages');
-    const div = document.createElement('div');
-    div.className = 'msg user';
-    div.innerHTML = `<div class="avatar">👤</div>
+    userDiv.innerHTML = `<div class="avatar">👤</div>
       <div class="bubble" style="padding:8px;">
         <img src="${pendingImage}" style="max-width:180px;border-radius:8px;display:block;margin-bottom:${text?'6px':'0'}"/>
-        ${text ? `<div>${text.replace(/\n/g,'<br>')}</div>` : ''}
+        ${text ? `<div>${text.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')}</div>` : ''}
       </div>`;
-    container.appendChild(div);
-    container.scrollTop = container.scrollHeight;
   } else {
-    const welcome = document.getElementById('welcome');
-    if (welcome) welcome.remove();
-    const container = document.getElementById('messages');
-    const div = document.createElement('div');
-    div.className = 'msg user';
-    div.innerHTML = `<div class="avatar">👤</div><div class="bubble">${text.replace(/\n/g,'<br>')}</div>`;
-    container.appendChild(div);
-    container.scrollTop = container.scrollHeight;
+    userDiv.innerHTML = `<div class="avatar">👤</div><div class="bubble">${text.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')}</div>`;
   }
+  container.appendChild(userDiv);
+  container.scrollTop = container.scrollHeight;
 
   input.value = '';
   input.style.height = 'auto';
   isLoading = true;
   document.getElementById('sendBtn').disabled = true;
 
-  // Image Generation Check
+  // Image generation check
   if (!pendingImage && isImageRequest(text)) {
     let cleanPrompt = text
-      .replace(/^(can you|please|hey|chhaiya|generate|draw|create|make|show me|image of|picture of|photo of)\s*/i, '')
+      .replace(/^(can you |please |hey |chhaiya |generate |draw |create |make |show me |image of |picture of |photo of |visualize )/gi, '')
       .trim();
-    if (!cleanPrompt) cleanPrompt = "beautiful landscape";
-
-    await generateImage(cleanPrompt);
+    if (!cleanPrompt) cleanPrompt = 'beautiful landscape';
     isLoading = false;
     document.getElementById('sendBtn').disabled = false;
+    await generateImage(cleanPrompt);
     document.getElementById('userInput').focus();
     return;
   }
 
-  // Normal Chat (with image if uploaded)
-  if (pendingImage) {
-    // For now we skip vision, just describe
-    messages.push({ role: 'user', content: text || 'Describe this image in detail.' });
-    clearPhoto();
-  } else {
-    messages.push({ role: 'user', content: text });
-  }
+  // Normal chat
+  const userContent = pendingImage
+    ? `[User sent an image] ${text || 'Describe what this image might be about and help the user.'}`
+    : text;
 
-  addTyping();
+  if (pendingImage) clearPhoto();
+
+  messages.push({ role: 'user', content: userContent });
+
+  // Typing indicator
+  const typingDiv = document.createElement('div');
+  typingDiv.className = 'msg ai'; typingDiv.id = 'typing';
+  typingDiv.innerHTML = `<div class="avatar">🤖</div><div class="bubble"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>`;
+  container.appendChild(typingDiv);
+  container.scrollTop = container.scrollHeight;
 
   try {
-    const response = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages })
-    });
-    const data = await response.json();
-    removeTyping();
-    if (data.choices && data.choices[0]) {
-      const reply = data.choices[0].message.content;
-      messages.push({ role: 'assistant', content: reply });
-      addMessage('ai', formatMessage(reply));
-    } else if (data.error) {
-      addMessage('ai', '❌ API Error: ' + JSON.stringify(data.error));
-    } else {
-      addMessage('ai', '❌ Unknown error');
-    }
+    const reply = await callGroq(messages);
+    messages.push({ role: 'assistant', content: reply });
+
+    // Remove typing
+    const t = document.getElementById('typing');
+    if (t) t.remove();
+
+    addMessage('ai', formatMessage(reply), reply);
+
+    if (autoSpeak) speakTextRaw(reply);
   } catch (e) {
-    removeTyping();
-    addMessage('ai', '❌ Connection error: ' + e.message);
+    const t = document.getElementById('typing');
+    if (t) t.remove();
+    addMessage('ai', `❌ Error: ${e.message}<br><small style="color:var(--text3)">Check your API key or try again.</small>`, '');
   }
 
   isLoading = false;
@@ -456,24 +536,22 @@ async function sendMessage() {
   document.getElementById('userInput').focus();
 }
 
-function addMessage(role, content) {
-  const welcome = document.getElementById('welcome');
-  if (welcome) welcome.remove();
+function addMessage(role, htmlContent, rawText) {
   const container = document.getElementById('messages');
   const div = document.createElement('div');
   div.className = `msg ${role}`;
   const bubble = document.createElement('div');
   bubble.className = 'bubble';
-  bubble.innerHTML = content;
+  bubble.innerHTML = htmlContent;
 
-  if (role === 'ai') {
-    const rawText = content.replace(/<[^>]*>/g, '');
+  if (role === 'ai' && rawText) {
     const actions = document.createElement('div');
     actions.className = 'msg-actions';
+    const safeRaw = rawText.replace(/"/g, '&quot;');
     actions.innerHTML = `
-      <button class="msg-action-btn" onclick="copyText(this)" data-text="${rawText.replace(/"/g,'&quot;')}">📋 Copy</button>
-      <button class="msg-action-btn" onclick="shareText(this)" data-text="${rawText.replace(/"/g,'&quot;')}">🔗 Share</button>
-      <button class="msg-action-btn" onclick="speakText(this)" data-text="${rawText.replace(/"/g,'&quot;')}">🔊 Listen</button>`;
+      <button class="msg-action-btn" onclick="copyRaw(this)" data-text="${safeRaw}">📋 Copy</button>
+      <button class="msg-action-btn" onclick="shareRaw(this)" data-text="${safeRaw}">🔗 Share</button>
+      <button class="msg-action-btn" onclick="speakRaw(this)" data-text="${safeRaw}">🔊 Listen</button>`;
     bubble.appendChild(actions);
   }
 
@@ -483,47 +561,67 @@ function addMessage(role, content) {
   container.scrollTop = container.scrollHeight;
 }
 
-function copyText(btn) {
+function copyRaw(btn) {
   const text = btn.getAttribute('data-text');
   navigator.clipboard.writeText(text).then(() => {
     btn.textContent = '✅ Copied!';
     setTimeout(() => btn.textContent = '📋 Copy', 2000);
   });
 }
-function shareText(btn) {
+function shareRaw(btn) {
   const text = btn.getAttribute('data-text');
-  if (navigator.share) {
-    navigator.share({ title: 'Chhaiya AI', text: text });
-  } else {
-    navigator.clipboard.writeText(text).then(() => {
-      btn.textContent = '✅ Copied!';
-      setTimeout(() => btn.textContent = '🔗 Share', 2000);
-    });
-  }
+  if (navigator.share) { navigator.share({ title: 'Chhaiya AI', text }); }
+  else { navigator.clipboard.writeText(text).then(() => { btn.textContent = '✅ Copied!'; setTimeout(() => btn.textContent = '🔗 Share', 2000); }); }
 }
-function speakText(btn) { /* keep your existing speak function if you want */ }
+function speakRaw(btn) { speakTextRaw(btn.getAttribute('data-text')); }
+function speakTextRaw(text) {
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.rate = 1; utter.pitch = 1;
+  window.speechSynthesis.speak(utter);
+}
 
-// Other functions (YouTube, Translate, Code, Settings, etc.) remain the same
+// ===================== YOUTUBE =====================
 function showYoutube() { document.getElementById('youtube-overlay').classList.add('show'); setTimeout(() => document.getElementById('yt-input').focus(), 100); }
+function searchYoutube() {
+  const q = document.getElementById('yt-input').value.trim();
+  if (!q) return;
+  const encoded = encodeURIComponent(q);
+  document.getElementById('yt-results').innerHTML = `
+    <a href="https://www.youtube.com/results?search_query=${encoded}" target="_blank"
+       style="display:block;background:linear-gradient(135deg,#ff0000,#cc0000);color:white;padding:10px 16px;border-radius:10px;text-decoration:none;text-align:center;font-size:0.88rem;margin-bottom:8px;">
+       🔍 Search "${q}" on YouTube
+    </a>
+    <iframe style="width:100%;height:200px;border-radius:10px;border:none;"
+      src="https://www.youtube.com/embed?listType=search&list=${encoded}" allowfullscreen></iframe>`;
+}
+
+// ===================== TRANSLATE MODAL =====================
 function showTranslate() { document.getElementById('translate-overlay').classList.add('show'); setTimeout(() => document.getElementById('translate-input').focus(), 100); }
+
+// ===================== CODE RUNNER =====================
 function showCodeRunner() { document.getElementById('code-overlay').classList.add('show'); setTimeout(() => document.getElementById('code-input').focus(), 100); }
+function runCode() {
+  const code = document.getElementById('code-input').value;
+  const iframe = document.getElementById('code-preview');
+  const doc = iframe.contentDocument || iframe.contentWindow.document;
+  doc.open(); doc.write(code); doc.close();
+}
+function clearCode() {
+  document.getElementById('code-input').value = '';
+  const iframe = document.getElementById('code-preview');
+  const doc = iframe.contentDocument || iframe.contentWindow.document;
+  doc.open(); doc.write(''); doc.close();
+}
+
+// ===================== MODALS =====================
 function hideModal(id, e) {
   if (!e || e.target === document.getElementById(id)) {
     document.getElementById(id).classList.remove('show');
   }
 }
-function searchYoutube() {
-  const q = document.getElementById('yt-input').value.trim();
-  if (!q) return;
-  const resultsDiv = document.getElementById('yt-results');
-  const encoded = encodeURIComponent(q);
-  resultsDiv.innerHTML = `
-    <a href="https://www.youtube.com/results?search_query=${encoded}" target="_blank" style="display:block;background:linear-gradient(135deg,#ff0000,#cc0000);color:white;padding:10px 16px;border-radius:10px;text-decoration:none;text-align:center;font-size:0.88rem;margin-bottom:8px;">🔍 Search "${q}" on YouTube</a>
-    <iframe style="width:100%;height:200px;border-radius:10px;border:none;" src="https://www.youtube.com/embed?listType=search&list=${encoded}" allowfullscreen></iframe>`;
-}
-function doTranslate() { /* your existing translate code */ }
-function runCode() { /* your existing code runner */ }
-function clearCode() { /* your existing */ }
+
+// ===================== SETTINGS =====================
 function showSettings() { document.getElementById('settings-overlay').classList.add('show'); }
 function hideSettings(e) {
   if (!e || e.target === document.getElementById('settings-overlay')) {
@@ -531,8 +629,9 @@ function hideSettings(e) {
   }
 }
 function toggleDark(cb) { document.body.classList.toggle('light', !cb.checked); }
-function toggleAutoSpeak(cb) {}
-function toggleHistory(cb) {}
+function toggleAutoSpeak(cb) { autoSpeak = cb.checked; }
+
+// ===================== CLEAR CHAT =====================
 function clearChat() {
   if (!confirm('Clear all chat history?')) return;
   messages = [];
@@ -540,7 +639,19 @@ function clearChat() {
   container.innerHTML = '';
   const welcome = document.createElement('div');
   welcome.className = 'welcome'; welcome.id = 'welcome';
-  welcome.innerHTML = `<div class="welcome-icon">🤖</div><h2>Hello! I'm Chhaiya AI 🔥</h2><p>Created by ChhaiyaDeveloper-AI 😎</p><div class="suggestions">...same as before...</div>`;
+  welcome.innerHTML = `
+    <div class="welcome-icon">🤖</div>
+    <h2>Hello! I'm Chhaiya AI 🔥</h2>
+    <p>Created by ChhaiyaDeveloper-AI 😎</p>
+    <div class="suggestions">
+      <div class="suggestion" onclick="sendSuggestion('What can you do?')">What can you do?</div>
+      <div class="suggestion" onclick="sendSuggestion('Tell me a fun fact')">Tell me a fun fact</div>
+      <div class="suggestion" onclick="sendSuggestion('Help me study for an exam')">Help me study</div>
+      <div class="suggestion" onclick="showYoutube()">▶️ YouTube Search</div>
+      <div class="suggestion" onclick="showTranslate()">🌐 Translate</div>
+      <div class="suggestion" onclick="showCodeRunner()">💻 Code Runner</div>
+      <div class="suggestion" onclick="sendSuggestion('generate image of a beautiful sunset over Angkor Wat in cyberpunk style')">🎨 Generate image</div>
+    </div>`;
   container.appendChild(welcome);
 }
 
