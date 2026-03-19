@@ -210,7 +210,7 @@ if ('serviceWorker' in navigator) {
       <button onclick="clearCode()" style="background:var(--surface2);border:1px solid var(--border);color:var(--text2);border-radius:10px;padding:0.6rem 1rem;font-family:Syne,sans-serif;font-size:0.9rem;cursor:pointer;">Clear</button>
     </div>
     <div style="font-size:0.75rem;color:var(--text3);margin-bottom:6px;">Preview:</div>
-    <iframe id="code-preview" style="width:100%;height:220px;border:1px solid rgba(124,111,255,0.3);border-radius:10px;background:white;" sandbox="allow-scripts"></iframe>
+    <iframe id="code-preview" style="width:100%;height:220px;border:1px solid rgba(124,111,255,0.3);border-radius:10px;background:white;" sandbox="allow-scripts allow-modals allow-forms allow-same-origin"></iframe>
   </div>
 </div>
 
@@ -717,16 +717,15 @@ function showTranslate() { document.getElementById('translate-overlay').classLis
 // ===================== CODE RUNNER =====================
 function showCodeRunner() { document.getElementById('code-overlay').classList.add('show'); setTimeout(() => document.getElementById('code-input').focus(), 100); }
 function runCode() {
-  const code = document.getElementById('code-input').value;
+  const code = document.getElementById('code-input').value.trim();
+  if (!code) return;
   const iframe = document.getElementById('code-preview');
-  const doc = iframe.contentDocument || iframe.contentWindow.document;
-  doc.open(); doc.write(code); doc.close();
+  // Use srcdoc for reliable cross-browser support
+  iframe.srcdoc = code;
 }
 function clearCode() {
   document.getElementById('code-input').value = '';
-  const iframe = document.getElementById('code-preview');
-  const doc = iframe.contentDocument || iframe.contentWindow.document;
-  doc.open(); doc.write(''); doc.close();
+  document.getElementById('code-preview').srcdoc = '';
 }
 
 // ===================== MODALS =====================
