@@ -42,6 +42,14 @@ For non-code questions, be concise, clear, friendly and engaging. Use emojis occ
       })
     });
     const data = await r.json();
+
+    // Strip <think>...</think> reasoning tags from response
+    if (data.choices && data.choices[0] && data.choices[0].message) {
+      data.choices[0].message.content = data.choices[0].message.content
+        .replace(/<think>[\s\S]*?<\/think>/gi, '')
+        .trim();
+    }
+
     return res.status(r.status).json(data);
   } catch (e) {
     return res.status(500).json({ error: e.message });
