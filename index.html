@@ -142,11 +142,15 @@ body.light #matrix-canvas { opacity: 0.06; }
       <textarea id="userInput" placeholder="Ask me anything..." rows="1" oninput="autoResize(this)" onkeydown="handleKey(event)"></textarea>
       <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
     </div>
-    <div style="display:flex;justify-content:center;gap:8px;margin-top:8px;flex-wrap:wrap;">
-      <label for="gallery-upload" style="display:flex;align-items:center;gap:6px;cursor:pointer;background:var(--surface2);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:6px 14px;border-radius:20px;font-size:0.82rem;">🖼️ Gallery</label>
-      <button onclick="showYoutube()" style="background:var(--surface2);border:1px solid rgba(255,0,0,0.3);color:var(--text2);padding:6px 14px;border-radius:20px;font-size:0.82rem;cursor:pointer;">▶️ YouTube</button>
-      <button onclick="showTranslate()" style="background:var(--surface2);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:6px 14px;border-radius:20px;font-size:0.82rem;cursor:pointer;">🌐 Translate</button>
-      <button onclick="showCodeRunner()" style="background:var(--surface2);border:1px solid rgba(0,207,255,0.3);color:var(--text2);padding:6px 14px;border-radius:20px;font-size:0.82rem;cursor:pointer;">💻 Code</button>
+    <div style="position:relative;display:flex;justify-content:center;margin-top:8px;">
+      <button onclick="toggleToolMenu()" id="plus-btn" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:white;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 0.2s;box-shadow:0 0 15px rgba(124,111,255,0.4);">+</button>
+      <div id="tool-menu" style="display:none;position:absolute;bottom:48px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid rgba(124,111,255,0.3);border-radius:16px;padding:10px;display:none;flex-direction:column;gap:6px;min-width:200px;box-shadow:0 8px 32px rgba(0,0,0,0.4);backdrop-filter:blur(20px);z-index:100;">
+        <label for="gallery-upload" onclick="closeToolMenu()" style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:8px 12px;border-radius:10px;color:var(--text2);font-size:0.85rem;transition:background 0.15s;" onmouseover="this.style.background='rgba(124,111,255,0.1)'" onmouseout="this.style.background='none'">🖼️ Gallery</label>
+        <button onclick="closeToolMenu();showYoutube()" style="display:flex;align-items:center;gap:10px;background:none;border:none;padding:8px 12px;border-radius:10px;color:var(--text2);font-size:0.85rem;cursor:pointer;text-align:left;transition:background 0.15s;" onmouseover="this.style.background='rgba(124,111,255,0.1)'" onmouseout="this.style.background='none'">▶️ YouTube Search</button>
+        <button onclick="closeToolMenu();showTranslate()" style="display:flex;align-items:center;gap:10px;background:none;border:none;padding:8px 12px;border-radius:10px;color:var(--text2);font-size:0.85rem;cursor:pointer;text-align:left;transition:background 0.15s;" onmouseover="this.style.background='rgba(124,111,255,0.1)'" onmouseout="this.style.background='none'">🌐 Translate</button>
+        <button onclick="closeToolMenu();showCodeRunner()" style="display:flex;align-items:center;gap:10px;background:none;border:none;padding:8px 12px;border-radius:10px;color:var(--text2);font-size:0.85rem;cursor:pointer;text-align:left;transition:background 0.15s;" onmouseover="this.style.background='rgba(124,111,255,0.1)'" onmouseout="this.style.background='none'">💻 Code Runner</button>
+        <button onclick="closeToolMenu();document.getElementById('userInput').value='generate image of ';document.getElementById('userInput').focus();autoResize(document.getElementById('userInput'));"  style="display:flex;align-items:center;gap:10px;background:none;border:none;padding:8px 12px;border-radius:10px;color:var(--text2);font-size:0.85rem;cursor:pointer;text-align:left;transition:background 0.15s;" onmouseover="this.style.background='rgba(124,111,255,0.1)'" onmouseout="this.style.background='none'">🎨 Generate Image</button>
+      </div>
       <input type="file" id="gallery-upload" accept="image/*" style="display:none" onchange="handlePhoto(this)"/>
     </div>
     <div class="input-hint">Press Enter to send · Shift+Enter for new line</div>
@@ -269,6 +273,27 @@ function handlePhoto(input) {
     document.querySelector('.input-area').insertBefore(prev, document.querySelector('.input-wrap'));
     document.getElementById('userInput').placeholder = 'Ask something about this photo...';
     document.getElementById('userInput').focus();
+
+// Tool menu toggle
+let toolMenuOpen = false;
+function toggleToolMenu() {
+  toolMenuOpen = !toolMenuOpen;
+  const menu = document.getElementById('tool-menu');
+  const btn = document.getElementById('plus-btn');
+  menu.style.display = toolMenuOpen ? 'flex' : 'none';
+  btn.style.transform = toolMenuOpen ? 'rotate(45deg)' : 'rotate(0deg)';
+}
+function closeToolMenu() {
+  toolMenuOpen = false;
+  document.getElementById('tool-menu').style.display = 'none';
+  document.getElementById('plus-btn').style.transform = 'rotate(0deg)';
+}
+// Close when clicking outside
+document.addEventListener('click', (e) => {
+  if (toolMenuOpen && !e.target.closest('#tool-menu') && !e.target.closest('#plus-btn')) {
+    closeToolMenu();
+  }
+});
   };
   reader.readAsDataURL(file);
   input.value = '';
@@ -490,6 +515,27 @@ async function sendMessage() {
     document.getElementById('sendBtn').disabled = false;
     await generateImage(cleanPrompt);
     document.getElementById('userInput').focus();
+
+// Tool menu toggle
+let toolMenuOpen = false;
+function toggleToolMenu() {
+  toolMenuOpen = !toolMenuOpen;
+  const menu = document.getElementById('tool-menu');
+  const btn = document.getElementById('plus-btn');
+  menu.style.display = toolMenuOpen ? 'flex' : 'none';
+  btn.style.transform = toolMenuOpen ? 'rotate(45deg)' : 'rotate(0deg)';
+}
+function closeToolMenu() {
+  toolMenuOpen = false;
+  document.getElementById('tool-menu').style.display = 'none';
+  document.getElementById('plus-btn').style.transform = 'rotate(0deg)';
+}
+// Close when clicking outside
+document.addEventListener('click', (e) => {
+  if (toolMenuOpen && !e.target.closest('#tool-menu') && !e.target.closest('#plus-btn')) {
+    closeToolMenu();
+  }
+});
     return;
   }
 
@@ -529,6 +575,27 @@ async function sendMessage() {
   isLoading = false;
   document.getElementById('sendBtn').disabled = false;
   document.getElementById('userInput').focus();
+
+// Tool menu toggle
+let toolMenuOpen = false;
+function toggleToolMenu() {
+  toolMenuOpen = !toolMenuOpen;
+  const menu = document.getElementById('tool-menu');
+  const btn = document.getElementById('plus-btn');
+  menu.style.display = toolMenuOpen ? 'flex' : 'none';
+  btn.style.transform = toolMenuOpen ? 'rotate(45deg)' : 'rotate(0deg)';
+}
+function closeToolMenu() {
+  toolMenuOpen = false;
+  document.getElementById('tool-menu').style.display = 'none';
+  document.getElementById('plus-btn').style.transform = 'rotate(0deg)';
+}
+// Close when clicking outside
+document.addEventListener('click', (e) => {
+  if (toolMenuOpen && !e.target.closest('#tool-menu') && !e.target.closest('#plus-btn')) {
+    closeToolMenu();
+  }
+});
 }
 
 function addMessage(role, htmlContent, rawText) {
@@ -651,6 +718,27 @@ function clearChat() {
 }
 
 document.getElementById('userInput').focus();
+
+// Tool menu toggle
+let toolMenuOpen = false;
+function toggleToolMenu() {
+  toolMenuOpen = !toolMenuOpen;
+  const menu = document.getElementById('tool-menu');
+  const btn = document.getElementById('plus-btn');
+  menu.style.display = toolMenuOpen ? 'flex' : 'none';
+  btn.style.transform = toolMenuOpen ? 'rotate(45deg)' : 'rotate(0deg)';
+}
+function closeToolMenu() {
+  toolMenuOpen = false;
+  document.getElementById('tool-menu').style.display = 'none';
+  document.getElementById('plus-btn').style.transform = 'rotate(0deg)';
+}
+// Close when clicking outside
+document.addEventListener('click', (e) => {
+  if (toolMenuOpen && !e.target.closest('#tool-menu') && !e.target.closest('#plus-btn')) {
+    closeToolMenu();
+  }
+});
 
 
 </script>
