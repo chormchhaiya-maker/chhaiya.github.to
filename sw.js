@@ -1,4 +1,4 @@
-const CACHE = 'friendchat-v1';
+const CACHE = 'chhaiya-ai-v1';
 const ASSETS = ['/', '/index.html'];
 
 self.addEventListener('install', e => {
@@ -12,7 +12,7 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
-  if (e.request.url.includes('firebase') || e.request.url.includes('googleapis')) return;
+  if (e.request.url.includes('/api/')) return;
   e.respondWith(
     fetch(e.request).catch(() => caches.match(e.request))
   );
