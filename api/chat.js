@@ -19,7 +19,7 @@ export default async function handler(req, res) {
         'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
       },
       body: JSON.stringify({
-        model: 'qwen/qwen3-32b',
+        model: 'llama-3.3-70b-versatile',
         messages: [
           { role: 'system', content: `You are Chhaiya AI, a smart, friendly, and powerful AI assistant created by ChhaiyaDeveloper-AI.
 
@@ -37,7 +37,7 @@ You are an EXPERT software engineer and programmer. When generating code:
 For non-code questions, be concise, clear, friendly and engaging. Use emojis occasionally. 😊` },
           ...messages
         ],
-        max_tokens: 8192,
+        max_tokens: 4096,
         temperature: 0.7
       })
     });
