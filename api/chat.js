@@ -19,7 +19,7 @@ export default async function handler(req, res) {
         'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
       },
       body: JSON.stringify({
-        model: 'moonshotai/kimi-k2-instruct',
+        model: 'deepseek-r1-distill-llama-70b',
         messages: [
           { role: 'system', content: `You are Chhaiya AI, a smart, friendly, and powerful AI assistant created by ChhaiyaDeveloper-AI.
 
