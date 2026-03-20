@@ -698,7 +698,7 @@ async function callGroq(msgs) {
   const response = await fetch('/api/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ messages: msgs, systemPrompt: getSystemPrompt() })
+    body: JSON.stringify({ messages: msgs, systemPrompt: getSystemPrompt(), hasImage: msgs.some(m => Array.isArray(m.content)) })
   });
 
   if (!response.ok) {
@@ -965,12 +965,20 @@ document.addEventListener('click', (e) => {
     return;
   }
 
-  // Normal chat
-  const userContent = pendingImage
-    ? `[User sent an image] ${text || 'Describe what this image might be about and help the user.'}`
-    : text;
+  // Normal chat — use vision model if image present
+  let hasImage = false;
+  let userContent;
 
-  if (pendingImage) clearPhoto();
+  if (pendingImage) {
+    hasImage = true;
+    userContent = [
+      { type: 'image_url', image_url: { url: pendingImage } },
+      { type: 'text', text: text || 'Please describe and analyze this image in detail.' }
+    ];
+    clearPhoto();
+  } else {
+    userContent = text;
+  }
 
   messages.push({ role: 'user', content: userContent });
 
