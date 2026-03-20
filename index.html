@@ -170,14 +170,40 @@ body.light #matrix-canvas { opacity: 0.06; }
     <div style="display:flex;align-items:center;gap:10px;">
       <span style="font-size:24px;">📲</span>
       <div>
-        <div style="font-size:0.88rem;font-weight:700;color:white;">Add to Home Screen</div>
-        <div style="font-size:0.75rem;color:rgba(255,255,255,0.8);">Install Chhaiya AI as an app</div>
+        <div style="font-size:0.88rem;font-weight:700;color:white;" id="install-banner-title">Install Chhaiya AI</div>
+        <div style="font-size:0.75rem;color:rgba(255,255,255,0.8);" id="install-banner-sub">Use it like a real app on your device</div>
       </div>
     </div>
     <div style="display:flex;gap:8px;">
       <button onclick="installApp()" style="background:white;color:var(--accent);border:none;border-radius:20px;padding:8px 18px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:Syne,sans-serif;">Install</button>
       <button onclick="dismissInstall()" style="background:rgba(255,255,255,0.2);color:white;border:none;border-radius:20px;padding:8px 12px;font-size:0.85rem;cursor:pointer;">✕</button>
     </div>
+  </div>
+</div>
+
+<!-- Desktop Install Modal -->
+<div id="desktop-modal" style="display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,0.7);align-items:center;justify-content:center;">
+  <div style="background:var(--surface);border-radius:20px;padding:24px;width:90%;max-width:400px;margin:0 auto;border:1px solid rgba(124,111,255,0.3);">
+    <div style="text-align:center;margin-bottom:16px;">
+      <div style="font-size:40px;margin-bottom:8px;">🖥️</div>
+      <div style="font-size:1rem;font-weight:700;color:var(--text);margin-bottom:6px;">Install on PC</div>
+    </div>
+    <div style="background:var(--surface2);border-radius:12px;padding:14px;margin-bottom:12px;">
+      <div style="font-size:0.85rem;color:var(--text2);font-weight:700;margin-bottom:8px;">Chrome / Edge:</div>
+      <div style="font-size:0.82rem;color:var(--text2);line-height:1.8;">
+        1. Look for <strong style="color:var(--accent)">⊕</strong> icon in the address bar<br>
+        2. Click <strong style="color:var(--accent)">"Install Chhaiya AI"</strong><br>
+        3. Click <strong style="color:var(--accent)">"Install"</strong>
+      </div>
+    </div>
+    <div style="background:var(--surface2);border-radius:12px;padding:14px;margin-bottom:16px;">
+      <div style="font-size:0.85rem;color:var(--text2);font-weight:700;margin-bottom:8px;">Or manually:</div>
+      <div style="font-size:0.82rem;color:var(--text2);line-height:1.8;">
+        Chrome: <strong style="color:var(--accent)">⋮ menu → Save and share → Install as app</strong><br>
+        Edge: <strong style="color:var(--accent)">⋯ menu → Apps → Install this site as an app</strong>
+      </div>
+    </div>
+    <button onclick="document.getElementById('desktop-modal').style.display='none'" style="width:100%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;border:none;border-radius:12px;padding:12px;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:Syne,sans-serif;">Got it!</button>
   </div>
 </div>
 
@@ -281,6 +307,10 @@ body.light #matrix-canvas { opacity: 0.06; }
 <div class="settings-overlay" id="settings-overlay" onclick="hideSettings(event)">
   <div class="settings-box" onclick="event.stopPropagation()">
     <div class="settings-title">⚙️ Settings <button onclick="hideSettings()" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:1.2rem;">✕</button></div>
+    <div class="settings-row">
+      <span>📲 Install App</span>
+      <button onclick="installApp();hideSettings();" style="background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;border:none;border-radius:8px;padding:4px 12px;font-size:0.8rem;cursor:pointer;font-family:Syne,sans-serif;">Install</button>
+    </div>
     <div class="settings-row"><span>🌙 Dark mode</span><label class="toggle-wrap"><input type="checkbox" id="dark-toggle" checked onchange="toggleDark(this)"/><span class="toggle-slider"></span></label></div>
     <div class="settings-row"><span>🔊 Auto speak replies</span><label class="toggle-wrap"><input type="checkbox" id="speak-toggle" onchange="toggleAutoSpeak(this)"/><span class="toggle-slider"></span></label></div>
     <div class="settings-row" style="border-bottom:none;padding-top:8px;">
@@ -862,11 +892,12 @@ const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').match
 window.addEventListener('DOMContentLoaded', () => {
   if (isInStandaloneMode) return; // Already installed
   if (isIOS) {
-    // Show iOS instructions banner after 2s
     setTimeout(() => {
       document.getElementById('install-banner').style.display = 'block';
     }, 2000);
   }
+  // Show for desktop too if not iOS and no prompt yet
+  // Will show when beforeinstallprompt fires
 });
 
 // Catch Android/Chrome install prompt
@@ -891,9 +922,9 @@ function installApp() {
       dismissInstall();
     });
   } else {
-    // Fallback - show iOS style instructions
+    // Show desktop instructions modal
     document.getElementById('install-banner').style.display = 'none';
-    document.getElementById('ios-modal').style.display = 'flex';
+    document.getElementById('desktop-modal').style.display = 'flex';
   }
 }
 
@@ -1092,11 +1123,12 @@ const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').match
 window.addEventListener('DOMContentLoaded', () => {
   if (isInStandaloneMode) return; // Already installed
   if (isIOS) {
-    // Show iOS instructions banner after 2s
     setTimeout(() => {
       document.getElementById('install-banner').style.display = 'block';
     }, 2000);
   }
+  // Show for desktop too if not iOS and no prompt yet
+  // Will show when beforeinstallprompt fires
 });
 
 // Catch Android/Chrome install prompt
@@ -1121,9 +1153,9 @@ function installApp() {
       dismissInstall();
     });
   } else {
-    // Fallback - show iOS style instructions
+    // Show desktop instructions modal
     document.getElementById('install-banner').style.display = 'none';
-    document.getElementById('ios-modal').style.display = 'flex';
+    document.getElementById('desktop-modal').style.display = 'flex';
   }
 }
 
@@ -1393,11 +1425,12 @@ const isInStandaloneMode = window.matchMedia('(display-mode: standalone)').match
 window.addEventListener('DOMContentLoaded', () => {
   if (isInStandaloneMode) return; // Already installed
   if (isIOS) {
-    // Show iOS instructions banner after 2s
     setTimeout(() => {
       document.getElementById('install-banner').style.display = 'block';
     }, 2000);
   }
+  // Show for desktop too if not iOS and no prompt yet
+  // Will show when beforeinstallprompt fires
 });
 
 // Catch Android/Chrome install prompt
@@ -1422,9 +1455,9 @@ function installApp() {
       dismissInstall();
     });
   } else {
-    // Fallback - show iOS style instructions
+    // Show desktop instructions modal
     document.getElementById('install-banner').style.display = 'none';
-    document.getElementById('ios-modal').style.display = 'flex';
+    document.getElementById('desktop-modal').style.display = 'flex';
   }
 }
 
