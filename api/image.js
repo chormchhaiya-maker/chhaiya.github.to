@@ -9,22 +9,36 @@ export default async function handler(req, res) {
   if (!prompt) return res.status(400).json({ error: 'prompt required' });
 
   try {
-    const seed = Math.floor(Math.random() * 99999);
-    const encoded = encodeURIComponent(prompt);
-    const url = `https://image.pollinations.ai/prompt/${encoded}?width=768&height=768&nologo=true&seed=${seed}&model=flux`;
+    const r = await fetch(
+      'https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell',
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.HF_API_KEY}`,
+          'Content-Type': 'application/json',
+          'x-wait-for-model': 'true'
+        },
+        body: JSON.stringify({
+          inputs: prompt,
+          parameters: { num_inference_steps: 4 }
+        })
+      }
+    );
 
-    const r = await fetch(url);
+    console.log('HF status:', r.status, r.headers.get('content-type'));
 
     if (!r.ok) {
-      return res.status(r.status).json({ error: `Pollinations error ${r.status}` });
+      const t = await r.text();
+      console.error('HF error:', t);
+      return res.status(r.status).json({ error: t });
     }
 
     const buf = await r.arrayBuffer();
     const b64 = Buffer.from(buf).toString('base64');
-    return res.status(200).json({ url: `data:image/jpeg;base64,${b64}` });
+    return res.status(200).json({ url: `data:image/png;base64,${b64}` });
 
   } catch (e) {
-    console.error('Image error:', e);
+    console.error('Error:', e);
     return res.status(500).json({ error: e.message });
   }
 }
