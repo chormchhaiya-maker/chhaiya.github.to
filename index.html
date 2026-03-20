@@ -355,14 +355,27 @@ function showPhotoPreview(imgSrc) {
       <span style="font-size:0.82rem;color:var(--text2);flex:1;">📸 Photo ready — tap an edit or ask anything!</span>
       <button onclick="clearPhoto()" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:1rem;">✕</button>
     </div>
-    <div style="display:flex;flex-wrap:wrap;gap:6px;">
-      <button onclick="quickEdit('remove background','remove-bg')" style="background:var(--surface);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:5px 10px;border-radius:20px;font-size:0.78rem;cursor:pointer;">🪄 Remove BG</button>
-      <button onclick="quickEdit('convert to anime art style','anime')" style="background:var(--surface);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:5px 10px;border-radius:20px;font-size:0.78rem;cursor:pointer;">✨ Anime</button>
-      <button onclick="quickEdit('convert to cartoon style','cartoon')" style="background:var(--surface);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:5px 10px;border-radius:20px;font-size:0.78rem;cursor:pointer;">🎨 Cartoon</button>
-      <button onclick="quickEdit('convert to oil painting style','painting')" style="background:var(--surface);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:5px 10px;border-radius:20px;font-size:0.78rem;cursor:pointer;">🖼️ Painting</button>
-      <button onclick="quickEdit('convert to pencil sketch','sketch')" style="background:var(--surface);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:5px 10px;border-radius:20px;font-size:0.78rem;cursor:pointer;">✏️ Sketch</button>
-      <button onclick="quickEdit('apply vintage retro filter','vintage')" style="background:var(--surface);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:5px 10px;border-radius:20px;font-size:0.78rem;cursor:pointer;">📷 Vintage</button>
-      <button onclick="quickEdit('apply cyberpunk neon filter','cyberpunk')" style="background:var(--surface);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:5px 10px;border-radius:20px;font-size:0.78rem;cursor:pointer;">🌆 Cyberpunk</button>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;max-height:120px;overflow-y:auto;">
+      <button onclick="quickEdit('anime style artwork, japanese animation, vibrant colors','anime')" style="background:var(--surface);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:5px 10px;border-radius:20px;font-size:0.75rem;cursor:pointer;">✨ Anime</button>
+      <button onclick="quickEdit('cartoon style, colorful, fun, illustrated','cartoon')" style="background:var(--surface);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:5px 10px;border-radius:20px;font-size:0.75rem;cursor:pointer;">🎨 Cartoon</button>
+      <button onclick="quickEdit('oil painting, artistic brush strokes, masterpiece, museum quality','painting')" style="background:var(--surface);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:5px 10px;border-radius:20px;font-size:0.75rem;cursor:pointer;">🖼️ Oil Painting</button>
+      <button onclick="quickEdit('pencil sketch, black and white, hand drawn, detailed lines','sketch')" style="background:var(--surface);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:5px 10px;border-radius:20px;font-size:0.75rem;cursor:pointer;">✏️ Sketch</button>
+      <button onclick="quickEdit('vintage retro photo, film grain, warm tones, 1970s style','vintage')" style="background:var(--surface);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:5px 10px;border-radius:20px;font-size:0.75rem;cursor:pointer;">📷 Vintage</button>
+      <button onclick="quickEdit('cyberpunk neon lights, futuristic, dark rainy city, blade runner','cyberpunk')" style="background:var(--surface);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:5px 10px;border-radius:20px;font-size:0.75rem;cursor:pointer;">🌆 Cyberpunk</button>
+      <button onclick="quickEdit('watercolor painting, soft colors, artistic, flowing paint','watercolor')" style="background:var(--surface);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:5px 10px;border-radius:20px;font-size:0.75rem;cursor:pointer;">💧 Watercolor</button>
+      <button onclick="quickEdit('pixel art, 8-bit retro game style, pixelated','pixel')" style="background:var(--surface);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:5px 10px;border-radius:20px;font-size:0.75rem;cursor:pointer;">👾 Pixel Art</button>
+      <button onclick="quickEdit('3D render, realistic CGI, octane render, cinematic lighting','3d')" style="background:var(--surface);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:5px 10px;border-radius:20px;font-size:0.75rem;cursor:pointer;">🎮 3D Render</button>
+      <button onclick="quickEdit('comic book style, bold lines, halftone dots, superhero comics','comic')" style="background:var(--surface);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:5px 10px;border-radius:20px;font-size:0.75rem;cursor:pointer;">💥 Comic Book</button>
+      <button onclick="quickEdit('impressionist painting, monet style, soft brushstrokes, dreamy','impressionist')" style="background:var(--surface);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:5px 10px;border-radius:20px;font-size:0.75rem;cursor:pointer;">🌸 Impressionist</button>
+      <button onclick="quickEdit('gothic dark fantasy art, dramatic lighting, dark atmosphere','gothic')" style="background:var(--surface);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:5px 10px;border-radius:20px;font-size:0.75rem;cursor:pointer;">🦇 Gothic</button>
+      <button onclick="quickEdit('studio ghibli style, miyazaki, whimsical, magical, soft animation','ghibli')" style="background:var(--surface);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:5px 10px;border-radius:20px;font-size:0.75rem;cursor:pointer;">🏯 Ghibli</button>
+      <button onclick="quickEdit('neon glow, synthwave, retrowave, 80s aesthetic, purple pink neon','synthwave')" style="background:var(--surface);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:5px 10px;border-radius:20px;font-size:0.75rem;cursor:pointer;">🎵 Synthwave</button>
+      <button onclick="quickEdit('fantasy art, epic, magical, dragon, sword, enchanted world','fantasy')" style="background:var(--surface);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:5px 10px;border-radius:20px;font-size:0.75rem;cursor:pointer;">🐉 Fantasy</button>
+      <button onclick="quickEdit('pop art, andy warhol style, bold colors, halftone, graphic','popart')" style="background:var(--surface);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:5px 10px;border-radius:20px;font-size:0.75rem;cursor:pointer;">🎭 Pop Art</button>
+      <button onclick="quickEdit('black and white photography, high contrast, dramatic shadows','bw')" style="background:var(--surface);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:5px 10px;border-radius:20px;font-size:0.75rem;cursor:pointer;">⚫ B&W Photo</button>
+      <button onclick="quickEdit('stained glass art, colorful glass mosaic, cathedral window style','stained')" style="background:var(--surface);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:5px 10px;border-radius:20px;font-size:0.75rem;cursor:pointer;">🪟 Stained Glass</button>
+      <button onclick="quickEdit('low poly art, geometric shapes, triangulated, minimal polygons','lowpoly')" style="background:var(--surface);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:5px 10px;border-radius:20px;font-size:0.75rem;cursor:pointer;">🔺 Low Poly</button>
+      <button onclick="quickEdit('vaporwave aesthetic, pastel colors, surreal, dreamy 90s internet','vaporwave')" style="background:var(--surface);border:1px solid rgba(124,111,255,0.3);color:var(--text2);padding:5px 10px;border-radius:20px;font-size:0.75rem;cursor:pointer;">🌊 Vaporwave</button>
     </div>`;
   document.querySelector('.input-area').insertBefore(prev, document.querySelector('.input-wrap'));
   document.getElementById('userInput').placeholder = 'Or type: change background to blue, change outfit to red...';
@@ -567,59 +580,33 @@ async function generateImage(prompt) {
   const statusId = 'img-status-' + Date.now();
   bubble.innerHTML = `
     <div style="margin-bottom:10px;font-size:0.85rem;color:var(--text2);">🎨 Generating: <em>${prompt}</em></div>
-    <div id="${statusId}" style="color:var(--accent);font-size:0.82rem;">⏳ Warming up AI model... (~10-30 seconds)</div>`;
+    <div id="${statusId}" style="color:var(--accent);font-size:0.82rem;">⏳ Generating image... please wait</div>`;
   div.appendChild(bubble);
   container.appendChild(div);
   container.scrollTop = container.scrollHeight;
 
-  const statusEl = () => document.getElementById(statusId);
+  const seed = Math.floor(Math.random() * 99999);
+  const encoded = encodeURIComponent(prompt);
+  const imgUrl = `https://image.pollinations.ai/prompt/${encoded}?width=768&height=768&nologo=true&seed=${seed}&model=flux`;
 
-  async function tryGenerate(retries = 3) {
-    for (let i = 0; i < retries; i++) {
-      try {
-        if (statusEl()) statusEl().textContent = i === 0 ? '⏳ Generating image...' : `🔄 Model loading, retrying (${i}/${retries})...`;
-
-        if (statusEl()) statusEl().textContent = `⏳ Generating image... (attempt ${i+1}/${retries})`;
-
-        const res = await fetch('/api/image', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ prompt })
-        });
-
-        if (res.status === 503) {
-          if (statusEl()) statusEl().textContent = `⏳ Model loading... retrying in 15s (${i+1}/${retries})`;
-          await new Promise(r => setTimeout(r, 15000));
-          continue;
-        }
-
-        if (!res.ok) {
-          const errJson = await res.json().catch(() => ({}));
-          throw new Error(errJson.error || `Server error ${res.status}`);
-        }
-
-        const data = await res.json();
-        bubble.innerHTML = `
-          <div style="margin-bottom:8px;font-size:0.82rem;color:var(--text2);">🎨 <em>${prompt}</em></div>
-          <img src="${data.url}" alt="${prompt}"
-               style="max-width:100%;border-radius:12px;display:block;box-shadow:0 0 25px rgba(124,111,255,0.4);cursor:pointer;"
-               onclick="window.open('${data.url}','_blank')">
-          <div style="font-size:0.75rem;color:var(--text3);margin-top:8px;text-align:center;">
-            ✨ Generated by FLUX.1 • Click to enlarge
-          </div>`;
-        container.scrollTop = container.scrollHeight;
-        return;
-
-      } catch (e) {
-        if (i === retries - 1) {
-          bubble.innerHTML = `❌ Failed: ${e.message}<br><small style="color:var(--text3)">Check Vercel logs for details.</small>`;
-        }
-      }
-    }
-  }
-
-  await tryGenerate();
+  const img = new Image();
+  img.onload = () => {
+    bubble.innerHTML = `
+      <div style="margin-bottom:8px;font-size:0.82rem;color:var(--text2);">🎨 <em>${prompt}</em></div>
+      <img src="${imgUrl}" alt="${prompt}"
+           style="max-width:100%;border-radius:12px;display:block;box-shadow:0 0 25px rgba(124,111,255,0.4);cursor:pointer;"
+           onclick="window.open('${imgUrl}','_blank')">
+      <div style="font-size:0.75rem;color:var(--text3);margin-top:8px;text-align:center;">
+        ✨ Generated by FLUX • Click to enlarge & save
+      </div>`;
+    container.scrollTop = container.scrollHeight;
+  };
+  img.onerror = () => {
+    bubble.innerHTML = '❌ Generation failed. Please try again with a different prompt!';
+  };
+  img.src = imgUrl;
 }
+
 
 // ===================== GROQ CHAT (via Vercel /api/chat) =====================
 async function callGroq(msgs) {
