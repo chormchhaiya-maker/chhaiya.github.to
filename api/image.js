@@ -9,8 +9,9 @@ export default async function handler(req, res) {
   if (!prompt) return res.status(400).json({ error: 'prompt required' });
 
   try {
+    // Use HF Inference API directly (not router) - free, no credits needed
     const r = await fetch(
-      'https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell',
+      'https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2-1',
       {
         method: 'POST',
         headers: {
@@ -18,18 +19,15 @@ export default async function handler(req, res) {
           'Content-Type': 'application/json',
           'x-wait-for-model': 'true'
         },
-        body: JSON.stringify({
-          inputs: prompt,
-          parameters: { num_inference_steps: 4 }
-        })
+        body: JSON.stringify({ inputs: prompt })
       }
     );
 
-    console.log('HF status:', r.status, r.headers.get('content-type'));
+    console.log('Status:', r.status, 'Type:', r.headers.get('content-type'));
 
     if (!r.ok) {
       const t = await r.text();
-      console.error('HF error:', t);
+      console.error('Error:', t);
       return res.status(r.status).json({ error: t });
     }
 
