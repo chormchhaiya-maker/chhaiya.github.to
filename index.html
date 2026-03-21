@@ -17,14 +17,14 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{height:-webkit-fill-available}
 :root{
-  --bg:#0a0a0a;--surface:#111111;--surface2:#1a1a1a;
-  --border:rgba(255,255,255,0.12);--accent:#ffffff;--accent2:#cccccc;
-  --text:#ffffff;--text2:#aaaaaa;--text3:#666666;
+  --bg:#888888;--surface:#777777;--surface2:#666666;
+  --border:rgba(255,255,255,0.15);--accent:#ffffff;--accent2:#dddddd;
+  --text:#ffffff;--text2:#eeeeee;--text3:#cccccc;
 }
 body.light{
-  --bg:#ffffff;--surface:#f0f0f0;--surface2:#e0e0e0;
-  --border:rgba(0,0,0,0.12);--accent:#000000;--accent2:#333333;
-  --text:#000000;--text2:#444444;--text3:#888888;
+  --bg:#aaaaaa;--surface:#999999;--surface2:#888888;
+  --border:rgba(0,0,0,0.15);--accent:#000000;--accent2:#333333;
+  --text:#000000;--text2:#111111;--text3:#333333;
 }
 body.light #matrix-canvas{opacity:0.03}
 body.light .grid-overlay{opacity:0.15}
@@ -35,11 +35,10 @@ body.light .grid-overlay{opacity:0.15}
 @keyframes glitch{0%,90%,100%{transform:translate(0)}92%{transform:translate(-2px,1px)}94%{transform:translate(2px,-1px)}96%{transform:translate(-1px,2px)}}
 @keyframes pulse{0%,100%{box-shadow:0 0 8px #4ade80}50%{box-shadow:0 0 16px #4ade80,0 0 30px #4ade80}}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;height:100vh;height:-webkit-fill-available;display:flex;flex-direction:column;overflow:hidden}
-#matrix-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.18;pointer-events:none;display:none}
-#landscape-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+#matrix-canvas{display:none}
 .grid-overlay{display:none}
-.scanline{position:fixed;top:0;left:0;width:100%;height:3px;background:linear-gradient(transparent,rgba(124,111,255,0.15),transparent);z-index:1;pointer-events:none;animation:scanline 6s linear infinite}
-.corner-decoration{position:fixed;width:60px;height:60px;z-index:1;pointer-events:none}
+.scanline{display:none}
+.corner-decoration{display:none}
 .corner-decoration.tl{top:12px;left:12px;border-top:1px solid rgba(124,111,255,0.4);border-left:1px solid rgba(124,111,255,0.4)}
 .corner-decoration.tr{top:12px;right:12px;border-top:1px solid rgba(255,107,157,0.4);border-right:1px solid rgba(255,107,157,0.4)}
 .corner-decoration.bl{bottom:12px;left:12px;border-bottom:1px solid rgba(124,111,255,0.4);border-left:1px solid rgba(124,111,255,0.4)}
@@ -107,7 +106,6 @@ img.ai-image{max-width:100%;border-radius:12px;display:block;box-shadow:0 0 25px
 </head>
 <body>
 <canvas id="matrix-canvas"></canvas>
-<canvas id="landscape-canvas"></canvas>
 <div class="grid-overlay"></div>
 <div class="scanline"></div>
 <div class="corner-decoration tl"></div>
@@ -341,83 +339,6 @@ img.ai-image{max-width:100%;border-radius:12px;display:block;box-shadow:0 0 25px
 </div>
 
 <script>
-// Landscape Background with Rain
-const lc=document.getElementById('landscape-canvas');
-const lx=lc.getContext('2d');
-let raindrops=[],W,H;
-function initLandscape(){
-  W=lc.width=window.innerWidth;H=lc.height=window.innerHeight;raindrops=[];
-  for(let i=0;i<200;i++)raindrops.push({x:Math.random()*W,y:Math.random()*H,len:Math.random()*20+10,speed:Math.random()*4+2,opacity:Math.random()*0.4+0.1});
-}
-function drawLandscape(){
-  const isLight=document.body.classList.contains('light');
-  lx.clearRect(0,0,W,H);
-
-  if(isLight){
-    // Day sky
-    const sky=lx.createLinearGradient(0,0,0,H*0.65);
-    sky.addColorStop(0,'#87CEEB');sky.addColorStop(0.5,'#b0d8f0');sky.addColorStop(1,'#d4ecf7');
-    lx.fillStyle=sky;lx.fillRect(0,0,W,H*0.65);
-    // Sun
-    lx.beginPath();lx.arc(W*0.8,H*0.13,42,0,Math.PI*2);
-    const sunGlow=lx.createRadialGradient(W*0.8,H*0.13,10,W*0.8,H*0.13,42);
-    sunGlow.addColorStop(0,'#fffbe0');sunGlow.addColorStop(0.6,'#FFD700');sunGlow.addColorStop(1,'rgba(255,200,0,0)');
-    lx.fillStyle=sunGlow;lx.fill();
-    lx.beginPath();lx.arc(W*0.8,H*0.13,28,0,Math.PI*2);lx.fillStyle='#FFE135';lx.fill();
-    // Clouds
-    function drawCloud(cx,cy,s){lx.fillStyle='rgba(255,255,255,0.85)';[[-s*0.4,0,s*0.5],[0,-s*0.3,s*0.6],[s*0.4,0,s*0.5],[0,s*0.15,s*0.8]].forEach(([dx,dy,r])=>{lx.beginPath();lx.arc(cx+dx,cy+dy,r,0,Math.PI*2);lx.fill()})}
-    drawCloud(W*0.2,H*0.1,30);drawCloud(W*0.45,H*0.08,25);drawCloud(W*0.6,H*0.12,22);
-    // Mountains green
-    lx.beginPath();lx.moveTo(0,H*0.55);lx.lineTo(W*0.1,H*0.35);lx.lineTo(W*0.2,H*0.45);lx.lineTo(W*0.32,H*0.28);lx.lineTo(W*0.45,H*0.42);lx.lineTo(W*0.58,H*0.25);lx.lineTo(W*0.7,H*0.4);lx.lineTo(W*0.82,H*0.3);lx.lineTo(W*0.92,H*0.44);lx.lineTo(W,H*0.38);lx.lineTo(W,H*0.65);lx.lineTo(0,H*0.65);lx.closePath();lx.fillStyle='#2d6a2d';lx.fill();
-    // Snow caps
-    lx.beginPath();lx.moveTo(W*0.32,H*0.28);lx.lineTo(W*0.29,H*0.35);lx.lineTo(W*0.35,H*0.35);lx.closePath();lx.fillStyle='#f0f0f0';lx.fill();
-    lx.beginPath();lx.moveTo(W*0.58,H*0.25);lx.lineTo(W*0.55,H*0.33);lx.lineTo(W*0.61,H*0.33);lx.closePath();lx.fillStyle='#f0f0f0';lx.fill();
-    // Ground green
-    const gnd=lx.createLinearGradient(0,H*0.62,0,H);gnd.addColorStop(0,'#3a7d3a');gnd.addColorStop(1,'#1a4d1a');
-    lx.fillStyle=gnd;lx.fillRect(0,H*0.62,W,H*0.38);
-    // Trees green
-    function drawTreeLight(x,h){
-      lx.fillStyle='#5c3d1a';lx.fillRect(x-h*0.06,H*0.62+(H*0.38-h),h*0.12,h*0.35);
-      for(let l=0;l<3;l++){lx.beginPath();const ly=H*0.62+(H*0.38-h)+h*l*0.25;lx.moveTo(x,ly-h*0.28*(1-l*0.1));lx.lineTo(x-h*(0.45+l*0.1),ly+h*0.18);lx.lineTo(x+h*(0.45+l*0.1),ly+h*0.18);lx.closePath();lx.fillStyle=l===0?'#1a5c1a':'#228B22';lx.fill()}
-    }
-    for(let i=0;i<10;i++)drawTreeLight((i/10)*W+50,H*(0.15+(i%3)*0.04));
-    drawTreeLight(W*0.05,H*0.3);drawTreeLight(W*0.14,H*0.27);drawTreeLight(W*0.83,H*0.28);drawTreeLight(W*0.93,H*0.25);
-    // Light overlay
-    lx.fillStyle='rgba(255,255,255,0.15)';lx.fillRect(0,0,W,H);
-  } else {
-    // Night sky
-    const sky=lx.createLinearGradient(0,0,0,H*0.65);
-    sky.addColorStop(0,'#060610');sky.addColorStop(0.5,'#0d0d1f');sky.addColorStop(1,'#151510');
-    lx.fillStyle=sky;lx.fillRect(0,0,W,H*0.65);
-    // Moon
-    lx.beginPath();lx.arc(W*0.8,H*0.12,35,0,Math.PI*2);lx.fillStyle='rgba(255,255,220,0.9)';lx.fill();
-    lx.beginPath();lx.arc(W*0.82,H*0.11,30,0,Math.PI*2);lx.fillStyle='#0d0d1f';lx.fill();
-    // Stars
-    for(let i=0;i<80;i++){const sx=(i*137.5+50)%W,sy=(i*97.3+20)%(H*0.5);lx.beginPath();lx.arc(sx,sy,i%3===0?1.5:0.8,0,Math.PI*2);lx.fillStyle=`rgba(255,255,255,${0.3+(i%5)*0.1})`;lx.fill()}
-    // Dark mountains
-    lx.beginPath();lx.moveTo(0,H*0.55);lx.lineTo(W*0.1,H*0.35);lx.lineTo(W*0.2,H*0.45);lx.lineTo(W*0.32,H*0.28);lx.lineTo(W*0.45,H*0.42);lx.lineTo(W*0.58,H*0.25);lx.lineTo(W*0.7,H*0.4);lx.lineTo(W*0.82,H*0.3);lx.lineTo(W*0.92,H*0.44);lx.lineTo(W,H*0.38);lx.lineTo(W,H*0.65);lx.lineTo(0,H*0.65);lx.closePath();lx.fillStyle='#101a10';lx.fill();
-    // Dark ground
-    const gnd=lx.createLinearGradient(0,H*0.62,0,H);gnd.addColorStop(0,'#0a140a');gnd.addColorStop(1,'#040804');
-    lx.fillStyle=gnd;lx.fillRect(0,H*0.62,W,H*0.38);
-    // Dark trees
-    function drawTreeDark(x,h){
-      lx.fillStyle='#040804';lx.fillRect(x-h*0.06,H*0.62+(H*0.38-h),h*0.12,h*0.35);
-      for(let l=0;l<3;l++){lx.beginPath();const ly=H*0.62+(H*0.38-h)+h*l*0.25;lx.moveTo(x,ly-h*0.28*(1-l*0.1));lx.lineTo(x-h*(0.45+l*0.1),ly+h*0.18);lx.lineTo(x+h*(0.45+l*0.1),ly+h*0.18);lx.closePath();lx.fillStyle='#071007';lx.fill()}
-    }
-    for(let i=0;i<10;i++)drawTreeDark((i/10)*W+50,H*(0.15+(i%3)*0.04));
-    drawTreeDark(W*0.05,H*0.3);drawTreeDark(W*0.14,H*0.27);drawTreeDark(W*0.83,H*0.28);drawTreeDark(W*0.93,H*0.25);
-    // Puddles
-    lx.fillStyle='rgba(80,100,140,0.12)';
-    lx.beginPath();lx.ellipse(W*0.3,H*0.86,W*0.1,H*0.018,0,0,Math.PI*2);lx.fill();
-    lx.beginPath();lx.ellipse(W*0.65,H*0.91,W*0.07,H*0.013,0,0,Math.PI*2);lx.fill();
-    // Rain
-    lx.lineWidth=1;
-    raindrops.forEach(d=>{lx.beginPath();lx.globalAlpha=d.opacity;lx.strokeStyle='rgba(160,190,255,0.5)';lx.moveTo(d.x,d.y);lx.lineTo(d.x-d.len*0.2,d.y+d.len);lx.stroke();d.y+=d.speed;d.x-=d.speed*0.2;if(d.y>H){d.y=-20;d.x=Math.random()*W}if(d.x<0)d.x=W});
-    lx.globalAlpha=1;
-    lx.fillStyle='rgba(0,0,0,0.5)';lx.fillRect(0,0,W,H);
-  }
-}
-initLandscape();setInterval(drawLandscape,40);window.addEventListener('resize',initLandscape);
 
 // State
 let messages=[],isLoading=false,autoSpeak=false,pendingImage=null;
