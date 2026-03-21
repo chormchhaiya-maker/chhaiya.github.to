@@ -791,18 +791,22 @@ function openGrokWithAd(prompt) {
       clearInterval(interval);
       if (btn) {
         btn.disabled = false;
-        btn.style.background = '#1a1a2e';
+        btn.style.background = '#FF5E5B';
         btn.style.color = '#ffffff';
         btn.style.cursor = 'pointer';
-        btn.textContent = '✨ Open Grok Imagine now!';
+        btn.textContent = '✨ Open Grok Imagine →';
+        // Use href - not blocked by browser
         btn.onclick = () => {
-          document.body.removeChild(overlay);
-          window.open('https://grok.com/imagine', '_blank');
+          if (document.body.contains(overlay)) document.body.removeChild(overlay);
+          const a = document.createElement('a');
+          a.href = 'https://grok.com/imagine';
+          a.target = '_blank';
+          a.rel = 'noopener';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
         };
       }
-      // Auto open after 5s
-      document.body.removeChild(overlay);
-      window.open('https://grok.com/imagine', '_blank');
     }
   }, 1000);
 }
