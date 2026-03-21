@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#7c6fff">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Chhaiya AI">
+<meta name="apple-mobile-web-app-title" content="CC AI">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="/icon.png">
 <link rel="icon" type="image/png" href="/icon.png">
@@ -125,7 +125,7 @@ img.ai-image{max-width:100%;border-radius:12px;display:block;box-shadow:0 0 25px
     <div class="welcome" id="welcome">
       <div class="welcome-icon">🤖</div>
       <h2>Hello! I'm CC AI 🔥 <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="url(#vg2)"/><path d="M7 12.5l3.5 3.5 6.5-7" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="vg2" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop stop-color="#7c6fff"/><stop offset="1" stop-color="#ff6b9d"/></linearGradient></defs></svg></h2>
-      <p>Created by ChhaiyaDeveloper-AI 😎</p>
+  <p>developer By Chhaiya-Programmer</p> 😎</p>
       <div class="suggestions">
         <div class="suggestion" onclick="sendSuggestion('What can you do?')">What can you do?</div>
         <div class="suggestion" onclick="sendSuggestion('Tell me a fun fact')">Tell me a fun fact</div>
@@ -285,7 +285,7 @@ img.ai-image{max-width:100%;border-radius:12px;display:block;box-shadow:0 0 25px
     <div style="display:flex;align-items:center;gap:10px;">
       <span style="font-size:24px;">📲</span>
       <div>
-        <div style="font-size:0.88rem;font-weight:700;color:white;">Install Chhaiya AI</div>
+        <div style="font-size:0.88rem;font-weight:700;color:white;">Install CC AI</div>
         <div style="font-size:0.75rem;color:rgba(255,255,255,0.8);">Use it like a real app on your device</div>
       </div>
     </div>
@@ -323,7 +323,7 @@ img.ai-image{max-width:100%;border-radius:12px;display:block;box-shadow:0 0 25px
       <div style="font-size:0.85rem;color:var(--text2);font-weight:700;margin-bottom:8px;">Chrome / Edge:</div>
       <div style="font-size:0.82rem;color:var(--text2);line-height:1.8;">
         1. Look for <strong style="color:var(--accent)">⊕</strong> icon in the address bar<br>
-        2. Click <strong style="color:var(--accent)">"Install Chhaiya AI"</strong><br>
+        2. Click <strong style="color:var(--accent)">"Install CC AI"</strong><br>
         3. Click <strong style="color:var(--accent)">"Install"</strong>
       </div>
     </div>
@@ -350,7 +350,7 @@ function getSystemPrompt(){
   const personalities={friendly:'Be friendly, warm and casual. Use emojis occasionally.',professional:'Be professional, formal and precise.',funny:'Be funny, playful and witty.',concise:'Be very concise and to the point.'};
   const nameStr=p.name?`The user's name is ${p.name}. Address them by name occasionally.`:'';
   const langStr=p.lang!=='English'?`Respond in ${p.lang} when the user writes in ${p.lang}.`:'';
-  return `You are Chhaiya AI, a smart and powerful AI assistant created by ChhaiyaDeveloper-AI.
+  return `You are CC AI, a smart and powerful AI assistant created by ChhaiyaDeveloper-AI.
 
 ABOUT THE CREATOR:
 - Full name: Chorm Chhaiya (also known as Yaxy)
@@ -529,7 +529,7 @@ function addMessage(role,html,raw){
   div.innerHTML=`<div class="avatar">${role==='user'?'👤':'🤖'}</div>`;div.appendChild(bubble);container.appendChild(div);container.scrollTop=container.scrollHeight;
 }
 function copyRaw(btn){copyToClipboard(btn.getAttribute('data-text'),btn,'📋 Copy')}
-function shareRaw(btn){const t=btn.getAttribute('data-text');if(navigator.share){navigator.share({title:'Chhaiya AI',text:t})}else{copyToClipboard(t,btn,'🔗 Share')}}
+function shareRaw(btn){const t=btn.getAttribute('data-text');if(navigator.share){navigator.share({title:'CC AI',text:t})}else{copyToClipboard(t,btn,'🔗 Share')}}
 function speakRaw(btn){speakTextRaw(btn.getAttribute('data-text'))}
 function speakTextRaw(text){window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);window.speechSynthesis.speak(u)}
 
@@ -674,7 +674,7 @@ async function generateMusic() {
       <audio controls style="width:100%;border-radius:10px;margin-bottom:8px;">
         <source src="${data.url}" type="audio/wav">
       </audio>
-      <a href="${data.url}" download="chhaiya-music.wav" style="display:block;text-align:center;color:var(--accent);font-size:0.82rem;">⬇️ Download music</a>`;
+      <a href="${data.url}" download="CC-music.wav" style="display:block;text-align:center;color:var(--accent);font-size:0.82rem;">⬇️ Download music</a>`;
   } catch(e) {
     resultDiv.innerHTML = `<div style="color:#f87171;font-size:0.82rem;">❌ ${e.message}</div>`;
   }
