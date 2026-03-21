@@ -560,7 +560,7 @@ async function sendMessage(){
     const reply=await callGroq(messages);messages.push({role:'assistant',content:reply});
     const t=document.getElementById('typing');if(t)t.remove();
     addMessage('ai',formatMessage(reply),reply);
-    if(autoSpeak)speakTextRaw(reply);
+    if(autoSpeak){fetch('/api/speak',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:reply.slice(0,500)})}).then(r=>r.json()).then(d=>{if(d.audio){const a=new Audio(d.audio);a.play()}else speakTextRaw(reply)}).catch(()=>speakTextRaw(reply));}
     if(typeof trackActivity==='function')trackActivity('chat');
   }catch(e){const t=document.getElementById('typing');if(t)t.remove();addMessage('ai',`❌ Error: ${e.message}`,'')}
   isLoading=false;document.getElementById('sendBtn').disabled=false;document.getElementById('userInput').focus();
@@ -575,7 +575,35 @@ function addMessage(role,html,raw){
 }
 function copyRaw(btn){copyToClipboard(btn.getAttribute('data-text'),btn,'📋 Copy')}
 function shareRaw(btn){const t=btn.getAttribute('data-text');if(navigator.share){navigator.share({title:'CC-AI',text:t})}else{copyToClipboard(t,btn,'🔗 Share')}}
-function speakRaw(btn){speakTextRaw(btn.getAttribute('data-text'))}
+function speakRaw(btn){
+  const text = btn.getAttribute('data-text');
+  const orig = btn.textContent;
+  btn.textContent = '⏳';
+  btn.disabled = true;
+  fetch('/api/speak', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({text: text.slice(0,500)})
+  })
+  .then(r => r.json())
+  .then(data => {
+    btn.textContent = orig;
+    btn.disabled = false;
+    if (data.audio) {
+      const audio = new Audio(data.audio);
+      audio.play();
+      btn.textContent = '🔊 Playing...';
+      audio.onended = () => btn.textContent = orig;
+    } else {
+      speakTextRaw(text);
+    }
+  })
+  .catch(() => {
+    btn.textContent = orig;
+    btn.disabled = false;
+    speakTextRaw(text);
+  });
+}
 function speakTextRaw(text){window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);window.speechSynthesis.speak(u)}
 
 // Paste image
