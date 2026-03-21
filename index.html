@@ -602,7 +602,20 @@ function toggleVoice() {
   recognition = new SpeechRecognition();
   recognition.continuous = false;
   recognition.interimResults = true;
-  recognition.lang = 'en-US';
+  // Use user's profile language
+  const langMap = {
+    'English': 'en-US',
+    'Khmer': 'km-KH',
+    'Chinese': 'zh-CN',
+    'Japanese': 'ja-JP',
+    'Korean': 'ko-KR',
+    'French': 'fr-FR',
+    'Spanish': 'es-ES',
+    'Thai': 'th-TH',
+    'Vietnamese': 'vi-VN'
+  };
+  const p = getProfile();
+  recognition.lang = langMap[p.lang] || 'en-US';
 
   const btn = document.getElementById('voiceBtn');
   recognition.onstart = () => {
