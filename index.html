@@ -17,17 +17,17 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{height:-webkit-fill-available}
 :root{
-  --bg:#0a0a0f;--surface:#13131a;--surface2:#1c1c26;
-  --border:rgba(255,255,255,0.08);--accent:#7c6fff;--accent2:#ff6b9d;
-  --text:#ffffff;--text2:#b0aed0;--text3:#6a6680;
+  --bg:#0a0a0a;--surface:#111111;--surface2:#1a1a1a;
+  --border:rgba(255,255,255,0.12);--accent:#ffffff;--accent2:#cccccc;
+  --text:#ffffff;--text2:#aaaaaa;--text3:#666666;
 }
 body.light{
-  --bg:#ffffff;--surface:#f5f5f5;--surface2:#ebebeb;
-  --border:rgba(0,0,0,0.1);--accent:#7c6fff;--accent2:#ff6b9d;
+  --bg:#ffffff;--surface:#f0f0f0;--surface2:#e0e0e0;
+  --border:rgba(0,0,0,0.12);--accent:#000000;--accent2:#333333;
   --text:#000000;--text2:#444444;--text3:#888888;
 }
-body.light #matrix-canvas{opacity:0.04}
-body.light .grid-overlay{opacity:0.3}
+body.light #matrix-canvas{opacity:0.03}
+body.light .grid-overlay{opacity:0.15}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 @keyframes gradShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
@@ -46,17 +46,17 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 .app{display:flex;flex-direction:column;height:100vh;height:-webkit-fill-available;position:relative;z-index:2;padding-bottom:env(safe-area-inset-bottom);padding-top:env(safe-area-inset-top)}
 .header{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid var(--border);background:var(--surface);backdrop-filter:blur(20px);flex-shrink:0}
 .logo{display:flex;align-items:center;gap:12px}
-.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;background-size:200% 200%;animation:gradShift 4s ease infinite}
-.logo-name{font-size:18px;font-weight:800;font-family:'Playfair Display',serif;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:flex;align-items:center;gap:6px}
+.logo-icon{width:36px;height:36px;background:var(--surface2);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.logo-name{font-size:18px;font-weight:800;font-family:'Playfair Display',serif;color:var(--text);display:flex;align-items:center;gap:6px}
 .logo-tag{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;margin-top:1px}
 .status{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);font-family:'DM Mono',monospace}
-.status-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite}
+.status-dot{width:7px;height:7px;border-radius:50%;background:#ffffff;animation:pulse 2s infinite}
 .messages{flex:1;overflow-y:auto;overflow-x:hidden;padding:24px;display:flex;flex-direction:column;gap:20px;scroll-behavior:smooth;min-height:0}
 .messages::-webkit-scrollbar{width:4px}
 .messages::-webkit-scrollbar-thumb{background:rgba(124,111,255,0.3);border-radius:2px}
 .welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;text-align:center;padding:40px;animation:fadeUp 0.6s ease forwards}
 .welcome-icon{font-size:56px;margin-bottom:20px;filter:drop-shadow(0 0 20px rgba(124,111,255,0.8)) drop-shadow(0 0 40px rgba(124,111,255,0.4))}
-.welcome h2{font-size:32px;font-weight:800;font-family:'Playfair Display',serif;background:linear-gradient(135deg,var(--text),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px}
+.welcome h2{font-size:32px;font-weight:800;font-family:'Playfair Display',serif;color:var(--text);margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px}
 .welcome p{color:var(--text2);font-size:15px;max-width:360px;line-height:1.6;font-weight:400}
 .suggestions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:28px}
 .suggestion{background:var(--surface2);border:1px solid rgba(124,111,255,0.2);border-radius:20px;padding:8px 16px;font-size:13px;color:var(--text2);cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;backdrop-filter:blur(10px)}
@@ -68,17 +68,17 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;heigh
 .msg.user .avatar{background:linear-gradient(135deg,var(--accent),var(--accent2))}
 .msg.ai .avatar{background:var(--surface2);border:1px solid rgba(124,111,255,0.3);box-shadow:0 0 10px rgba(124,111,255,0.2)}
 .bubble{max-width:580px;padding:12px 16px;border-radius:16px;font-size:14.5px;line-height:1.7;font-weight:400;font-family:'Inter',sans-serif;word-break:break-word;overflow-wrap:break-word}
-.msg.user .bubble{background:linear-gradient(135deg,var(--accent),#6b5de0);color:#fff;border-bottom-right-radius:4px;box-shadow:0 0 20px rgba(124,111,255,0.3)}
+.msg.user .bubble{background:var(--accent);color:var(--bg);border-bottom-right-radius:4px;}
 .msg.ai .bubble{background:var(--surface);border:1px solid rgba(124,111,255,0.2);color:var(--text);border-bottom-left-radius:4px;backdrop-filter:blur(10px);width:100%}
-.typing-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin:0 2px;animation:blink 1.2s infinite;box-shadow:0 0 6px var(--accent)}
+.typing-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--text2);margin:0 2px;animation:blink 1.2s infinite;}
 .typing-dot:nth-child(2){animation-delay:0.2s}
 .typing-dot:nth-child(3){animation-delay:0.4s}
 .input-area{padding:16px 24px max(24px,env(safe-area-inset-bottom));border-top:1px solid var(--border);background:var(--surface);backdrop-filter:blur(20px);flex-shrink:0}
 .input-wrap{display:flex;align-items:flex-end;gap:12px;background:var(--surface);border:1px solid rgba(124,111,255,0.2);border-radius:16px;padding:12px 16px;transition:border-color 0.2s,box-shadow 0.2s;max-width:800px;margin:0 auto;backdrop-filter:blur(10px)}
-.input-wrap:focus-within{border-color:var(--accent);box-shadow:0 0 20px rgba(124,111,255,0.2)}
+.input-wrap:focus-within{border-color:var(--text2);box-shadow:none}
 textarea{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:'Inter',sans-serif;font-size:14px;resize:none;max-height:120px;min-height:24px;line-height:1.6}
 textarea::placeholder{color:var(--text3)}
-.send-btn{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity 0.2s,transform 0.1s,box-shadow 0.2s;font-size:16px}
+.send-btn{width:36px;height:36px;border-radius:10px;background:var(--accent);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity 0.2s,transform 0.1s,box-shadow 0.2s;font-size:16px;color:var(--bg)}
 .send-btn:hover{opacity:0.85;transform:scale(1.05);box-shadow:0 0 20px rgba(124,111,255,0.5)}
 .send-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;box-shadow:none}
 .input-hint{text-align:center;font-size:11px;color:var(--text3);margin-top:10px;font-family:'DM Mono',monospace}
@@ -151,7 +151,7 @@ img.ai-image{max-width:100%;border-radius:12px;display:block;box-shadow:0 0 25px
       <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
     </div>
     <div style="display:flex;justify-content:center;margin-top:8px;position:relative;">
-      <button onclick="toggleToolMenu()" id="plus-btn" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:white;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 0.2s;box-shadow:0 0 15px rgba(124,111,255,0.4);">+</button>
+      <button onclick="toggleToolMenu()" id="plus-btn" style="width:36px;height:36px;border-radius:50%;background:var(--accent);border:none;color:var(--bg);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 0.2s;">+</button>
       <div id="tool-menu" style="display:none;position:absolute;bottom:48px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid rgba(124,111,255,0.3);border-radius:16px;padding:10px;flex-direction:column;gap:6px;min-width:200px;box-shadow:0 8px 32px rgba(0,0,0,0.4);backdrop-filter:blur(20px);z-index:100;">
         <label for="camera-upload" onclick="closeToolMenu()" style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:8px 12px;border-radius:10px;color:var(--text2);font-size:0.85rem;">📷 Take Photo</label>
         <label for="gallery-upload" onclick="closeToolMenu()" style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:8px 12px;border-radius:10px;color:var(--text2);font-size:0.85rem;">🖼️ Gallery</label>
@@ -344,7 +344,7 @@ const canvas=document.getElementById('matrix-canvas');
 const ctx=canvas.getContext('2d');
 let cols,drops;
 function initMatrix(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;cols=Math.floor(canvas.width/14);drops=Array(cols).fill(1)}
-function drawMatrix(){ctx.fillStyle='rgba(10,10,15,0.05)';ctx.fillRect(0,0,canvas.width,canvas.height);const chars='01アイウエオカキクケコ';for(let i=0;i<drops.length;i++){const char=chars[Math.floor(Math.random()*chars.length)];ctx.fillStyle=Math.random()>0.95?'#ff6b9d':Math.random()>0.7?'#a093f8':'#7c6fff';ctx.globalAlpha=Math.random()*0.5+0.1;ctx.font='14px DM Mono,monospace';ctx.fillText(char,i*14,drops[i]*14);if(drops[i]*14>canvas.height&&Math.random()>0.975)drops[i]=0;drops[i]++}ctx.globalAlpha=1}
+function drawMatrix(){ctx.fillStyle='rgba(10,10,15,0.05)';ctx.fillRect(0,0,canvas.width,canvas.height);const chars='01アイウエオカキクケコ';for(let i=0;i<drops.length;i++){const char=chars[Math.floor(Math.random()*chars.length)];ctx.fillStyle=Math.random()>0.5?'#ffffff':'#888888';ctx.globalAlpha=Math.random()*0.5+0.1;ctx.font='14px DM Mono,monospace';ctx.fillText(char,i*14,drops[i]*14);if(drops[i]*14>canvas.height&&Math.random()>0.975)drops[i]=0;drops[i]++}ctx.globalAlpha=1}
 initMatrix();setInterval(drawMatrix,50);window.addEventListener('resize',initMatrix);
 
 // State
